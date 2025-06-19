@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shake_n_report/shake_to_report.dart';
+import 'package:shake_n_report/shake_n_report.dart';
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
@@ -7,7 +7,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   // // Initialize the plugin
-  ShakeToReportPlugin.initialize(
+  ShakeNReportPlugin.initialize(
     shakeThreshold: 2,
     minShakeCount: 1,
     isDebuggable: true,

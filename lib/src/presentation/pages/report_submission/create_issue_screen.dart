@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shake_n_report/shake_to_report.dart';
+import 'package:shake_n_report/shake_n_report.dart';
 import 'package:shake_n_report/src/core/constants/my_constants.dart';
 import 'package:shake_n_report/src/core/utils/utility.dart';
 import 'package:shake_n_report/src/data/models/jira/response/jira_assignable_users_response.dart';

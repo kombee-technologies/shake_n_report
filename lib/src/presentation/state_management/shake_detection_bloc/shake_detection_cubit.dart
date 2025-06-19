@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shake_n_report/src/core/constants/enums.dart';
 import 'package:shake_n_report/src/core/constants/my_constants.dart';
 import 'package:shake_n_report/src/core/di.dart';
-import 'package:shake_n_report/src/core/shake_to_report_plugin.dart';
+import 'package:shake_n_report/src/core/shake_n_report_plugin.dart';
 import 'package:shake_n_report/src/core/utils/utility.dart';
 import 'package:shake_n_report/src/data/data_source/local_data_source/local_storage.dart';
 import 'package:shake_n_report/src/data/data_source/local_data_source/local_storage_keys.dart';
@@ -15,14 +15,14 @@ class ShakeDetectionCubit extends Cubit<ShakeDetectionState> {
   ShakeDetectionCubit() : super(ShakeDetectionInitial());
 
   Future<void> onShakeDetected(DateTime timestamp) async {
-    switch (ShakeToReportPlugin.instance.managementTool) {
+    switch (ShakeNReportPlugin.instance.managementTool) {
       case ManagementTools.jira:
-        if (ShakeToReportPlugin.instance.jiraConfig?.isValid() ?? false) {
+        if (ShakeNReportPlugin.instance.jiraConfig?.isValid() ?? false) {
           Utility.debugLog('Jira tool selected');
           emit(ShakeDetectedState(timestamp));
           final String accessToken = await getIt<LocalStorage>().getStringData(LocalStorageKeys.jiraAccessToken);
           final String refreshToken = await getIt<LocalStorage>().getStringData(LocalStorageKeys.jiraRefreshToken);
-          final BuildContext? context = ShakeToReportPlugin.instance.navigatorKey.currentContext;
+          final BuildContext? context = ShakeNReportPlugin.instance.navigatorKey.currentContext;
           if (accessToken.isNotEmpty || refreshToken.isNotEmpty) {
             if (context != null && context.mounted) {
               Navigator.of(context).push(
@@ -32,8 +32,8 @@ class ShakeDetectionCubit extends Cubit<ShakeDetectionState> {
               );
             }
           } else {
-            final String clientId = ShakeToReportPlugin.instance.jiraConfig?.clientId ?? '';
-            final String redirectUrl = ShakeToReportPlugin.instance.jiraConfig?.redirectUrl ?? '';
+            final String clientId = ShakeNReportPlugin.instance.jiraConfig?.clientId ?? '';
+            final String redirectUrl = ShakeNReportPlugin.instance.jiraConfig?.redirectUrl ?? '';
             final String jiraLoginUrl =
                 'https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=$clientId&scope=${MyConstants.jiraScopes}&redirect_uri=$redirectUrl&state=${MyConstants.state}&response_type=code&prompt=consent';
 

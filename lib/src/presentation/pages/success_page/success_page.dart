@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shake_n_report/shake_to_report.dart';
+import 'package:shake_n_report/shake_n_report.dart';
 import 'package:shake_n_report/src/core/constants/my_constants.dart';
 import 'package:shake_n_report/src/core/utils/utility.dart';
 

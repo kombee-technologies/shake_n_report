@@ -3,13 +3,13 @@ import 'package:shake_n_report/src/core/constants/enums.dart';
 import 'package:shake_n_report/src/core/di.dart';
 import 'package:shake_n_report/src/data/models/jira/jira_config.dart';
 
-class ShakeToReportPlugin {
-  static final ShakeToReportPlugin _instance = ShakeToReportPlugin._internal();
+class ShakeNReportPlugin {
+  static final ShakeNReportPlugin _instance = ShakeNReportPlugin._internal();
 
-  /// Get the singleton instance of ShakeToReportPlugin
-  static ShakeToReportPlugin get instance => _instance;
+  /// Get the singleton instance of ShakeNReportPlugin
+  static ShakeNReportPlugin get instance => _instance;
 
-  ShakeToReportPlugin._internal();
+  ShakeNReportPlugin._internal();
 
   double shakeThreshold = 2.7;
 

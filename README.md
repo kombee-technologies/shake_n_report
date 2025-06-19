@@ -31,7 +31,7 @@ flutter pub get
 Import the package in your main.dart file:
 
 ```dart
-import 'package:shake_n_report/shake_to_report.dart';
+import 'package:shake_n_report/shake_n_report.dart';
 ```
 
 Create a GlobalKey for navigation:

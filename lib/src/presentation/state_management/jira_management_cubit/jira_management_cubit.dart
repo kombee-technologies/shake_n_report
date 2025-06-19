@@ -4,7 +4,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shake_n_report/shake_to_report.dart';
+import 'package:shake_n_report/shake_n_report.dart';
 import 'package:shake_n_report/src/core/constants/my_constants.dart';
 import 'package:shake_n_report/src/core/di.dart';
 import 'package:shake_n_report/src/core/exceptions/exceptions.dart';
@@ -60,11 +60,11 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
     final GetAccessTokenRequest request = GetAccessTokenRequest(
       code: code,
       grantType: MyConstants.authorizationCode,
-      clientId: ShakeToReportPlugin.instance.jiraConfig?.clientId ?? '',
-      clientSecret: ShakeToReportPlugin.instance.jiraConfig?.clientSecret ?? '',
-      redirectUri: ShakeToReportPlugin.instance.jiraConfig?.redirectUrl ?? '',
+      clientId: ShakeNReportPlugin.instance.jiraConfig?.clientId ?? '',
+      clientSecret: ShakeNReportPlugin.instance.jiraConfig?.clientSecret ?? '',
+      redirectUri: ShakeNReportPlugin.instance.jiraConfig?.redirectUrl ?? '',
     );
-    final BuildContext? context = ShakeToReportPlugin.instance.navigatorKey.currentContext;
+    final BuildContext? context = ShakeNReportPlugin.instance.navigatorKey.currentContext;
     final Either<BaseException, AccessTokenResponse> accessToken = await getAccessTokenUseCase.call(request);
     accessToken.fold(
       (BaseException error) {
@@ -276,7 +276,7 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
     await createTicketResult.fold(
       (BaseException error) async {
         if (error is UnauthorizedException) {
-          final BuildContext? context = ShakeToReportPlugin.instance.navigatorKey.currentContext;
+          final BuildContext? context = ShakeNReportPlugin.instance.navigatorKey.currentContext;
           if (context != null && context.mounted) {
             context.read<JiraManagementCubit>().resetState();
             context.read<ShakeDetectionCubit>().resetState();
