@@ -107,7 +107,7 @@ When using Jira as the management tool, provide the following configuration:
 - `redirectUrl`: The redirect URL for OAuth authentication
 - `clientSecret`: Your Jira client secret
 
-(For more information on how to obtain these credentials, refer to the [Jira Plugin Documentation](https://www.google.com)).
+(For more information on how to obtain these credentials, refer to the [Jira Plugin Documentation](jira_developer_app_setup_guide.md)).
 
 ## Usage
 
