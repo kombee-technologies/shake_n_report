@@ -42,7 +42,9 @@ class _ShakeToReportWidgetState extends State<ShakeToReportWidget> {
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _shakeDetector?.startListening();
+      if (ShakeNReportPlugin.instance.isEnabled) {
+        _shakeDetector?.startListening();
+      }
     });
   }
 
