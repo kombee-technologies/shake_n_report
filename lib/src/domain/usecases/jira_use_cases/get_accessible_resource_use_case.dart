@@ -11,6 +11,6 @@ class GetAccessibleResourceUseCase extends UseCase<List<AccessibleResourcesRespo
   GetAccessibleResourceUseCase(this._jiraRepository);
 
   @override
-  Future<Either<BaseException, List<AccessibleResourcesResponse>>> call(NoParams params) =>
+  Future<Either<BaseException, List<AccessibleResourcesResponse>>> call(NoParams reqParams) =>
       _jiraRepository.getAccessibleResources();
 }

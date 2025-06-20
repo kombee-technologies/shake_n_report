@@ -11,6 +11,6 @@ class GetAccessTokenUseCase extends UseCase<AccessTokenResponse, GetAccessTokenR
   GetAccessTokenUseCase(this._jiraRepository);
 
   @override
-  Future<Either<BaseException, AccessTokenResponse>> call(GetAccessTokenRequest params) =>
-      _jiraRepository.getAccessToken(params);
+  Future<Either<BaseException, AccessTokenResponse>> call(GetAccessTokenRequest reqParams) =>
+      _jiraRepository.getAccessToken(reqParams);
 }

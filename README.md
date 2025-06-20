@@ -9,6 +9,17 @@ A Flutter plugin that enables users to report issues by shaking their device. Th
 - Integration with Jira for issue management
 - Debug mode support
 
+## Platform Support
+
+- iOS
+- Android
+
+## Requirements
+
+- Flutter 3.22.0 or higher
+- iOS 11.0 or higher
+- Android API level 21 or higher
+
 ## Installation
 
 Add the following dependency to your `pubspec.yaml` file:
@@ -120,17 +131,6 @@ Once configured, users can trigger the bug report interface by shaking their dev
 ## Debug Mode
 
 When `isDebuggable` is set to true, additional debugging information will be available in the bug report interface. This is useful during development and testing.
-
-## Platform Support
-
-- iOS
-- Android
-
-## Requirements
-
-- Flutter 2.0.0 or higher
-- iOS 11.0 or higher
-- Android API level 21 or higher
 
 ## Coming Soon
 

@@ -62,7 +62,7 @@ class ShakeNReportPlugin {
   }) async {
     // Runtime validation
     assert(
-      managementTool != ManagementTools.jira,
+      managementTool == ManagementTools.jira,
       'JiraConfig must be provided when managementTool is set to ManagementTools.jira',
     );
 

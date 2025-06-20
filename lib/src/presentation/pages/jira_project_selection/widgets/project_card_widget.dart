@@ -22,15 +22,35 @@ class ProjectCardWidget extends StatefulWidget {
 }
 
 class _ProjectCardWidgetState extends State<ProjectCardWidget> {
-  final ExpansibleController _controller = ExpansibleController();
-
   @override
   Widget build(BuildContext context) {
     final List<String> scopes = widget.project?.scopes ?? <String>[];
 
-    return Expansible(
-      controller: _controller,
-      headerBuilder: (BuildContext context, Animation<double> animation) => Container(
+    return ExpansionTile(
+      initiallyExpanded: widget.project?.projects?.isNotEmpty ?? false,
+      maintainState: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(MyConstants.borderRadius),
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+      collapsedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(MyConstants.borderRadius),
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+      onExpansionChanged: (bool isExpanded) {
+        // Check if projects are empty and id is not null before fetching
+        if (isExpanded &&
+            (widget.project?.projects?.isEmpty ?? true) &&
+            widget.project?.id != null &&
+            widget.project?.errorStr == null) {
+          context.read<JiraManagementCubit>().getProjectsForResource(widget.project?.id ?? '');
+        }
+      },
+      title: Container(
         padding: const EdgeInsets.all(8),
         child: Row(
           children: <Widget>[
@@ -90,91 +110,61 @@ class _ProjectCardWidgetState extends State<ProjectCardWidget> {
           ],
         ),
       ),
-      bodyBuilder: (BuildContext context, Animation<double> animation) =>
-          ((widget.project?.projects?.isEmpty ?? true) && widget.project?.errorStr == null)
-              ? const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  child: CupertinoActivityIndicator(),
-                )
-              : (widget.project?.errorStr != null)
-                  ? Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Text(widget.project?.errorStr ?? ''),
-                    )
-                  : Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey.shade300,
-                        ),
-                        borderRadius: BorderRadius.circular(MyConstants.borderRadius),
+      children: <Widget>[
+        ((widget.project?.projects?.isEmpty ?? true) && widget.project?.errorStr == null)
+            ? const Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: CupertinoActivityIndicator(),
+              )
+            : (widget.project?.errorStr != null)
+                ? Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Text(widget.project?.errorStr ?? ''),
+                  )
+                : Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey.shade300,
                       ),
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) => InkWell(
-                          borderRadius: BorderRadius.circular(MyConstants.borderRadius),
-                          onTap: () {
-                            widget.onTap(widget.project?.projects?[index]);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Row(
-                              children: <Widget>[
-                                CacheNetworkImageWidget(
-                                  imageUrl: widget.project?.projects?[index].avatarUrls?.the48X48 ?? '',
-                                  width: 40,
-                                  height: 40,
-                                  fit: BoxFit.cover,
+                      borderRadius: BorderRadius.circular(MyConstants.borderRadius),
+                    ),
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) => InkWell(
+                        borderRadius: BorderRadius.circular(MyConstants.borderRadius),
+                        onTap: () {
+                          widget.onTap(widget.project?.projects?[index]);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            children: <Widget>[
+                              CacheNetworkImageWidget(
+                                imageUrl: widget.project?.projects?[index].avatarUrls?.the48X48 ?? '',
+                                width: 40,
+                                height: 40,
+                                fit: BoxFit.cover,
+                              ),
+                              const SizedBox(width: 12),
+                              Flexible(
+                                child: Text(
+                                  widget.project?.projects?[index].name ?? '',
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                 ),
-                                const SizedBox(width: 12),
-                                Flexible(
-                                  child: Text(
-                                    widget.project?.projects?[index].name ?? '',
-                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                        separatorBuilder: (BuildContext context, int index) => const Divider(),
-                        itemCount: widget.project?.projects?.length ?? 0,
                       ),
+                      separatorBuilder: (BuildContext context, int index) => const Divider(),
+                      itemCount: widget.project?.projects?.length ?? 0,
                     ),
-      expansibleBuilder: (BuildContext context, Widget header, Widget body, Animation<double> animation) => Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(MyConstants.borderRadius),
-          border: Border.all(
-            color: Colors.grey.shade300,
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            InkWell(
-              borderRadius: BorderRadius.circular(MyConstants.borderRadius),
-              onTap: () {
-                if (_controller.isExpanded) {
-                  _controller.collapse();
-                } else {
-                  _controller.expand();
-                  // Check if projects are empty and id is not null before fetching
-                  if ((widget.project?.projects?.isEmpty ?? true) &&
-                      widget.project?.id != null &&
-                      widget.project?.errorStr == null) {
-                    context.read<JiraManagementCubit>().getProjectsForResource(widget.project?.id ?? '');
-                  }
-                }
-              },
-              child: header,
-            ),
-            body,
-          ],
-        ),
-      ),
+                  ),
+      ],
     );
   }
 }
