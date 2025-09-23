@@ -12,12 +12,14 @@ class AssignUserToTicketUseCase extends UseCase<void, AssignTicketRequest> {
 
   @override
   Future<Either<BaseException, void>> call(AssignTicketRequest reqParams) =>
-      jiraRepository.assignTicket(reqParams.commonParamsRequest, reqParams.assignIssueRequest);
+      jiraRepository.assignTicket(
+          reqParams.commonParamsRequest, reqParams.assignIssueRequest);
 }
 
 class AssignTicketRequest {
   final CommonParamsRequest commonParamsRequest;
   final AssignIssueRequest assignIssueRequest;
 
-  AssignTicketRequest({required this.commonParamsRequest, required this.assignIssueRequest});
+  AssignTicketRequest(
+      {required this.commonParamsRequest, required this.assignIssueRequest});
 }

@@ -5,12 +5,14 @@ import 'package:shake_n_report/src/data/models/jira/request/common_params_reques
 import 'package:shake_n_report/src/data/models/jira/response/jira_issue_type_response.dart';
 import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
-class GetProjectIssueTypeUseCase extends UseCase<List<JiraIssueTypeResponse>, CommonParamsRequest> {
+class GetProjectIssueTypeUseCase
+    extends UseCase<List<JiraIssueTypeResponse>, CommonParamsRequest> {
   final JiraRepository jiraRepository;
 
   GetProjectIssueTypeUseCase(this.jiraRepository);
 
   @override
-  Future<Either<BaseException, List<JiraIssueTypeResponse>>> call(CommonParamsRequest reqParams) =>
+  Future<Either<BaseException, List<JiraIssueTypeResponse>>> call(
+          CommonParamsRequest reqParams) =>
       jiraRepository.getJiraIssueTypes(reqParams);
 }

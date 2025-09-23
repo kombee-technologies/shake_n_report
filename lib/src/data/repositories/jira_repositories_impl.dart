@@ -21,9 +21,11 @@ class JiraRepositoriesImpl extends JiraRepository {
   JiraRepositoriesImpl(this._jiraDataSource);
 
   @override
-  Future<Either<BaseException, AccessTokenResponse>> getAccessToken(GetAccessTokenRequest request) async {
+  Future<Either<BaseException, AccessTokenResponse>> getAccessToken(
+      GetAccessTokenRequest request) async {
     try {
-      final AccessTokenResponse response = await _jiraDataSource.getAccessToken(request);
+      final AccessTokenResponse response =
+          await _jiraDataSource.getAccessToken(request);
       return right(response);
     } catch (e) {
       if ((e is DioException) && (e.error is BaseException)) {
@@ -34,9 +36,11 @@ class JiraRepositoriesImpl extends JiraRepository {
   }
 
   @override
-  Future<Either<BaseException, List<AccessibleResourcesResponse>>> getAccessibleResources() async {
+  Future<Either<BaseException, List<AccessibleResourcesResponse>>>
+      getAccessibleResources() async {
     try {
-      final List<AccessibleResourcesResponse> response = await _jiraDataSource.getAccessibleResources();
+      final List<AccessibleResourcesResponse> response =
+          await _jiraDataSource.getAccessibleResources();
       return right(response);
     } catch (e) {
       if ((e is DioException) && (e.error is BaseException)) {
@@ -47,10 +51,26 @@ class JiraRepositoriesImpl extends JiraRepository {
   }
 
   @override
-  Future<Either<BaseException, List<JiraAssignableUsersResponse>>> getJiraAssignableUsers(
+  Future<Either<BaseException, List<JiraAssignableUsersResponse>>>
+      getJiraAssignableUsers(CommonParamsRequest request) async {
+    try {
+      final List<JiraAssignableUsersResponse> response =
+          await _jiraDataSource.getJiraAssignableUsers(request);
+      return right(response);
+    } catch (e) {
+      if ((e is DioException) && (e.error is BaseException)) {
+        return left(e.error as BaseException);
+      }
+      return left(GeneralException(MyConstants.somethingWentWrong));
+    }
+  }
+
+  @override
+  Future<Either<BaseException, List<JiraIssueTypeResponse>>> getJiraIssueTypes(
       CommonParamsRequest request) async {
     try {
-      final List<JiraAssignableUsersResponse> response = await _jiraDataSource.getJiraAssignableUsers(request);
+      final List<JiraIssueTypeResponse> response =
+          await _jiraDataSource.getJiraIssueTypes(request);
       return right(response);
     } catch (e) {
       if ((e is DioException) && (e.error is BaseException)) {
@@ -61,9 +81,11 @@ class JiraRepositoriesImpl extends JiraRepository {
   }
 
   @override
-  Future<Either<BaseException, List<JiraIssueTypeResponse>>> getJiraIssueTypes(CommonParamsRequest request) async {
+  Future<Either<BaseException, JiraProjectsResponse>> getJiraProjects(
+      CommonParamsRequest request) async {
     try {
-      final List<JiraIssueTypeResponse> response = await _jiraDataSource.getJiraIssueTypes(request);
+      final JiraProjectsResponse response =
+          await _jiraDataSource.getJiraProjects(request);
       return right(response);
     } catch (e) {
       if ((e is DioException) && (e.error is BaseException)) {
@@ -74,20 +96,8 @@ class JiraRepositoriesImpl extends JiraRepository {
   }
 
   @override
-  Future<Either<BaseException, JiraProjectsResponse>> getJiraProjects(CommonParamsRequest request) async {
-    try {
-      final JiraProjectsResponse response = await _jiraDataSource.getJiraProjects(request);
-      return right(response);
-    } catch (e) {
-      if ((e is DioException) && (e.error is BaseException)) {
-        return left(e.error as BaseException);
-      }
-      return left(GeneralException(MyConstants.somethingWentWrong));
-    }
-  }
-
-  @override
-  Future<Either<BaseException, void>> addAttachmentToTicket(CommonParamsRequest params, FormData request) async {
+  Future<Either<BaseException, void>> addAttachmentToTicket(
+      CommonParamsRequest params, FormData request) async {
     try {
       await _jiraDataSource.addAttachmentToTicket(params, request);
       return right(null);
@@ -100,7 +110,8 @@ class JiraRepositoriesImpl extends JiraRepository {
   }
 
   @override
-  Future<Either<BaseException, void>> assignTicket(CommonParamsRequest params, AssignIssueRequest request) async {
+  Future<Either<BaseException, void>> assignTicket(
+      CommonParamsRequest params, AssignIssueRequest request) async {
     try {
       await _jiraDataSource.assignTicket(params, request);
       return right(null);
@@ -116,7 +127,8 @@ class JiraRepositoriesImpl extends JiraRepository {
   Future<Either<BaseException, CreateJiraIssueResponse>> createJiraTicket(
       CommonParamsRequest params, CreateJiraIssueRequest request) async {
     try {
-      final CreateJiraIssueResponse response = await _jiraDataSource.createJiraTicket(params, request);
+      final CreateJiraIssueResponse response =
+          await _jiraDataSource.createJiraTicket(params, request);
       return right(response);
     } catch (e) {
       if ((e is DioException) && (e.error is BaseException)) {

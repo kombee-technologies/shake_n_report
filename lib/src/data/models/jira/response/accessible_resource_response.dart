@@ -6,13 +6,17 @@ import 'dart:convert';
 
 import 'package:shake_n_report/src/data/models/jira/response/jira_project_response.dart';
 
-List<AccessibleResourcesResponse> accessibleResourcesResponseFromJson(List<dynamic> json) =>
+List<AccessibleResourcesResponse> accessibleResourcesResponseFromJson(
+        List<dynamic> json) =>
     List<AccessibleResourcesResponse>.from(
         // ignore: always_specify_types
-        json.map((x) => AccessibleResourcesResponse.fromJson(x as Map<String, dynamic>)));
+        json.map((x) =>
+            AccessibleResourcesResponse.fromJson(x as Map<String, dynamic>)));
 
-String accessibleResourcesResponseToJson(List<AccessibleResourcesResponse> data) =>
-    json.encode(List<dynamic>.from(data.map((AccessibleResourcesResponse x) => x.toJson())));
+String accessibleResourcesResponseToJson(
+        List<AccessibleResourcesResponse> data) =>
+    json.encode(List<dynamic>.from(
+        data.map((AccessibleResourcesResponse x) => x.toJson())));
 
 class AccessibleResourcesResponse {
   String? id;
@@ -34,7 +38,7 @@ class AccessibleResourcesResponse {
     this.errorStr,
   });
 
-  // copy with 
+  // copy with
   AccessibleResourcesResponse copyWith({
     String? id,
     String? url,
@@ -54,14 +58,16 @@ class AccessibleResourcesResponse {
         errorStr: errorStr ?? this.errorStr,
       );
 
-
-  factory AccessibleResourcesResponse.fromJson(Map<String, dynamic> json) => AccessibleResourcesResponse(
+  factory AccessibleResourcesResponse.fromJson(Map<String, dynamic> json) =>
+      AccessibleResourcesResponse(
         id: json['id'] as String?,
         url: json['url'] as String?,
         name: json['name'] as String?,
         scopes:
             // ignore: always_specify_types
-            json['scopes'] == null ? <String>[] : List<String>.from((json['scopes'] as List<dynamic>).map((x) => x)),
+            json['scopes'] == null ? <String>[] : List<String>.from(
+                // ignore: always_specify_types
+                (json['scopes'] as List<dynamic>).map((x) => x)),
         avatarUrl: json['avatarUrl'] as String?,
       );
 
@@ -69,7 +75,9 @@ class AccessibleResourcesResponse {
         'id': id,
         'url': url,
         'name': name,
-        'scopes': scopes == null ? <dynamic>[] : List<dynamic>.from(scopes!.map((String x) => x)),
+        'scopes': scopes == null
+            ? <dynamic>[]
+            : List<dynamic>.from(scopes!.map((String x) => x)),
         'avatarUrl': avatarUrl,
       };
 }

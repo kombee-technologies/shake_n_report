@@ -50,7 +50,8 @@ class Utility {
     }
   }
 
-  static void showSnackbar({required String msg, BannerStyle? bannerStyle, void Function()? onTap}) {
+  static void showSnackbar(
+      {required String msg, BannerStyle? bannerStyle, void Function()? onTap}) {
     getIt<Toastification>().dismissAll();
     final ToastificationType toastificationType;
     if (bannerStyle == BannerStyle.success) {

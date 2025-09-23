@@ -12,7 +12,8 @@ class LoggingInterceptor extends Interceptor {
   LoggingInterceptor();
 
   @override
-  Future<dynamic> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  Future<dynamic> onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     logPrint('*************** API Request - Start ***************');
 
     printKV('URI', options.uri);
@@ -48,7 +49,8 @@ class LoggingInterceptor extends Interceptor {
   }
 
   @override
-  Future<dynamic> onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) async {
+  Future<dynamic> onResponse(
+      Response<dynamic> response, ResponseInterceptorHandler handler) async {
     logPrint('*************** Api Response - Start ***************');
 
     printKV('URI', response.requestOptions.uri);
@@ -71,7 +73,9 @@ class LoggingInterceptor extends Interceptor {
   void printAll(String msg) {
     // msg.toString().split('\n').forEach(logPrint);
     final RegExp pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
-    pattern.allMatches(msg).forEach((RegExpMatch match) => logPrint(match.group(0) ?? ''));
+    pattern
+        .allMatches(msg)
+        .forEach((RegExpMatch match) => logPrint(match.group(0) ?? ''));
   }
 
   void logPrint(String s) {

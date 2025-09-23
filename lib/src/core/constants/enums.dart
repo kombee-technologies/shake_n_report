@@ -1,6 +1,4 @@
-enum ManagementTools {
-  jira
-}
+enum ManagementTools { jira }
 
 enum BannerStyle {
   success,

@@ -5,12 +5,14 @@ import 'package:shake_n_report/src/data/models/jira/request/common_params_reques
 import 'package:shake_n_report/src/data/models/jira/response/jira_assignable_users_response.dart';
 import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
-class GetAssignableUserUseCase extends UseCase<List<JiraAssignableUsersResponse>, CommonParamsRequest> {
+class GetAssignableUserUseCase
+    extends UseCase<List<JiraAssignableUsersResponse>, CommonParamsRequest> {
   final JiraRepository jiraRepository;
 
   GetAssignableUserUseCase(this.jiraRepository);
 
   @override
-  Future<Either<BaseException, List<JiraAssignableUsersResponse>>> call(CommonParamsRequest reqParams) =>
+  Future<Either<BaseException, List<JiraAssignableUsersResponse>>> call(
+          CommonParamsRequest reqParams) =>
       jiraRepository.getJiraAssignableUsers(reqParams);
 }

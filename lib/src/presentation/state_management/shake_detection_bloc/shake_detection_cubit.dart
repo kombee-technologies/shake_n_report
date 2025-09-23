@@ -20,9 +20,12 @@ class ShakeDetectionCubit extends Cubit<ShakeDetectionState> {
         if (ShakeNReportPlugin.instance.jiraConfig?.isValid() ?? false) {
           Utility.debugLog('Jira tool selected');
           emit(ShakeDetectedState(timestamp));
-          final String accessToken = await getIt<LocalStorage>().getStringData(LocalStorageKeys.jiraAccessToken);
-          final String refreshToken = await getIt<LocalStorage>().getStringData(LocalStorageKeys.jiraRefreshToken);
-          final BuildContext? context = ShakeNReportPlugin.instance.navigatorKey.currentContext;
+          final String accessToken = await getIt<LocalStorage>()
+              .getStringData(LocalStorageKeys.jiraAccessToken);
+          final String refreshToken = await getIt<LocalStorage>()
+              .getStringData(LocalStorageKeys.jiraRefreshToken);
+          final BuildContext? context =
+              ShakeNReportPlugin.instance.navigatorKey.currentContext;
           if (accessToken.isNotEmpty || refreshToken.isNotEmpty) {
             if (context != null && context.mounted) {
               Navigator.of(context).push(
@@ -32,8 +35,10 @@ class ShakeDetectionCubit extends Cubit<ShakeDetectionState> {
               );
             }
           } else {
-            final String clientId = ShakeNReportPlugin.instance.jiraConfig?.clientId ?? '';
-            final String redirectUrl = ShakeNReportPlugin.instance.jiraConfig?.redirectUrl ?? '';
+            final String clientId =
+                ShakeNReportPlugin.instance.jiraConfig?.clientId ?? '';
+            final String redirectUrl =
+                ShakeNReportPlugin.instance.jiraConfig?.redirectUrl ?? '';
             final String jiraLoginUrl =
                 'https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=$clientId&scope=${MyConstants.jiraScopes}&redirect_uri=$redirectUrl&state=${MyConstants.state}&response_type=code&prompt=consent';
 
@@ -47,11 +52,13 @@ class ShakeDetectionCubit extends Cubit<ShakeDetectionState> {
               );
             } else {
               Utility.showSnackbar(
-                  msg: 'Jira tool selected but missing query parameters in URL. (client_id, scope, redirect_uri)');
+                  msg:
+                      'Jira tool selected but missing query parameters in URL. (client_id, scope, redirect_uri)');
             }
           }
         } else {
-          Utility.showSnackbar(msg: 'Jira tool selected but no config provided.');
+          Utility.showSnackbar(
+              msg: 'Jira tool selected but no config provided.');
         }
         break;
       // default:

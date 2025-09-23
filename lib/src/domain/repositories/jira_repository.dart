@@ -16,27 +16,32 @@ abstract class JiraRepository {
   /// Fetches the access token from the Jira API.
   ///
   /// Returns an [AccessTokenResponse] containing the access token.
-  Future<Either<BaseException, AccessTokenResponse>> getAccessToken(GetAccessTokenRequest request);
+  Future<Either<BaseException, AccessTokenResponse>> getAccessToken(
+      GetAccessTokenRequest request);
 
   /// Fetches the accessible resources from the Jira API.
   ///
   /// Returns an [List<AccessibleResourcesResponse>] containing the accessible resources.
-  Future<Either<BaseException, List<AccessibleResourcesResponse>>> getAccessibleResources();
+  Future<Either<BaseException, List<AccessibleResourcesResponse>>>
+      getAccessibleResources();
 
   /// Fetches the projects from the Jira API.
   ///
   /// Returns a [JiraProjectsResponse] containing the projects.
-  Future<Either<BaseException, JiraProjectsResponse>> getJiraProjects(CommonParamsRequest request);
+  Future<Either<BaseException, JiraProjectsResponse>> getJiraProjects(
+      CommonParamsRequest request);
 
   /// Fetches the issue types from the Jira API.
   ///
   /// Returns a [List<JiraIssueTypeResponse>]
-  Future<Either<BaseException, List<JiraIssueTypeResponse>>> getJiraIssueTypes(CommonParamsRequest request);
+  Future<Either<BaseException, List<JiraIssueTypeResponse>>> getJiraIssueTypes(
+      CommonParamsRequest request);
 
   /// Fetches the assignable users from the Jira API.
   ///
   /// Returns a [List<JiraAssignableUsersResponse>]
-  Future<Either<BaseException, List<JiraAssignableUsersResponse>>> getJiraAssignableUsers(CommonParamsRequest request);
+  Future<Either<BaseException, List<JiraAssignableUsersResponse>>>
+      getJiraAssignableUsers(CommonParamsRequest request);
 
   /// Creates a new Jira ticket with the specified parameters and request data.
   ///
@@ -51,11 +56,13 @@ abstract class JiraRepository {
   ///
   /// [params] - Common parameters required for the request.
   /// [request] - The assignment details including ticket and user information.
-  Future<Either<BaseException, void>> assignTicket(CommonParamsRequest params, AssignIssueRequest request);
+  Future<Either<BaseException, void>> assignTicket(
+      CommonParamsRequest params, AssignIssueRequest request);
 
   /// Adds an attachment to a Jira ticket.
   ///
   /// [params] - Common parameters required for the request.
   /// [request] - The form data containing the attachment file(s) and related information.
-  Future<Either<BaseException, void>> addAttachmentToTicket(CommonParamsRequest params, FormData request);
+  Future<Either<BaseException, void>> addAttachmentToTicket(
+      CommonParamsRequest params, FormData request);
 }

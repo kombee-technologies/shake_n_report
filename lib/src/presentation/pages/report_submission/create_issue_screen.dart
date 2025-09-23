@@ -41,10 +41,13 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
   }
 
   Future<void> _pickAttachmentsFromDevice() async {
-    if ((_jiraManagementCubit?.state.attachments.length ?? 0) >= MyConstants.maxAttachments) {
+    if ((_jiraManagementCubit?.state.attachments.length ?? 0) >=
+        MyConstants.maxAttachments) {
       if (mounted) {
         Utility.showSnackbar(
-            msg: 'You can only attach up to ${MyConstants.maxAttachments} files.', bannerStyle: BannerStyle.info);
+            msg:
+                'You can only attach up to ${MyConstants.maxAttachments} files.',
+            bannerStyle: BannerStyle.info);
       }
       return;
     }
@@ -92,7 +95,9 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: BlocConsumer<JiraManagementCubit, JiraManagementState>(
                 listener: (BuildContext context, JiraManagementState state) {
-                  if (!state.isSubmitting && state.createJiraIssueResponse != null && state.errorMessage == null) {
+                  if (!state.isSubmitting &&
+                      state.createJiraIssueResponse != null &&
+                      state.errorMessage == null) {
                     context.read<ShakeDetectionCubit>().resetState();
                     _jiraManagementCubit?.resetState();
                     // Submission successful
@@ -103,14 +108,17 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
                         ),
                       ),
                     );
-                  } else if (!state.isSubmitting && state.errorMessage != null) {
+                  } else if (!state.isSubmitting &&
+                      state.errorMessage != null) {
                     // Submission failed at some point
                     // Snackbar for specific errors already shown by Cubit.
                     Utility.showSnackbar(
-                        msg: 'Submission failed: ${state.errorMessage}', bannerStyle: BannerStyle.error);
+                        msg: 'Submission failed: ${state.errorMessage}',
+                        bannerStyle: BannerStyle.error);
                   }
                 },
-                builder: (BuildContext context, JiraManagementState state) => Form(
+                builder: (BuildContext context, JiraManagementState state) =>
+                    Form(
                   //NOSONAR
                   key: _formKey,
                   child: ListView(
@@ -119,7 +127,8 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
                       // Issue Type Autocomplete
                       JiraIssueTypeDropdownWidget(
                         jiraManagementState: state,
-                        onSelected: (JiraIssueTypeResponse? item) => _jiraManagementCubit?.setSelectedIssueType(item),
+                        onSelected: (JiraIssueTypeResponse? item) =>
+                            _jiraManagementCubit?.setSelectedIssueType(item),
                         isSubmitting: state.isSubmitting,
                       ),
                       const SizedBox(height: 16),
@@ -132,7 +141,9 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
                         decoration: InputDecoration(
                           hintText: 'Enter issue title',
                           labelText: 'Title',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(MyConstants.borderRadius)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(
+                                  MyConstants.borderRadius)),
                         ),
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
@@ -152,7 +163,9 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
                         decoration: InputDecoration(
                           hintText: 'Enter issue description',
                           labelText: 'Description',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(MyConstants.borderRadius)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(
+                                  MyConstants.borderRadius)),
                           alignLabelWithHint: true,
                         ),
                         keyboardType: TextInputType.multiline,
@@ -198,7 +211,8 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
                           onPressed: state.isSubmitting
                               ? null
                               : () {
-                                  if (_formKey.currentState?.validate() ?? false) {
+                                  if (_formKey.currentState?.validate() ??
+                                      false) {
                                     submitData();
                                   }
                                 },

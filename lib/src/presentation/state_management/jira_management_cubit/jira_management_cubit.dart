@@ -40,21 +40,29 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
 
   final LocalStorage _localStorage = getIt<LocalStorage>();
 
-  final GetAccessibleResourceUseCase getAccessibleResourcesUseCase = getIt<GetAccessibleResourceUseCase>();
+  final GetAccessibleResourceUseCase getAccessibleResourcesUseCase =
+      getIt<GetAccessibleResourceUseCase>();
 
-  final GetAccessTokenUseCase getAccessTokenUseCase = getIt<GetAccessTokenUseCase>();
+  final GetAccessTokenUseCase getAccessTokenUseCase =
+      getIt<GetAccessTokenUseCase>();
 
-  final GetJiraProjectsUseCase getJiraProjectsUseCase = getIt<GetJiraProjectsUseCase>();
+  final GetJiraProjectsUseCase getJiraProjectsUseCase =
+      getIt<GetJiraProjectsUseCase>();
 
-  final GetProjectIssueTypeUseCase getProjectIssueTypeUseCase = getIt<GetProjectIssueTypeUseCase>();
+  final GetProjectIssueTypeUseCase getProjectIssueTypeUseCase =
+      getIt<GetProjectIssueTypeUseCase>();
 
-  final GetAssignableUserUseCase getAssignableUserUseCase = getIt<GetAssignableUserUseCase>();
+  final GetAssignableUserUseCase getAssignableUserUseCase =
+      getIt<GetAssignableUserUseCase>();
 
-  final CreateJiraTicketUseCase createJiraTicketUseCase = getIt<CreateJiraTicketUseCase>();
+  final CreateJiraTicketUseCase createJiraTicketUseCase =
+      getIt<CreateJiraTicketUseCase>();
 
-  final AssignUserToTicketUseCase assignUserToTicketUseCase = getIt<AssignUserToTicketUseCase>();
+  final AssignUserToTicketUseCase assignUserToTicketUseCase =
+      getIt<AssignUserToTicketUseCase>();
 
-  final AddAttachmentToTicketUseCase addAttachmentToTicketUseCase = getIt<AddAttachmentToTicketUseCase>();
+  final AddAttachmentToTicketUseCase addAttachmentToTicketUseCase =
+      getIt<AddAttachmentToTicketUseCase>();
 
   Future<void> getAccessToken(String code) async {
     final GetAccessTokenRequest request = GetAccessTokenRequest(
@@ -64,11 +72,14 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
       clientSecret: ShakeNReportPlugin.instance.jiraConfig?.clientSecret ?? '',
       redirectUri: ShakeNReportPlugin.instance.jiraConfig?.redirectUrl ?? '',
     );
-    final BuildContext? context = ShakeNReportPlugin.instance.navigatorKey.currentContext;
-    final Either<BaseException, AccessTokenResponse> accessToken = await getAccessTokenUseCase.call(request);
+    final BuildContext? context =
+        ShakeNReportPlugin.instance.navigatorKey.currentContext;
+    final Either<BaseException, AccessTokenResponse> accessToken =
+        await getAccessTokenUseCase.call(request);
     accessToken.fold(
       (BaseException error) {
-        Utility.showSnackbar(msg: error.message, bannerStyle: BannerStyle.error);
+        Utility.showSnackbar(
+            msg: error.message, bannerStyle: BannerStyle.error);
         emit(JiraManagementInitial());
         if (context != null && context.mounted) {
           context.read<ShakeDetectionCubit>().resetState();
@@ -76,10 +87,14 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
         }
       },
       (AccessTokenResponse token) async {
-        Utility.showSnackbar(msg: 'Access token received successfully', bannerStyle: BannerStyle.success);
+        Utility.showSnackbar(
+            msg: 'Access token received successfully',
+            bannerStyle: BannerStyle.success);
         await _localStorage.clear();
-        await _localStorage.setStringData(LocalStorageKeys.jiraAccessToken, token.accessToken ?? '');
-        await _localStorage.setStringData(LocalStorageKeys.jiraRefreshToken, token.refreshToken ?? '');
+        await _localStorage.setStringData(
+            LocalStorageKeys.jiraAccessToken, token.accessToken ?? '');
+        await _localStorage.setStringData(
+            LocalStorageKeys.jiraRefreshToken, token.refreshToken ?? '');
         if (context != null && context.mounted) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute<void>(
@@ -91,7 +106,8 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
     );
   }
 
-  void selectProject(AccessibleResourcesResponse? project, ProjectItem? projectItem) {
+  void selectProject(
+      AccessibleResourcesResponse? project, ProjectItem? projectItem) {
     emit(state.copyWith(selectedProject: project, projectItem: projectItem));
   }
 
@@ -103,7 +119,8 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
         await getAccessibleResourcesUseCase.call(NoParams());
     resources.fold(
       (BaseException error) {
-        emit(state.copyWith(isProjectLoading: false, errorMessage: error.message));
+        emit(state.copyWith(
+            isProjectLoading: false, errorMessage: error.message));
       },
       (List<AccessibleResourcesResponse> projects) {
         emit(state.copyWith(projects: projects, isProjectLoading: false));
@@ -118,7 +135,8 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
       return;
     }
 
-    final int index = state.projects!.indexWhere((AccessibleResourcesResponse item) => item.id == resourceId);
+    final int index = state.projects!.indexWhere(
+        (AccessibleResourcesResponse item) => item.id == resourceId);
 
     // Ensure the resource was found in the list
     if (index == -1) {
@@ -127,20 +145,24 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
     }
 
     final Either<BaseException, JiraProjectsResponse> resourcesResult =
-        await getJiraProjectsUseCase.call(CommonParamsRequest(cloudId: resourceId));
+        await getJiraProjectsUseCase
+            .call(CommonParamsRequest(cloudId: resourceId));
 
     // Create a new list from the existing projects to ensure immutability
     final List<AccessibleResourcesResponse> updatedProjectResources =
         List<AccessibleResourcesResponse>.from(state.projects!);
-    final AccessibleResourcesResponse resourceToUpdate = updatedProjectResources[index];
+    final AccessibleResourcesResponse resourceToUpdate =
+        updatedProjectResources[index];
 
     resourcesResult.fold(
       (BaseException error) {
-        updatedProjectResources[index] = resourceToUpdate.copyWith(errorStr: error.message);
+        updatedProjectResources[index] =
+            resourceToUpdate.copyWith(errorStr: error.message);
         emit(state.copyWith(projects: updatedProjectResources));
       },
       (JiraProjectsResponse projectsRes) {
-        updatedProjectResources[index] = resourceToUpdate.copyWith(projects: projectsRes.values);
+        updatedProjectResources[index] =
+            resourceToUpdate.copyWith(projects: projectsRes.values);
         emit(state.copyWith(projects: updatedProjectResources));
       },
     );
@@ -152,11 +174,13 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
     final String? projectId = state.projectItem?.id;
 
     final Either<BaseException, List<JiraIssueTypeResponse>> issueTypesResult =
-        await getProjectIssueTypeUseCase.call(CommonParamsRequest(cloudId: cloudId, projectId: projectId));
+        await getProjectIssueTypeUseCase
+            .call(CommonParamsRequest(cloudId: cloudId, projectId: projectId));
 
     issueTypesResult.fold(
       (BaseException error) {
-        emit(state.copyWith(isIssueTypeLoading: false, errorMessage: error.message));
+        emit(state.copyWith(
+            isIssueTypeLoading: false, errorMessage: error.message));
       },
       (List<JiraIssueTypeResponse> issueTypes) {
         emit(state.copyWith(issueTypes: issueTypes, isIssueTypeLoading: false));
@@ -180,7 +204,8 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
 
   void onAddAttachments(List<XFile> attachments) {
     emit(state.copyWith(
-      attachments: (attachments.isEmpty) ? <XFile>[] : (state.attachments + attachments),
+      attachments:
+          (attachments.isEmpty) ? <XFile>[] : (state.attachments + attachments),
       selectedAssignerAccID: state.selectedAssignerAccID,
       selectedIssueTypeID: state.selectedIssueTypeID,
     ));
@@ -196,19 +221,24 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
     final String? cloudId = state.selectedProject?.id;
     final String? projectKey = state.projectItem?.key;
 
-    final Either<BaseException, List<JiraAssignableUsersResponse>> assignableUsersResult =
-        await getAssignableUserUseCase.call(CommonParamsRequest(cloudId: cloudId, projectKey: projectKey));
+    final Either<BaseException, List<JiraAssignableUsersResponse>>
+        assignableUsersResult = await getAssignableUserUseCase.call(
+            CommonParamsRequest(cloudId: cloudId, projectKey: projectKey));
 
     assignableUsersResult.fold(
       (BaseException error) {
-        emit(state.copyWith(isAssignableUsersLoading: false, errorMessage: error.message));
-        Utility.showSnackbar(msg: error.message, bannerStyle: BannerStyle.error);
+        emit(state.copyWith(
+            isAssignableUsersLoading: false, errorMessage: error.message));
+        Utility.showSnackbar(
+            msg: error.message, bannerStyle: BannerStyle.error);
       },
       (List<JiraAssignableUsersResponse> users) {
         // Filter out inactive users if necessary, or handle as per your requirements
-        final List<JiraAssignableUsersResponse> activeUsers =
-            users.where((JiraAssignableUsersResponse user) => user.active == true).toList();
-        emit(state.copyWith(assignableUsers: activeUsers, isAssignableUsersLoading: false));
+        final List<JiraAssignableUsersResponse> activeUsers = users
+            .where((JiraAssignableUsersResponse user) => user.active == true)
+            .toList();
+        emit(state.copyWith(
+            assignableUsers: activeUsers, isAssignableUsersLoading: false));
       },
     );
   }
@@ -226,7 +256,8 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
         state.selectedIssueTypeID == null ||
         state.selectedAssignerAccID == null) {
       Utility.showSnackbar(
-        msg: 'Project, or Issue Type not selected. Please select them before submitting.',
+        msg:
+            'Project, or Issue Type not selected. Please select them before submitting.',
         bannerStyle: BannerStyle.error,
       );
       return;
@@ -263,7 +294,8 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
       ),
     );
 
-    final CreateJiraTicketRequest createTicketFullRequest = CreateJiraTicketRequest(
+    final CreateJiraTicketRequest createTicketFullRequest =
+        CreateJiraTicketRequest(
       commonParamsRequest: CommonParamsRequest(cloudId: cloudId),
       createJiraIssueRequest: issueRequestBody,
     );
@@ -276,7 +308,8 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
     await createTicketResult.fold(
       (BaseException error) async {
         if (error is UnauthorizedException) {
-          final BuildContext? context = ShakeNReportPlugin.instance.navigatorKey.currentContext;
+          final BuildContext? context =
+              ShakeNReportPlugin.instance.navigatorKey.currentContext;
           if (context != null && context.mounted) {
             context.read<JiraManagementCubit>().resetState();
             context.read<ShakeDetectionCubit>().resetState();
@@ -302,16 +335,21 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
         //   selectedIssueTypeID: state.selectedIssueTypeID,
         //   selectedAssignerAccID: state.selectedAssignerAccID,
         // )); // Store response early
-        Utility.showSnackbar(msg: 'Ticket created successfully!', bannerStyle: BannerStyle.success);
+        Utility.showSnackbar(
+            msg: 'Ticket created successfully!',
+            bannerStyle: BannerStyle.success);
 
         final String issueKey = response.key ?? '';
 
         // 2. Assign User (if selected)
-        if (state.selectedAssignerAccID != null && state.selectedAssignerAccID?.accountId != null) {
-          final AssignIssueRequest assignRequestBody =
-              AssignIssueRequest(accountId: state.selectedAssignerAccID?.accountId);
-          final AssignTicketRequest assignTicketFullRequest = AssignTicketRequest(
-            commonParamsRequest: CommonParamsRequest(cloudId: cloudId, issueKey: issueKey),
+        if (state.selectedAssignerAccID != null &&
+            state.selectedAssignerAccID?.accountId != null) {
+          final AssignIssueRequest assignRequestBody = AssignIssueRequest(
+              accountId: state.selectedAssignerAccID?.accountId);
+          final AssignTicketRequest assignTicketFullRequest =
+              AssignTicketRequest(
+            commonParamsRequest:
+                CommonParamsRequest(cloudId: cloudId, issueKey: issueKey),
             assignIssueRequest: assignRequestBody,
           );
 
@@ -320,12 +358,15 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
           assignResult.fold(
             (BaseException error) {
               Utility.showSnackbar(
-                  msg: 'Ticket created, but failed to assign user: ${error.message}', bannerStyle: BannerStyle.warning);
+                  msg:
+                      'Ticket created, but failed to assign user: ${error.message}',
+                  bannerStyle: BannerStyle.warning);
               // Continue to attachments even if assignment fails
             },
             (_) {
               Utility.showSnackbar(
-                  msg: 'User ${state.selectedAssignerAccID?.displayName} assigned successfully.',
+                  msg:
+                      'User ${state.selectedAssignerAccID?.displayName} assigned successfully.',
                   bannerStyle: BannerStyle.success);
             },
           );
@@ -335,13 +376,17 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
         if (state.attachments.isNotEmpty) {
           final List<dio.MultipartFile> multipartFiles = <dio.MultipartFile>[];
           for (final XFile file in state.attachments) {
-            multipartFiles.add(await dio.MultipartFile.fromFile(file.path, filename: file.name));
+            multipartFiles.add(await dio.MultipartFile.fromFile(file.path,
+                filename: file.name));
           }
           // Jira API expects files under the 'file' key, and it can handle multiple files with the same key.
-          final dio.FormData formData = dio.FormData.fromMap(<String, dynamic>{'file': multipartFiles});
+          final dio.FormData formData =
+              dio.FormData.fromMap(<String, dynamic>{'file': multipartFiles});
 
-          final AddAttachmentToTicketRequest addAttachmentFullRequest = AddAttachmentToTicketRequest(
-            commonParamsRequest: CommonParamsRequest(cloudId: cloudId, issueKey: issueKey),
+          final AddAttachmentToTicketRequest addAttachmentFullRequest =
+              AddAttachmentToTicketRequest(
+            commonParamsRequest:
+                CommonParamsRequest(cloudId: cloudId, issueKey: issueKey),
             formData: formData,
           );
 
@@ -350,11 +395,14 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
           attachmentResult.fold(
             (BaseException error) {
               Utility.showSnackbar(
-                  msg: 'Ticket created, but failed to add attachments: ${error.message}',
+                  msg:
+                      'Ticket created, but failed to add attachments: ${error.message}',
                   bannerStyle: BannerStyle.warning);
             },
             (_) {
-              Utility.showSnackbar(msg: 'Attachments added successfully.', bannerStyle: BannerStyle.success);
+              Utility.showSnackbar(
+                  msg: 'Attachments added successfully.',
+                  bannerStyle: BannerStyle.success);
             },
           );
         }
@@ -364,7 +412,8 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
     // Finalize state
     if (ticketResponse != null) {
       // Success path completed (ticket created, assignment/attachments attempted)
-      emit(state.copyWith(isSubmitting: false, createJiraIssueResponse: ticketResponse));
+      emit(state.copyWith(
+          isSubmitting: false, createJiraIssueResponse: ticketResponse));
     } else {
       // Failure in ticket creation itself
       emit(state.copyWith(

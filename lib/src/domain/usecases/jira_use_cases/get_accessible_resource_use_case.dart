@@ -5,12 +5,14 @@ import 'package:shake_n_report/src/data/models/jira/request/no_params.dart';
 import 'package:shake_n_report/src/data/models/jira/response/accessible_resource_response.dart';
 import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
-class GetAccessibleResourceUseCase extends UseCase<List<AccessibleResourcesResponse>, NoParams> {
+class GetAccessibleResourceUseCase
+    extends UseCase<List<AccessibleResourcesResponse>, NoParams> {
   final JiraRepository _jiraRepository;
 
   GetAccessibleResourceUseCase(this._jiraRepository);
 
   @override
-  Future<Either<BaseException, List<AccessibleResourcesResponse>>> call(NoParams reqParams) =>
+  Future<Either<BaseException, List<AccessibleResourcesResponse>>> call(
+          NoParams reqParams) =>
       _jiraRepository.getAccessibleResources();
 }

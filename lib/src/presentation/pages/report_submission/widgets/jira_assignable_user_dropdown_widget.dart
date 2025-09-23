@@ -6,7 +6,10 @@ import 'package:shake_n_report/src/presentation/widgets/custom_autocomplete_widg
 
 class JiraAssignableUserDropdownWidget extends StatelessWidget {
   const JiraAssignableUserDropdownWidget(
-      {required this.jiraManagementState, required this.onSelected, required this.isSubmitting, super.key});
+      {required this.jiraManagementState,
+      required this.onSelected,
+      required this.isSubmitting,
+      super.key});
 
   final JiraManagementState jiraManagementState;
 
@@ -15,51 +18,61 @@ class JiraAssignableUserDropdownWidget extends StatelessWidget {
   final bool isSubmitting;
 
   @override
-  Widget build(BuildContext context) => (jiraManagementState.isAssignableUsersLoading ?? false)
-      ? const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: CupertinoActivityIndicator(),
-        )
-      : CustomAutocompleteField<JiraAssignableUsersResponse>(
-          labelText: 'Assignee',
-          hintText: 'Type to search assignee',
-          isReadOnly: isSubmitting,
-          options: jiraManagementState.assignableUsers ?? <JiraAssignableUsersResponse>[],
-          initialValue: jiraManagementState.selectedAssignerAccID,
-          displayStringForOption: (JiraAssignableUsersResponse option) => option.displayName ?? '',
-          onSelected: (JiraAssignableUsersResponse selection) {
-            onSelected(selection);
-          },
-          filterCondition: (JiraAssignableUsersResponse option, String query) =>
-              option.displayName?.toLowerCase().contains(query.toLowerCase()) ?? false,
-          optionViewBuilder: (BuildContext context, JiraAssignableUsersResponse user) => Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: <Widget>[
-                CacheNetworkImageWidget(
-                  imageUrl: user.avatarUrls?.the48X48 ?? '',
-                  height: 48,
-                  width: 48,
+  Widget build(BuildContext context) =>
+      (jiraManagementState.isAssignableUsersLoading ?? false)
+          ? const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: CupertinoActivityIndicator(),
+            )
+          : CustomAutocompleteField<JiraAssignableUsersResponse>(
+              labelText: 'Assignee',
+              hintText: 'Type to search assignee',
+              isReadOnly: isSubmitting,
+              options: jiraManagementState.assignableUsers ??
+                  <JiraAssignableUsersResponse>[],
+              initialValue: jiraManagementState.selectedAssignerAccID,
+              displayStringForOption: (JiraAssignableUsersResponse option) =>
+                  option.displayName ?? '',
+              onSelected: (JiraAssignableUsersResponse selection) {
+                onSelected(selection);
+              },
+              filterCondition:
+                  (JiraAssignableUsersResponse option, String query) =>
+                      option.displayName
+                          ?.toLowerCase()
+                          .contains(query.toLowerCase()) ??
+                      false,
+              optionViewBuilder:
+                  (BuildContext context, JiraAssignableUsersResponse user) =>
+                      Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: <Widget>[
+                    CacheNetworkImageWidget(
+                      imageUrl: user.avatarUrls?.the48X48 ?? '',
+                      height: 48,
+                      width: 48,
+                    ),
+                    const SizedBox(width: 10),
+                    Text(user.displayName ?? ''),
+                  ],
                 ),
-                const SizedBox(width: 10),
-                Text(user.displayName ?? ''),
-              ],
-            ),
-          ),
-          validator: (String? value) {
-            // The 'value' here is the text in the field.
-            // We need to validate based on whether a user object is selected.
-            if (jiraManagementState.selectedAssignerAccID == null && (value != null && value.isNotEmpty)) {
-              return 'Please select a valid user from the list.';
-            }
-            if (jiraManagementState.selectedAssignerAccID == null) {
-              // If assignee is mandatory
-              return 'Please select an assignee.';
-            }
-            return null;
-          },
-          onClear: () {
-            onSelected(null);
-          },
-        );
+              ),
+              validator: (String? value) {
+                // The 'value' here is the text in the field.
+                // We need to validate based on whether a user object is selected.
+                if (jiraManagementState.selectedAssignerAccID == null &&
+                    (value != null && value.isNotEmpty)) {
+                  return 'Please select a valid user from the list.';
+                }
+                if (jiraManagementState.selectedAssignerAccID == null) {
+                  // If assignee is mandatory
+                  return 'Please select an assignee.';
+                }
+                return null;
+              },
+              onClear: () {
+                onSelected(null);
+              },
+            );
 }

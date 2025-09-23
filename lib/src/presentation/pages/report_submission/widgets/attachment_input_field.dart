@@ -22,7 +22,8 @@ class AttachmentInputField extends StatelessWidget {
   });
 
   Future<bool> _requestPermissions() async {
-    Map<Permission, PermissionStatus> statuses = <Permission, PermissionStatus>{};
+    Map<Permission, PermissionStatus> statuses =
+        <Permission, PermissionStatus>{};
     final List<Permission> permissionsToRequest = <Permission>[];
 
     if (Platform.isAndroid) {
@@ -38,7 +39,8 @@ class AttachmentInputField extends StatelessWidget {
         permissionsToRequest.add(Permission.storage);
       }
     } else if (Platform.isIOS) {
-      permissionsToRequest.add(Permission.photos); // Covers both images and videos on iOS
+      permissionsToRequest
+          .add(Permission.photos); // Covers both images and videos on iOS
     }
 
     if (permissionsToRequest.isNotEmpty) {
@@ -49,7 +51,8 @@ class AttachmentInputField extends StatelessWidget {
 
     bool allGranted = true;
     statuses.forEach((Permission permission, PermissionStatus status) {
-      if (status != PermissionStatus.granted && status != PermissionStatus.limited) {
+      if (status != PermissionStatus.granted &&
+          status != PermissionStatus.limited) {
         allGranted = false;
       }
     });
@@ -57,7 +60,8 @@ class AttachmentInputField extends StatelessWidget {
     return allGranted;
   }
 
-  Future<void> _showPermissionDialog(BuildContext context) async => showDialog<void>(
+  Future<void> _showPermissionDialog(BuildContext context) async =>
+      showDialog<void>(
         context: context,
         barrierDismissible: false, // User must tap button!
         builder: (BuildContext dialogContext) => AlertDialog(
@@ -65,7 +69,8 @@ class AttachmentInputField extends StatelessWidget {
           content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('This app needs permission to access your photos and videos to attach them.'),
+                Text(
+                    'This app needs permission to access your photos and videos to attach them.'),
                 Text('Please grant access in app settings.'),
               ],
             ),
@@ -102,18 +107,19 @@ class AttachmentInputField extends StatelessWidget {
               TextButton.icon(
                 icon: const Icon(Icons.attach_file),
                 label: const Text('Add'),
-                onPressed: (attachments.length < maxAttachments && !isSubmitting)
-                    ? () async {
-                        final bool granted = await _requestPermissions();
-                        if (granted) {
-                          onAddAttachment();
-                        } else {
-                          if (context.mounted) {
-                            _showPermissionDialog(context);
+                onPressed:
+                    (attachments.length < maxAttachments && !isSubmitting)
+                        ? () async {
+                            final bool granted = await _requestPermissions();
+                            if (granted) {
+                              onAddAttachment();
+                            } else {
+                              if (context.mounted) {
+                                _showPermissionDialog(context);
+                              }
+                            }
                           }
-                        }
-                      }
-                    : null,
+                        : null,
               ),
             ],
           ),
@@ -125,7 +131,8 @@ class AttachmentInputField extends StatelessWidget {
           if (attachments.isEmpty)
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
-              child: Text('No attachments added yet.', style: TextStyle(color: Colors.grey)),
+              child: Text('No attachments added yet.',
+                  style: TextStyle(color: Colors.grey)),
             )
           else
             SizedBox(
@@ -134,7 +141,8 @@ class AttachmentInputField extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: attachments.length,
                 itemBuilder: (BuildContext context, int index) => Padding(
-                  padding: const EdgeInsets.only(right: 8.0, top: 4.0, bottom: 4.0),
+                  padding:
+                      const EdgeInsets.only(right: 8.0, top: 4.0, bottom: 4.0),
                   child: Stack(
                     alignment: Alignment.topRight,
                     children: <Widget>[
@@ -144,27 +152,34 @@ class AttachmentInputField extends StatelessWidget {
                         clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey.shade400),
-                          borderRadius: BorderRadius.circular(MyConstants.borderRadius),
+                          borderRadius:
+                              BorderRadius.circular(MyConstants.borderRadius),
                           color: Colors.grey.shade200,
                         ),
                         // attachment.type == AttachmentType.image
                         child: Image.file(
                           File(attachments[index].path),
                           fit: BoxFit.cover,
-                          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => const Center(
-                            child: Icon(Icons.broken_image, color: Colors.redAccent, size: 40),
+                          errorBuilder: (BuildContext context, Object error,
+                                  StackTrace? stackTrace) =>
+                              const Center(
+                            child: Icon(Icons.broken_image,
+                                color: Colors.redAccent, size: 40),
                           ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0, top: 8.0),
                         child: InkWell(
-                          onTap: (isSubmitting) ? null : () => onRemoveAttachment(index),
+                          onTap: (isSubmitting)
+                              ? null
+                              : () => onRemoveAttachment(index),
                           borderRadius: BorderRadius.circular(12),
                           child: const CircleAvatar(
                             radius: 12,
                             backgroundColor: Colors.black54,
-                            child: Icon(Icons.close, color: Colors.white, size: 16),
+                            child: Icon(Icons.close,
+                                color: Colors.white, size: 16),
                           ),
                         ),
                       ),

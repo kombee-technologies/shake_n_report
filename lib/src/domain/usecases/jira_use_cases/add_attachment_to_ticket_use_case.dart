@@ -5,14 +5,17 @@ import 'package:shake_n_report/src/core/usecase/use_case.dart';
 import 'package:shake_n_report/src/data/models/jira/request/common_params_request.dart';
 import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
-class AddAttachmentToTicketUseCase extends UseCase<void, AddAttachmentToTicketRequest> {
+class AddAttachmentToTicketUseCase
+    extends UseCase<void, AddAttachmentToTicketRequest> {
   final JiraRepository jiraRepository;
 
   AddAttachmentToTicketUseCase(this.jiraRepository);
 
   @override
-  Future<Either<BaseException, void>> call(AddAttachmentToTicketRequest reqParams) =>
-      jiraRepository.addAttachmentToTicket(reqParams.commonParamsRequest, reqParams.formData);
+  Future<Either<BaseException, void>> call(
+          AddAttachmentToTicketRequest reqParams) =>
+      jiraRepository.addAttachmentToTicket(
+          reqParams.commonParamsRequest, reqParams.formData);
 }
 
 class AddAttachmentToTicketRequest {

@@ -22,15 +22,20 @@ abstract class JiraDataSource {
 
   Future<JiraProjectsResponse> getJiraProjects(CommonParamsRequest request);
 
-  Future<List<JiraIssueTypeResponse>> getJiraIssueTypes(CommonParamsRequest request);
+  Future<List<JiraIssueTypeResponse>> getJiraIssueTypes(
+      CommonParamsRequest request);
 
-  Future<List<JiraAssignableUsersResponse>> getJiraAssignableUsers(CommonParamsRequest request);
+  Future<List<JiraAssignableUsersResponse>> getJiraAssignableUsers(
+      CommonParamsRequest request);
 
-  Future<CreateJiraIssueResponse> createJiraTicket(CommonParamsRequest params, CreateJiraIssueRequest request);
+  Future<CreateJiraIssueResponse> createJiraTicket(
+      CommonParamsRequest params, CreateJiraIssueRequest request);
 
-  Future<void> assignTicket(CommonParamsRequest params, AssignIssueRequest request);
+  Future<void> assignTicket(
+      CommonParamsRequest params, AssignIssueRequest request);
 
-  Future<void> addAttachmentToTicket(CommonParamsRequest params, FormData request);
+  Future<void> addAttachmentToTicket(
+      CommonParamsRequest params, FormData request);
 }
 
 class JiraDataSourceImpl implements JiraDataSource {
@@ -41,8 +46,10 @@ class JiraDataSourceImpl implements JiraDataSource {
   JiraDataSourceImpl(this._dioFactory, this._localStorage);
 
   @override
-  Future<AccessTokenResponse> getAccessToken(GetAccessTokenRequest request) async {
-    final Response<Map<String, dynamic>> response = await _dioFactory.shared.post<Map<String, dynamic>>(
+  Future<AccessTokenResponse> getAccessToken(
+      GetAccessTokenRequest request) async {
+    final Response<Map<String, dynamic>> response =
+        await _dioFactory.shared.post<Map<String, dynamic>>(
       ApiEndPoints.oAuthTokenJira,
       data: request.toJson(),
     );
@@ -51,9 +58,11 @@ class JiraDataSourceImpl implements JiraDataSource {
 
   @override
   Future<List<AccessibleResourcesResponse>> getAccessibleResources() async {
-    final String accessToken = await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
+    final String accessToken =
+        await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
-    final Response<List<dynamic>> response = await _dioFactory.shared.get<List<dynamic>>(
+    final Response<List<dynamic>> response =
+        await _dioFactory.shared.get<List<dynamic>>(
       ApiEndPoints.getAccessibleResourcesJira,
       options: Options(
         headers: <String, dynamic>{
@@ -67,11 +76,15 @@ class JiraDataSourceImpl implements JiraDataSource {
   }
 
   @override
-  Future<List<JiraAssignableUsersResponse>> getJiraAssignableUsers(CommonParamsRequest request) async {
-    final String accessToken = await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
+  Future<List<JiraAssignableUsersResponse>> getJiraAssignableUsers(
+      CommonParamsRequest request) async {
+    final String accessToken =
+        await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
-    final Response<List<dynamic>> response = await _dioFactory.shared.get<List<dynamic>>(
-      ApiEndPoints.getAssignableUsersJira(request.cloudId ?? '', request.projectKey ?? ''),
+    final Response<List<dynamic>> response =
+        await _dioFactory.shared.get<List<dynamic>>(
+      ApiEndPoints.getAssignableUsersJira(
+          request.cloudId ?? '', request.projectKey ?? ''),
       options: Options(
         headers: <String, dynamic>{
           ApiKeys.contentType: ApiKeys.applicationXWwwFormUrlencoded,
@@ -84,11 +97,15 @@ class JiraDataSourceImpl implements JiraDataSource {
   }
 
   @override
-  Future<List<JiraIssueTypeResponse>> getJiraIssueTypes(CommonParamsRequest request) async {
-    final String accessToken = await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
+  Future<List<JiraIssueTypeResponse>> getJiraIssueTypes(
+      CommonParamsRequest request) async {
+    final String accessToken =
+        await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
-    final Response<List<dynamic>> response = await _dioFactory.shared.get<List<dynamic>>(
-      ApiEndPoints.getJiraProjectIssueType(request.cloudId ?? '', request.projectId ?? ''),
+    final Response<List<dynamic>> response =
+        await _dioFactory.shared.get<List<dynamic>>(
+      ApiEndPoints.getJiraProjectIssueType(
+          request.cloudId ?? '', request.projectId ?? ''),
       options: Options(
         headers: <String, dynamic>{
           ApiKeys.contentType: ApiKeys.applicationXWwwFormUrlencoded,
@@ -102,10 +119,13 @@ class JiraDataSourceImpl implements JiraDataSource {
   }
 
   @override
-  Future<JiraProjectsResponse> getJiraProjects(CommonParamsRequest request) async {
-    final String accessToken = await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
+  Future<JiraProjectsResponse> getJiraProjects(
+      CommonParamsRequest request) async {
+    final String accessToken =
+        await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
-    final Response<Map<String, dynamic>> response = await _dioFactory.shared.get<Map<String, dynamic>>(
+    final Response<Map<String, dynamic>> response =
+        await _dioFactory.shared.get<Map<String, dynamic>>(
       ApiEndPoints.getJiraProjects(request.cloudId ?? ''),
       options: Options(
         headers: <String, dynamic>{
@@ -120,10 +140,13 @@ class JiraDataSourceImpl implements JiraDataSource {
   }
 
   @override
-  Future<CreateJiraIssueResponse> createJiraTicket(CommonParamsRequest params, CreateJiraIssueRequest request) async {
-    final String accessToken = await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
+  Future<CreateJiraIssueResponse> createJiraTicket(
+      CommonParamsRequest params, CreateJiraIssueRequest request) async {
+    final String accessToken =
+        await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
-    final Response<Map<String, dynamic>> response = await _dioFactory.shared.post<Map<String, dynamic>>(
+    final Response<Map<String, dynamic>> response =
+        await _dioFactory.shared.post<Map<String, dynamic>>(
       ApiEndPoints.createIssueJira(params.cloudId ?? ''),
       data: request.toMap(),
       options: Options(
@@ -135,12 +158,15 @@ class JiraDataSourceImpl implements JiraDataSource {
       ),
     );
 
-    return CreateJiraIssueResponse.fromMap(response.data ?? <String, dynamic>{});
+    return CreateJiraIssueResponse.fromMap(
+        response.data ?? <String, dynamic>{});
   }
 
   @override
-  Future<void> addAttachmentToTicket(CommonParamsRequest params, FormData request) async {
-    final String accessToken = await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
+  Future<void> addAttachmentToTicket(
+      CommonParamsRequest params, FormData request) async {
+    final String accessToken =
+        await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
     await _dioFactory.shared.post<List<dynamic>>(
       ApiEndPoints.attachFileJira(params.cloudId ?? '', params.issueKey ?? ''),
@@ -157,8 +183,10 @@ class JiraDataSourceImpl implements JiraDataSource {
   }
 
   @override
-  Future<void> assignTicket(CommonParamsRequest params, AssignIssueRequest request) async {
-    final String accessToken = await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
+  Future<void> assignTicket(
+      CommonParamsRequest params, AssignIssueRequest request) async {
+    final String accessToken =
+        await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
     await _dioFactory.shared.put<dynamic>(
       ApiEndPoints.assignIssueJira(params.cloudId ?? '', params.issueKey ?? ''),

@@ -21,14 +21,23 @@ Future<void> initDI() async {
     ..registerSingleton<LocalStorage>(LocalStorage())
     ..registerLazySingleton<DioFactory>(() => DioFactory())
     ..registerLazySingleton<Toastification>(() => Toastification())
-    ..registerLazySingleton<JiraDataSource>(() => JiraDataSourceImpl(getIt(), getIt()))
+    ..registerLazySingleton<JiraDataSource>(
+        () => JiraDataSourceImpl(getIt(), getIt()))
     ..registerLazySingleton<JiraRepository>(() => JiraRepositoriesImpl(getIt()))
-    ..registerLazySingleton<GetAccessTokenUseCase>(() => GetAccessTokenUseCase(getIt()))
-    ..registerLazySingleton<GetAccessibleResourceUseCase>(() => GetAccessibleResourceUseCase(getIt()))
-    ..registerLazySingleton<GetJiraProjectsUseCase>(() => GetJiraProjectsUseCase(getIt()))
-    ..registerLazySingleton<GetProjectIssueTypeUseCase>(() => GetProjectIssueTypeUseCase(getIt()))
-    ..registerLazySingleton<GetAssignableUserUseCase>(() => GetAssignableUserUseCase(getIt()))
-    ..registerLazySingleton<CreateJiraTicketUseCase>(() => CreateJiraTicketUseCase(getIt()))
-    ..registerLazySingleton<AssignUserToTicketUseCase>(() => AssignUserToTicketUseCase(getIt()))
-    ..registerLazySingleton<AddAttachmentToTicketUseCase>(() => AddAttachmentToTicketUseCase(getIt()));
+    ..registerLazySingleton<GetAccessTokenUseCase>(
+        () => GetAccessTokenUseCase(getIt()))
+    ..registerLazySingleton<GetAccessibleResourceUseCase>(
+        () => GetAccessibleResourceUseCase(getIt()))
+    ..registerLazySingleton<GetJiraProjectsUseCase>(
+        () => GetJiraProjectsUseCase(getIt()))
+    ..registerLazySingleton<GetProjectIssueTypeUseCase>(
+        () => GetProjectIssueTypeUseCase(getIt()))
+    ..registerLazySingleton<GetAssignableUserUseCase>(
+        () => GetAssignableUserUseCase(getIt()))
+    ..registerLazySingleton<CreateJiraTicketUseCase>(
+        () => CreateJiraTicketUseCase(getIt()))
+    ..registerLazySingleton<AssignUserToTicketUseCase>(
+        () => AssignUserToTicketUseCase(getIt()))
+    ..registerLazySingleton<AddAttachmentToTicketUseCase>(
+        () => AddAttachmentToTicketUseCase(getIt()));
 }

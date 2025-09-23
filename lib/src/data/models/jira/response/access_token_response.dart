@@ -9,7 +9,13 @@ class AccessTokenResponse {
   String? errorDescription;
 
   AccessTokenResponse(
-      {this.accessToken, this.refreshToken, this.expiresIn, this.tokenType, this.scope, this.error, this.errorDescription});
+      {this.accessToken,
+      this.refreshToken,
+      this.expiresIn,
+      this.tokenType,
+      this.scope,
+      this.error,
+      this.errorDescription});
 
   AccessTokenResponse.fromJson(Map<String, dynamic> json) {
     accessToken = json['access_token'] as String?;

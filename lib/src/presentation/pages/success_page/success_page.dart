@@ -11,7 +11,8 @@ class SuccessPage extends StatelessWidget {
 
   void _copyIssueIdToClipboard() {
     Clipboard.setData(ClipboardData(text: issueId));
-    Utility.showSnackbar(msg: 'Issue ID copied to clipboard', bannerStyle: BannerStyle.info);
+    Utility.showSnackbar(
+        msg: 'Issue ID copied to clipboard', bannerStyle: BannerStyle.info);
   }
 
   @override
@@ -24,7 +25,6 @@ class SuccessPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              
               // Success message
               const Text(
                 'Ticket Created Successfully',
@@ -42,7 +42,8 @@ class SuccessPage extends StatelessWidget {
               GestureDetector(
                 onTap: _copyIssueIdToClipboard,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
                     color: Colors.white.withAlpha(51),
                     borderRadius: BorderRadius.circular(12),
@@ -85,7 +86,8 @@ class SuccessPage extends StatelessWidget {
                   foregroundColor: Colors.green,
                   elevation: 2,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(MyConstants.borderRadius),
+                    borderRadius:
+                        BorderRadius.circular(MyConstants.borderRadius),
                   ),
                 ),
                 child: const Text(

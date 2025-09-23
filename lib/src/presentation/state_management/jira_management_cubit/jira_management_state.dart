@@ -90,7 +90,8 @@ class JiraManagementState extends Equatable {
         issueTypes: issueTypes ?? this.issueTypes,
         isIssueTypeLoading: isIssueTypeLoading ?? this.isIssueTypeLoading,
         assignableUsers: assignableUsers ?? this.assignableUsers,
-        isAssignableUsersLoading: isAssignableUsersLoading ?? this.isAssignableUsersLoading,
+        isAssignableUsersLoading:
+            isAssignableUsersLoading ?? this.isAssignableUsersLoading,
         selectedIssueTypeID: selectedIssueTypeID,
         selectedAssignerAccID: selectedAssignerAccID,
         issueTypeErrorMessage: issueTypeErrorMessage,

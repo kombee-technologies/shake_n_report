@@ -6,19 +6,24 @@ import 'package:shake_n_report/src/data/models/jira/request/create_jira_issue_re
 import 'package:shake_n_report/src/data/models/jira/response/create_jira_issue_response.dart';
 import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
-class CreateJiraTicketUseCase extends UseCase<CreateJiraIssueResponse, CreateJiraTicketRequest> {
+class CreateJiraTicketUseCase
+    extends UseCase<CreateJiraIssueResponse, CreateJiraTicketRequest> {
   final JiraRepository _jiraRepository;
 
   CreateJiraTicketUseCase(this._jiraRepository);
 
   @override
-  Future<Either<BaseException, CreateJiraIssueResponse>> call(CreateJiraTicketRequest reqParams) =>
-      _jiraRepository.createJiraTicket(reqParams.commonParamsRequest, reqParams.createJiraIssueRequest);
+  Future<Either<BaseException, CreateJiraIssueResponse>> call(
+          CreateJiraTicketRequest reqParams) =>
+      _jiraRepository.createJiraTicket(
+          reqParams.commonParamsRequest, reqParams.createJiraIssueRequest);
 }
 
 class CreateJiraTicketRequest {
   final CommonParamsRequest commonParamsRequest;
   final CreateJiraIssueRequest createJiraIssueRequest;
 
-  CreateJiraTicketRequest({required this.commonParamsRequest, required this.createJiraIssueRequest});
+  CreateJiraTicketRequest(
+      {required this.commonParamsRequest,
+      required this.createJiraIssueRequest});
 }

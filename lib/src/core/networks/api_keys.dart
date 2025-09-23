@@ -4,7 +4,8 @@ class ApiKeys {
   static const String contentType = 'Content-Type';
   static const String accept = 'Accept';
   static const String applicationJson = 'application/json';
-  static const String applicationXWwwFormUrlencoded = 'application/x-www-form-urlencoded';
+  static const String applicationXWwwFormUrlencoded =
+      'application/x-www-form-urlencoded';
   static const String multipartFormData = 'multipart/form-data';
   static const String error = 'error';
   static const String errorDescription = 'error_description';

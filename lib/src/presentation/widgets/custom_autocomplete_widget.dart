@@ -29,10 +29,12 @@ class CustomAutocompleteField<T extends Object> extends StatefulWidget {
   });
 
   @override
-  State<CustomAutocompleteField<T>> createState() => _CustomAutocompleteFieldState<T>();
+  State<CustomAutocompleteField<T>> createState() =>
+      _CustomAutocompleteFieldState<T>();
 }
 
-class _CustomAutocompleteFieldState<T extends Object> extends State<CustomAutocompleteField<T>> {
+class _CustomAutocompleteFieldState<T extends Object>
+    extends State<CustomAutocompleteField<T>> {
   T? _selectedOption;
 
   @override
@@ -59,13 +61,15 @@ class _CustomAutocompleteFieldState<T extends Object> extends State<CustomAutoco
   Widget build(BuildContext context) => Autocomplete<T>(
         displayStringForOption: widget.displayStringForOption,
         initialValue: widget.initialValue != null
-            ? TextEditingValue(text: widget.displayStringForOption(widget.initialValue as T))
+            ? TextEditingValue(
+                text: widget.displayStringForOption(widget.initialValue as T))
             : null,
         optionsBuilder: (TextEditingValue textEditingValue) {
           if (textEditingValue.text == '') {
             // If text is empty, and it was previously a selected option's display string,
             // it means the user cleared it manually.
-            if (_selectedOption != null && widget.displayStringForOption(_selectedOption as T) != '') {
+            if (_selectedOption != null &&
+                widget.displayStringForOption(_selectedOption as T) != '') {
               // This check helps if the user backspaces the selected item text
               // We should clear our internal _selectedOption state
               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -84,7 +88,10 @@ class _CustomAutocompleteFieldState<T extends Object> extends State<CustomAutoco
             if (widget.filterCondition != null) {
               return widget.filterCondition!(option, textEditingValue.text);
             }
-            return widget.displayStringForOption(option).toLowerCase().contains(textEditingValue.text.toLowerCase());
+            return widget
+                .displayStringForOption(option)
+                .toLowerCase()
+                .contains(textEditingValue.text.toLowerCase());
           });
         },
         onSelected: (T selection) {
@@ -102,17 +109,22 @@ class _CustomAutocompleteFieldState<T extends Object> extends State<CustomAutoco
           widget.onSelected(selection);
           FocusManager.instance.primaryFocus?.unfocus();
         },
-        fieldViewBuilder: (BuildContext context, TextEditingController fieldTextEditingController,
-                FocusNode fieldFocusNode, VoidCallback onFieldSubmitted) =>
+        fieldViewBuilder: (BuildContext context,
+                TextEditingController fieldTextEditingController,
+                FocusNode fieldFocusNode,
+                VoidCallback onFieldSubmitted) =>
             TextFormField(
-          controller: fieldTextEditingController, // Use controller from Autocomplete
+          controller:
+              fieldTextEditingController, // Use controller from Autocomplete
           focusNode: fieldFocusNode,
           readOnly: widget.isReadOnly,
           decoration: InputDecoration(
             labelText: widget.labelText,
             hintText: widget.hintText,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(14.0)), // Example border
-            suffixIcon: _selectedOption != null || fieldTextEditingController.text.isNotEmpty
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14.0)), // Example border
+            suffixIcon: _selectedOption != null ||
+                    fieldTextEditingController.text.isNotEmpty
                 ? IconButton(
                     icon: const Icon(Icons.clear),
                     onPressed: () {
@@ -140,7 +152,9 @@ class _CustomAutocompleteFieldState<T extends Object> extends State<CustomAutoco
           },
           onFieldSubmitted: (_) => onFieldSubmitted(),
         ),
-        optionsViewBuilder: (BuildContext context, AutocompleteOnSelected<T> onSelected, Iterable<T> options) => Align(
+        optionsViewBuilder: (BuildContext context,
+                AutocompleteOnSelected<T> onSelected, Iterable<T> options) =>
+            Align(
           alignment: Alignment.topLeft,
           child: Material(
             elevation: 4.0,

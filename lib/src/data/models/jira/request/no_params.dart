@@ -1,3 +1,1 @@
-class NoParams {
-  
-}
+class NoParams {}

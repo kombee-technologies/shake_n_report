@@ -5,12 +5,14 @@ import 'package:shake_n_report/src/data/models/jira/request/get_access_token_req
 import 'package:shake_n_report/src/data/models/jira/response/access_token_response.dart';
 import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
-class GetAccessTokenUseCase extends UseCase<AccessTokenResponse, GetAccessTokenRequest> {
+class GetAccessTokenUseCase
+    extends UseCase<AccessTokenResponse, GetAccessTokenRequest> {
   final JiraRepository _jiraRepository;
 
   GetAccessTokenUseCase(this._jiraRepository);
 
   @override
-  Future<Either<BaseException, AccessTokenResponse>> call(GetAccessTokenRequest reqParams) =>
+  Future<Either<BaseException, AccessTokenResponse>> call(
+          GetAccessTokenRequest reqParams) =>
       _jiraRepository.getAccessToken(reqParams);
 }

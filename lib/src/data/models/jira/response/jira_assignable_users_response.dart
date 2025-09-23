@@ -1,12 +1,16 @@
 import 'dart:convert';
 
-List<JiraAssignableUsersResponse> jiraAssignableUsersResponseFromMap(List<dynamic> json) =>
+List<JiraAssignableUsersResponse> jiraAssignableUsersResponseFromMap(
+        List<dynamic> json) =>
     List<JiraAssignableUsersResponse>.from(
 // ignore: always_specify_types
-        json.map((x) => JiraAssignableUsersResponse.fromMap(x as Map<String, dynamic>)));
+        json.map((x) =>
+            JiraAssignableUsersResponse.fromMap(x as Map<String, dynamic>)));
 
-String jiraAssignableUsersResponseToMap(List<JiraAssignableUsersResponse> data) =>
-    json.encode(List<dynamic>.from(data.map((JiraAssignableUsersResponse x) => x.toMap())));
+String jiraAssignableUsersResponseToMap(
+        List<JiraAssignableUsersResponse> data) =>
+    json.encode(List<dynamic>.from(
+        data.map((JiraAssignableUsersResponse x) => x.toMap())));
 
 class JiraAssignableUsersResponse {
   String? self;
@@ -31,12 +35,15 @@ class JiraAssignableUsersResponse {
     this.locale,
   });
 
-  factory JiraAssignableUsersResponse.fromMap(Map<String, dynamic> json) => JiraAssignableUsersResponse(
+  factory JiraAssignableUsersResponse.fromMap(Map<String, dynamic> json) =>
+      JiraAssignableUsersResponse(
         self: json['self'] as String?,
         accountId: json['accountId'] as String?,
         accountType: json['accountType'] as String?,
         emailAddress: json['emailAddress'] as String?,
-        avatarUrls: json['avatarUrls'] == null ? null : AvatarUrls.fromMap(json['avatarUrls'] as Map<String, dynamic>),
+        avatarUrls: json['avatarUrls'] == null
+            ? null
+            : AvatarUrls.fromMap(json['avatarUrls'] as Map<String, dynamic>),
         displayName: json['displayName'] as String?,
         active: json['active'] as bool?,
         timeZone: json['timeZone'] as String?,

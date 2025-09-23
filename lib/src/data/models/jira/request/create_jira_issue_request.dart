@@ -45,8 +45,10 @@ class Description {
   Map<String, dynamic> toMap() => <String, dynamic>{
         'type': type,
         'version': version,
-        'content':
-            content == null ? <dynamic>[] : List<dynamic>.from(content!.map((DescriptionContent x) => x.toMap())),
+        'content': content == null
+            ? <dynamic>[]
+            : List<dynamic>.from(
+                content!.map((DescriptionContent x) => x.toMap())),
       };
 }
 
@@ -61,7 +63,9 @@ class DescriptionContent {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'type': type,
-        'content': content == null ? <dynamic>[] : List<dynamic>.from(content!.map((ContentContent x) => x.toMap())),
+        'content': content == null
+            ? <dynamic>[]
+            : List<dynamic>.from(content!.map((ContentContent x) => x.toMap())),
       };
 }
 

@@ -47,7 +47,8 @@ class ToolsSelections extends StatelessWidget {
                     elevation: 0,
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(MyConstants.borderRadius),
+                      borderRadius:
+                          BorderRadius.circular(MyConstants.borderRadius),
                       side: BorderSide(
                         color: Colors.grey.shade300,
                       ),

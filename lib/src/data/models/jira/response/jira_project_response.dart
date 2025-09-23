@@ -15,7 +15,8 @@ class JiraProjectsResponse {
     this.values,
   });
 
-  factory JiraProjectsResponse.fromMap(Map<String, dynamic> json) => JiraProjectsResponse(
+  factory JiraProjectsResponse.fromMap(Map<String, dynamic> json) =>
+      JiraProjectsResponse(
         self: json['self'] as String?,
         maxResults: json['maxResults'] as int?,
         startAt: json['startAt'] as int?,
@@ -24,7 +25,9 @@ class JiraProjectsResponse {
         values: json['values'] == null
             ? <ProjectItem>[]
             // ignore: always_specify_types
-            : List<ProjectItem>.from((json['values'] as List<dynamic>).map((x) => ProjectItem.fromMap(x as Map<String, dynamic>))),
+            : List<ProjectItem>.from((json['values'] as List<dynamic>)
+                // ignore: always_specify_types
+                .map((x) => ProjectItem.fromMap(x as Map<String, dynamic>))),
       );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -33,7 +36,9 @@ class JiraProjectsResponse {
         'startAt': startAt,
         'total': total,
         'isLast': isLast,
-        'values': values == null ? <dynamic>[] : List<dynamic>.from(values!.map((ProjectItem x) => x.toMap())),
+        'values': values == null
+            ? <dynamic>[]
+            : List<dynamic>.from(values!.map((ProjectItem x) => x.toMap())),
       };
 }
 
@@ -72,7 +77,9 @@ class ProjectItem {
         id: json['id'] as String?,
         key: json['key'] as String?,
         name: json['name'] as String?,
-        avatarUrls: json['avatarUrls'] == null ? null : AvatarUrls.fromMap(json['avatarUrls'] as Map<String, dynamic>),
+        avatarUrls: json['avatarUrls'] == null
+            ? null
+            : AvatarUrls.fromMap(json['avatarUrls'] as Map<String, dynamic>),
         projectTypeKey: json['projectTypeKey'] as String?,
         simplified: json['simplified'] as bool?,
         style: json['style'] as String?,

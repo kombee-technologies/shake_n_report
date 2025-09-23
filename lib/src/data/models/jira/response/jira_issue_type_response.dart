@@ -2,10 +2,13 @@ import 'dart:convert';
 
 List<JiraIssueTypeResponse> jiraIssueTypeResponseFromMap(List<dynamic> json) =>
 // ignore: always_specify_types
-    List<JiraIssueTypeResponse>.from(json.map((x) => JiraIssueTypeResponse.fromMap(x as Map<String, dynamic>)));
+    List<JiraIssueTypeResponse>.from(json
+        // ignore: always_specify_types
+        .map((x) => JiraIssueTypeResponse.fromMap(x as Map<String, dynamic>)));
 
 String jiraIssueTypeResponseToMap(List<JiraIssueTypeResponse> data) =>
-    json.encode(List<dynamic>.from(data.map((JiraIssueTypeResponse x) => x.toMap())));
+    json.encode(
+        List<dynamic>.from(data.map((JiraIssueTypeResponse x) => x.toMap())));
 
 class JiraIssueTypeResponse {
   String? self;
@@ -32,7 +35,8 @@ class JiraIssueTypeResponse {
     this.scope,
   });
 
-  factory JiraIssueTypeResponse.fromMap(Map<String, dynamic> json) => JiraIssueTypeResponse(
+  factory JiraIssueTypeResponse.fromMap(Map<String, dynamic> json) =>
+      JiraIssueTypeResponse(
         self: json['self'] as String?,
         id: json['id'] as String?,
         description: json['description'] as String?,
@@ -42,7 +46,9 @@ class JiraIssueTypeResponse {
         subtask: json['subtask'] as bool?,
         avatarId: json['avatarId'] as int?,
         hierarchyLevel: json['hierarchyLevel'] as int?,
-        scope: json['scope'] == null ? null : Scope.fromMap(json['scope'] as Map<String, dynamic>),
+        scope: json['scope'] == null
+            ? null
+            : Scope.fromMap(json['scope'] as Map<String, dynamic>),
       );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -70,7 +76,9 @@ class Scope {
 
   factory Scope.fromMap(Map<String, dynamic> json) => Scope(
         type: json['type'] as String?,
-        project: json['project'] == null ? null : Project.fromMap(json['project'] as Map<String, dynamic>),
+        project: json['project'] == null
+            ? null
+            : Project.fromMap(json['project'] as Map<String, dynamic>),
       );
 
   Map<String, dynamic> toMap() => <String, dynamic>{

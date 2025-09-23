@@ -22,7 +22,8 @@ class _ProjectSelectionScreenState extends State<ProjectSelectionScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final JiraManagementCubit jiraManagementCubit = context.read<JiraManagementCubit>();
+      final JiraManagementCubit jiraManagementCubit =
+          context.read<JiraManagementCubit>();
       if (jiraManagementCubit.state.projects?.isEmpty ?? false) {
         jiraManagementCubit.getAccessibleResources();
       }
@@ -66,13 +67,16 @@ class _ProjectSelectionScreenState extends State<ProjectSelectionScreen> {
             BlocConsumer<JiraManagementCubit, JiraManagementState>(
               listener: (BuildContext context, JiraManagementState state) {
                 if (!state.isProjectLoading && state.errorMessage != null) {
-                  Utility.showSnackbar(msg: state.errorMessage ?? 'Error occurred', bannerStyle: BannerStyle.error);
+                  Utility.showSnackbar(
+                      msg: state.errorMessage ?? 'Error occurred',
+                      bannerStyle: BannerStyle.error);
                   context.read<JiraManagementCubit>().resetState();
                   context.read<ShakeDetectionCubit>().resetState();
                   Navigator.of(context).pop();
                 }
               },
-              buildWhen: (JiraManagementState previous, JiraManagementState current) =>
+              buildWhen: (JiraManagementState previous,
+                      JiraManagementState current) =>
                   (current.errorMessage == null) && !current.isProjectLoading ||
                   (current.projects == previous.projects),
               builder: (BuildContext context, JiraManagementState state) {
@@ -96,10 +100,13 @@ class _ProjectSelectionScreenState extends State<ProjectSelectionScreen> {
                 return Expanded(
                   child: ListView.builder(
                     itemCount: state.projects?.length,
-                    itemBuilder: (BuildContext context, int index) => ProjectCardWidget(
+                    itemBuilder: (BuildContext context, int index) =>
+                        ProjectCardWidget(
                       project: state.projects?[index],
                       onTap: (ProjectItem? project) {
-                        context.read<JiraManagementCubit>().selectProject(state.projects?[index], project);
+                        context
+                            .read<JiraManagementCubit>()
+                            .selectProject(state.projects?[index], project);
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute<void>(
                             builder: (_) => const CreateIssueScreen(),

@@ -29,9 +29,11 @@ class WebViewPageState extends State<WebViewPage> {
     ..setNavigationDelegate(
       NavigationDelegate(
         onNavigationRequest: (NavigationRequest request) {
-          if (request.url.startsWith(queryParams[MyConstants.jiraRedirectUri] ?? '')) {
+          if (request.url
+              .startsWith(queryParams[MyConstants.jiraRedirectUri] ?? '')) {
             final Uri uri = Uri.parse(request.url);
-            final String? accessCode = uri.queryParameters[MyConstants.jiraAccessCode];
+            final String? accessCode =
+                uri.queryParameters[MyConstants.jiraAccessCode];
             if (accessCode != null && accessCode.isNotEmpty) {
               isLoading.value = true;
               _jiraManagementCubit?.getAccessToken(accessCode);
@@ -92,11 +94,12 @@ class WebViewPageState extends State<WebViewPage> {
             ),
             ValueListenableBuilder<bool>(
               valueListenable: isLoading,
-              builder: (BuildContext context, bool isLoading, Widget? child) => isLoading
-                  ? const Center(
-                      child: CupertinoActivityIndicator(),
-                    )
-                  : const SizedBox.shrink(),
+              builder: (BuildContext context, bool isLoading, Widget? child) =>
+                  isLoading
+                      ? const Center(
+                          child: CupertinoActivityIndicator(),
+                        )
+                      : const SizedBox.shrink(),
             ),
           ],
         ),

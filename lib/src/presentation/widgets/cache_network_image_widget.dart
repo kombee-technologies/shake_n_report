@@ -46,7 +46,8 @@ class CacheNetworkImageWidget extends StatelessWidget {
 
   final EdgeInsetsGeometry? padding;
 
-  final Widget Function(BuildContext, String, DownloadProgress)? progressIndicatorBuilder;
+  final Widget Function(BuildContext, String, DownloadProgress)?
+      progressIndicatorBuilder;
 
   final String? authorization;
 
@@ -78,10 +79,14 @@ class CacheNetworkImageWidget extends StatelessWidget {
         ),
         alignment: alignment,
         errorWidget: (BuildContext context, String error, Object stackTrace) =>
-            (errorWidget == null) ? Container(color: Colors.grey) : errorWidget!,
-        errorListener: (Object value) => Utility.debugLog('CacheNetworkImage: "$imageUrl" => $value'),
-        placeholder: (BuildContext context, String url) =>
-            (placeholder == null) ? Container(color: Colors.grey) : placeholder!,
+            (errorWidget == null)
+                ? Container(color: Colors.grey)
+                : errorWidget!,
+        errorListener: (Object value) =>
+            Utility.debugLog('CacheNetworkImage: "$imageUrl" => $value'),
+        placeholder: (BuildContext context, String url) => (placeholder == null)
+            ? Container(color: Colors.grey)
+            : placeholder!,
         width: width,
         height: height,
         httpHeaders: <String, String>{

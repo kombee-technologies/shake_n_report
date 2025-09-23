@@ -6,7 +6,10 @@ import 'package:shake_n_report/src/presentation/widgets/custom_autocomplete_widg
 
 class JiraIssueTypeDropdownWidget extends StatelessWidget {
   const JiraIssueTypeDropdownWidget(
-      {required this.jiraManagementState, required this.isSubmitting, required this.onSelected, super.key});
+      {required this.jiraManagementState,
+      required this.isSubmitting,
+      required this.onSelected,
+      super.key});
 
   final JiraManagementState jiraManagementState;
 
@@ -15,7 +18,9 @@ class JiraIssueTypeDropdownWidget extends StatelessWidget {
   final bool isSubmitting;
 
   @override
-  Widget build(BuildContext context) => (jiraManagementState.isIssueTypeLoading ?? false)
+  Widget build(BuildContext context) => (jiraManagementState
+              .isIssueTypeLoading ??
+          false)
       ? const Padding(
           padding: EdgeInsets.all(16.0),
           child: CupertinoActivityIndicator(),
@@ -26,17 +31,21 @@ class JiraIssueTypeDropdownWidget extends StatelessWidget {
           isReadOnly: isSubmitting,
           options: jiraManagementState.issueTypes ?? <JiraIssueTypeResponse>[],
           initialValue: jiraManagementState.selectedIssueTypeID,
-          displayStringForOption: (JiraIssueTypeResponse option) => option.name ?? '',
+          displayStringForOption: (JiraIssueTypeResponse option) =>
+              option.name ?? '',
           onSelected: (JiraIssueTypeResponse selection) {
             onSelected(selection);
           },
           filterCondition: (JiraIssueTypeResponse option, String query) =>
               option.name?.toLowerCase().contains(query.toLowerCase()) ?? false,
-          optionViewBuilder: (BuildContext context, JiraIssueTypeResponse issueType) => Padding(
+          optionViewBuilder:
+              (BuildContext context, JiraIssueTypeResponse issueType) =>
+                  Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: <Widget>[
-                if (issueType.iconUrl != null && issueType.iconUrl!.isNotEmpty) ...<Widget>[
+                if (issueType.iconUrl != null &&
+                    issueType.iconUrl!.isNotEmpty) ...<Widget>[
                   CacheNetworkImageWidget(
                     // Or Image.network if icons are not cached
                     imageUrl: issueType.iconUrl!,

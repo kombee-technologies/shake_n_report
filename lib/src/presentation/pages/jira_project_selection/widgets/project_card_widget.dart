@@ -47,7 +47,9 @@ class _ProjectCardWidgetState extends State<ProjectCardWidget> {
             (widget.project?.projects?.isEmpty ?? true) &&
             widget.project?.id != null &&
             widget.project?.errorStr == null) {
-          context.read<JiraManagementCubit>().getProjectsForResource(widget.project?.id ?? '');
+          context
+              .read<JiraManagementCubit>()
+              .getProjectsForResource(widget.project?.id ?? '');
         }
       },
       title: Container(
@@ -89,14 +91,20 @@ class _ProjectCardWidgetState extends State<ProjectCardWidget> {
                     children: scopes
                         .map<Widget>(
                           (String scope) => Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 0.5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 0.5),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Theme.of(context).colorScheme.onSurface),
+                              border: Border.all(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface),
                             ),
                             child: Text(
                               scope,
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
                                     fontWeight: FontWeight.w500,
                                   ),
                             ),
@@ -111,7 +119,8 @@ class _ProjectCardWidgetState extends State<ProjectCardWidget> {
         ),
       ),
       children: <Widget>[
-        ((widget.project?.projects?.isEmpty ?? true) && widget.project?.errorStr == null)
+        ((widget.project?.projects?.isEmpty ?? true) &&
+                widget.project?.errorStr == null)
             ? const Padding(
                 padding: EdgeInsets.symmetric(vertical: 20),
                 child: CupertinoActivityIndicator(),
@@ -122,18 +131,21 @@ class _ProjectCardWidgetState extends State<ProjectCardWidget> {
                     child: Text(widget.project?.errorStr ?? ''),
                   )
                 : Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: Colors.grey.shade300,
                       ),
-                      borderRadius: BorderRadius.circular(MyConstants.borderRadius),
+                      borderRadius:
+                          BorderRadius.circular(MyConstants.borderRadius),
                     ),
                     child: ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) => InkWell(
-                        borderRadius: BorderRadius.circular(MyConstants.borderRadius),
+                        borderRadius:
+                            BorderRadius.circular(MyConstants.borderRadius),
                         onTap: () {
                           widget.onTap(widget.project?.projects?[index]);
                         },
@@ -142,7 +154,9 @@ class _ProjectCardWidgetState extends State<ProjectCardWidget> {
                           child: Row(
                             children: <Widget>[
                               CacheNetworkImageWidget(
-                                imageUrl: widget.project?.projects?[index].avatarUrls?.the48X48 ?? '',
+                                imageUrl: widget.project?.projects?[index]
+                                        .avatarUrls?.the48X48 ??
+                                    '',
                                 width: 40,
                                 height: 40,
                                 fit: BoxFit.cover,
@@ -151,7 +165,10 @@ class _ProjectCardWidgetState extends State<ProjectCardWidget> {
                               Flexible(
                                 child: Text(
                                   widget.project?.projects?[index].name ?? '',
-                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
                                         fontWeight: FontWeight.w600,
                                       ),
                                 ),
@@ -160,7 +177,8 @@ class _ProjectCardWidgetState extends State<ProjectCardWidget> {
                           ),
                         ),
                       ),
-                      separatorBuilder: (BuildContext context, int index) => const Divider(),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const Divider(),
                       itemCount: widget.project?.projects?.length ?? 0,
                     ),
                   ),
