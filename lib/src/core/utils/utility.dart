@@ -1,57 +1,20 @@
+import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:shake_n_report/shake_n_report.dart';
 import 'package:shake_n_report/src/core/di.dart';
 import 'package:toastification/toastification.dart';
 
 class Utility {
-  static final Logger _logger = Logger();
+  static final String _tag = 'ShakeNReport';
 
   /// Log an informational message
   static void infoLog(String log) {
     if (ShakeNReportPlugin.instance.isDebuggable) {
-      _logger.i(log);
+      dev.log(_tag + log);
     }
   }
 
-  /// Log a warning message
-  static void warnLog(String log) {
-    if (ShakeNReportPlugin.instance.isDebuggable) {
-      _logger.w(log);
-    }
-  }
-
-  /// Log an error message
-  // ignore: avoid_annotating_with_dynamic
-  static void errorLog(String log, [dynamic error, StackTrace? stackTrace]) {
-    if (ShakeNReportPlugin.instance.isDebuggable) {
-      _logger.e(log, error: error, stackTrace: stackTrace);
-    }
-  }
-
-  /// Log a debug message
-  static void debugLog(String log) {
-    if (ShakeNReportPlugin.instance.isDebuggable) {
-      _logger.d(log);
-    }
-  }
-
-  /// Log a verbose message
-  static void verboseLog(String log) {
-    if (ShakeNReportPlugin.instance.isDebuggable) {
-      _logger.t(log);
-    }
-  }
-
-  /// Log a message with a custom level
-  static void log(Level level, String log) {
-    if (ShakeNReportPlugin.instance.isDebuggable) {
-      _logger.log(level, log);
-    }
-  }
-
-  static void showSnackbar(
-      {required String msg, BannerStyle? bannerStyle, void Function()? onTap}) {
+  static void showSnackbar({required String msg, BannerStyle? bannerStyle, void Function()? onTap}) {
     getIt<Toastification>().dismissAll();
     final ToastificationType toastificationType;
     if (bannerStyle == BannerStyle.success) {

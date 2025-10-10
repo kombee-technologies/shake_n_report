@@ -43,7 +43,7 @@ class WebViewPageState extends State<WebViewPage> {
           return NavigationDecision.navigate;
         },
         onPageStarted: (String url) {
-          Utility.debugLog('Page started loading: $url');
+          Utility.infoLog('Page started loading: $url');
           isLoading.value = true;
         },
         onPageFinished: (String url) {
