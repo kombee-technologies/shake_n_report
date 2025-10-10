@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:shake_n_report/src/core/networks/dio_factory.dart';
+import 'package:shake_n_report/src/core/networks/http_client_wrapper.dart';
 import 'package:shake_n_report/src/data/data_source/local_data_source/local_storage.dart';
 import 'package:shake_n_report/src/data/data_source/remote_data_source/jira_data_source/jira_data_source.dart';
 import 'package:shake_n_report/src/data/repositories/jira_repositories_impl.dart';
@@ -19,7 +19,8 @@ final GetIt getIt = GetIt.instance;
 Future<void> initDI() async {
   getIt
     ..registerSingleton<LocalStorage>(LocalStorage())
-    ..registerLazySingleton<DioFactory>(() => DioFactory())
+    ..registerSingleton<HttpClientWrapper>(
+        HttpClientWrapper(localStorage: getIt()))
     ..registerLazySingleton<Toastification>(() => Toastification())
     ..registerLazySingleton<JiraDataSource>(
         () => JiraDataSourceImpl(getIt(), getIt()))

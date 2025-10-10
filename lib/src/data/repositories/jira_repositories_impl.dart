@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:shake_n_report/src/core/constants/my_constants.dart';
 import 'package:shake_n_report/src/core/exceptions/exceptions.dart';
 import 'package:shake_n_report/src/data/data_source/remote_data_source/jira_data_source/jira_data_source.dart';
@@ -28,8 +27,8 @@ class JiraRepositoriesImpl extends JiraRepository {
           await _jiraDataSource.getAccessToken(request);
       return right(response);
     } catch (e) {
-      if ((e is DioException) && (e.error is BaseException)) {
-        return left(e.error as BaseException);
+      if (e is BaseException) {
+        return left(e);
       }
       return left(GeneralException(MyConstants.somethingWentWrong));
     }
@@ -43,8 +42,8 @@ class JiraRepositoriesImpl extends JiraRepository {
           await _jiraDataSource.getAccessibleResources();
       return right(response);
     } catch (e) {
-      if ((e is DioException) && (e.error is BaseException)) {
-        return left(e.error as BaseException);
+      if (e is BaseException) {
+        return left(e);
       }
       return left(GeneralException(MyConstants.somethingWentWrong));
     }
@@ -58,8 +57,8 @@ class JiraRepositoriesImpl extends JiraRepository {
           await _jiraDataSource.getJiraAssignableUsers(request);
       return right(response);
     } catch (e) {
-      if ((e is DioException) && (e.error is BaseException)) {
-        return left(e.error as BaseException);
+      if (e is BaseException) {
+        return left(e);
       }
       return left(GeneralException(MyConstants.somethingWentWrong));
     }
@@ -73,8 +72,8 @@ class JiraRepositoriesImpl extends JiraRepository {
           await _jiraDataSource.getJiraIssueTypes(request);
       return right(response);
     } catch (e) {
-      if ((e is DioException) && (e.error is BaseException)) {
-        return left(e.error as BaseException);
+      if (e is BaseException) {
+        return left(e);
       }
       return left(GeneralException(MyConstants.somethingWentWrong));
     }
@@ -88,8 +87,8 @@ class JiraRepositoriesImpl extends JiraRepository {
           await _jiraDataSource.getJiraProjects(request);
       return right(response);
     } catch (e) {
-      if ((e is DioException) && (e.error is BaseException)) {
-        return left(e.error as BaseException);
+      if (e is BaseException) {
+        return left(e);
       }
       return left(GeneralException(MyConstants.somethingWentWrong));
     }
@@ -97,13 +96,13 @@ class JiraRepositoriesImpl extends JiraRepository {
 
   @override
   Future<Either<BaseException, void>> addAttachmentToTicket(
-      CommonParamsRequest params, FormData request) async {
+      CommonParamsRequest params, List<String> filePaths) async {
     try {
-      await _jiraDataSource.addAttachmentToTicket(params, request);
+      await _jiraDataSource.addAttachmentToTicket(params, filePaths);
       return right(null);
     } catch (e) {
-      if ((e is DioException) && (e.error is BaseException)) {
-        return left(e.error as BaseException);
+      if (e is BaseException) {
+        return left(e);
       }
       return left(GeneralException(MyConstants.somethingWentWrong));
     }
@@ -116,8 +115,8 @@ class JiraRepositoriesImpl extends JiraRepository {
       await _jiraDataSource.assignTicket(params, request);
       return right(null);
     } catch (e) {
-      if ((e is DioException) && (e.error is BaseException)) {
-        return left(e.error as BaseException);
+      if (e is BaseException) {
+        return left(e);
       }
       return left(GeneralException(MyConstants.somethingWentWrong));
     }
@@ -131,8 +130,8 @@ class JiraRepositoriesImpl extends JiraRepository {
           await _jiraDataSource.createJiraTicket(params, request);
       return right(response);
     } catch (e) {
-      if ((e is DioException) && (e.error is BaseException)) {
-        return left(e.error as BaseException);
+      if (e is BaseException) {
+        return left(e);
       }
       return left(GeneralException(MyConstants.somethingWentWrong));
     }

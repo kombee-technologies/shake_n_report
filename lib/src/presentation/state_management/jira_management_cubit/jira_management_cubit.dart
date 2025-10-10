@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -374,20 +373,16 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
 
         // 3. Add Attachments (if any)
         if (state.attachments.isNotEmpty) {
-          final List<dio.MultipartFile> multipartFiles = <dio.MultipartFile>[];
-          for (final XFile file in state.attachments) {
-            multipartFiles.add(await dio.MultipartFile.fromFile(file.path,
-                filename: file.name));
-          }
-          // Jira API expects files under the 'file' key, and it can handle multiple files with the same key.
-          final dio.FormData formData =
-              dio.FormData.fromMap(<String, dynamic>{'file': multipartFiles});
+          // Extract file paths from XFile objects
+          final List<String> filePaths = state.attachments
+              .map((XFile file) => file.path)
+              .toList();
 
           final AddAttachmentToTicketRequest addAttachmentFullRequest =
               AddAttachmentToTicketRequest(
             commonParamsRequest:
                 CommonParamsRequest(cloudId: cloudId, issueKey: issueKey),
-            formData: formData,
+            filePaths: filePaths,
           );
 
           final Either<BaseException, void> attachmentResult =

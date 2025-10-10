@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:shake_n_report/src/core/exceptions/exceptions.dart';
 import 'package:shake_n_report/src/data/models/jira/request/assign_issue_request.dart';
 import 'package:shake_n_report/src/data/models/jira/request/common_params_request.dart';
@@ -62,7 +61,7 @@ abstract class JiraRepository {
   /// Adds an attachment to a Jira ticket.
   ///
   /// [params] - Common parameters required for the request.
-  /// [request] - The form data containing the attachment file(s) and related information.
+  /// [filePaths] - List of file paths to attach to the ticket.
   Future<Either<BaseException, void>> addAttachmentToTicket(
-      CommonParamsRequest params, FormData request);
+      CommonParamsRequest params, List<String> filePaths);
 }

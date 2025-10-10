@@ -20,7 +20,6 @@ dependencies:
   dartz: ^0.10.1
   flutter_secure_storage: ^9.2.4
   webview_flutter: ^4.8.0
-  dio: ^5.8.0
   get_it: ^8.0.3
   toastification: ^2.3.0
   image_picker: ^1.1.2

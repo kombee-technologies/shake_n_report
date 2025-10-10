@@ -1,7 +1,9 @@
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:shake_n_report/src/core/networks/api_end_points.dart';
 import 'package:shake_n_report/src/core/networks/api_keys.dart';
-import 'package:shake_n_report/src/core/networks/dio_factory.dart';
+import 'package:shake_n_report/src/core/networks/http_client_wrapper.dart';
+import 'package:shake_n_report/src/core/networks/http_response.dart';
+import 'package:shake_n_report/src/core/networks/multipart_helper.dart';
 import 'package:shake_n_report/src/data/data_source/local_data_source/local_storage.dart';
 import 'package:shake_n_report/src/data/data_source/local_data_source/local_storage_keys.dart';
 import 'package:shake_n_report/src/data/models/jira/request/assign_issue_request.dart';
@@ -35,23 +37,25 @@ abstract class JiraDataSource {
       CommonParamsRequest params, AssignIssueRequest request);
 
   Future<void> addAttachmentToTicket(
-      CommonParamsRequest params, FormData request);
+      CommonParamsRequest params, List<String> filePaths);
 }
 
 class JiraDataSourceImpl implements JiraDataSource {
-  final DioFactory _dioFactory;
+  final HttpClientWrapper _httpClient;
 
   final LocalStorage _localStorage;
 
-  JiraDataSourceImpl(this._dioFactory, this._localStorage);
+  JiraDataSourceImpl(this._httpClient, this._localStorage);
 
   @override
   Future<AccessTokenResponse> getAccessToken(
       GetAccessTokenRequest request) async {
-    final Response<Map<String, dynamic>> response =
-        await _dioFactory.shared.post<Map<String, dynamic>>(
+    final HttpResponse<Map<String, dynamic>> response = await _httpClient.post<Map<String, dynamic>>(
       ApiEndPoints.oAuthTokenJira,
       data: request.toJson(),
+      headers: <String, String>{
+        ApiKeys.contentType: ApiKeys.applicationXWwwFormUrlencoded,
+      },
     );
     return AccessTokenResponse.fromJson(response.data ?? <String, dynamic>{});
   }
@@ -61,16 +65,13 @@ class JiraDataSourceImpl implements JiraDataSource {
     final String accessToken =
         await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
-    final Response<List<dynamic>> response =
-        await _dioFactory.shared.get<List<dynamic>>(
+    final HttpResponse<List<dynamic>> response = await _httpClient.get<List<dynamic>>(
       ApiEndPoints.getAccessibleResourcesJira,
-      options: Options(
-        headers: <String, dynamic>{
-          ApiKeys.contentType: ApiKeys.applicationXWwwFormUrlencoded,
-          ApiKeys.accept: ApiKeys.applicationJson,
-          ApiKeys.authorization: 'Bearer $accessToken',
-        },
-      ),
+      headers: <String, String>{
+        ApiKeys.contentType: ApiKeys.applicationXWwwFormUrlencoded,
+        ApiKeys.accept: ApiKeys.applicationJson,
+        ApiKeys.authorization: 'Bearer $accessToken',
+      },
     );
     return accessibleResourcesResponseFromJson(response.data ?? <dynamic>[]);
   }
@@ -81,17 +82,15 @@ class JiraDataSourceImpl implements JiraDataSource {
     final String accessToken =
         await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
-    final Response<List<dynamic>> response =
-        await _dioFactory.shared.get<List<dynamic>>(
+    final HttpResponse<List<dynamic>> response =
+        await _httpClient.get<List<dynamic>>(
       ApiEndPoints.getAssignableUsersJira(
           request.cloudId ?? '', request.projectKey ?? ''),
-      options: Options(
-        headers: <String, dynamic>{
-          ApiKeys.contentType: ApiKeys.applicationXWwwFormUrlencoded,
-          ApiKeys.accept: ApiKeys.applicationJson,
-          ApiKeys.authorization: 'Bearer $accessToken',
-        },
-      ),
+      headers: <String, String>{
+        ApiKeys.contentType: ApiKeys.applicationXWwwFormUrlencoded,
+        ApiKeys.accept: ApiKeys.applicationJson,
+        ApiKeys.authorization: 'Bearer $accessToken',
+      },
     );
     return jiraAssignableUsersResponseFromMap(response.data ?? <dynamic>[]);
   }
@@ -102,17 +101,15 @@ class JiraDataSourceImpl implements JiraDataSource {
     final String accessToken =
         await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
-    final Response<List<dynamic>> response =
-        await _dioFactory.shared.get<List<dynamic>>(
+    final HttpResponse<List<dynamic>> response =
+        await _httpClient.get<List<dynamic>>(
       ApiEndPoints.getJiraProjectIssueType(
           request.cloudId ?? '', request.projectId ?? ''),
-      options: Options(
-        headers: <String, dynamic>{
-          ApiKeys.contentType: ApiKeys.applicationXWwwFormUrlencoded,
-          ApiKeys.accept: ApiKeys.applicationJson,
-          ApiKeys.authorization: 'Bearer $accessToken',
-        },
-      ),
+      headers: <String, String>{
+        ApiKeys.contentType: ApiKeys.applicationXWwwFormUrlencoded,
+        ApiKeys.accept: ApiKeys.applicationJson,
+        ApiKeys.authorization: 'Bearer $accessToken',
+      },
     );
 
     return jiraIssueTypeResponseFromMap(response.data ?? <dynamic>[]);
@@ -124,16 +121,14 @@ class JiraDataSourceImpl implements JiraDataSource {
     final String accessToken =
         await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
-    final Response<Map<String, dynamic>> response =
-        await _dioFactory.shared.get<Map<String, dynamic>>(
+    final HttpResponse<Map<String, dynamic>> response =
+        await _httpClient.get<Map<String, dynamic>>(
       ApiEndPoints.getJiraProjects(request.cloudId ?? ''),
-      options: Options(
-        headers: <String, dynamic>{
-          ApiKeys.contentType: ApiKeys.applicationXWwwFormUrlencoded,
-          ApiKeys.accept: ApiKeys.applicationJson,
-          ApiKeys.authorization: 'Bearer $accessToken',
-        },
-      ),
+      headers: <String, String>{
+        ApiKeys.contentType: ApiKeys.applicationXWwwFormUrlencoded,
+        ApiKeys.accept: ApiKeys.applicationJson,
+        ApiKeys.authorization: 'Bearer $accessToken',
+      },
     );
 
     return JiraProjectsResponse.fromMap(response.data ?? <String, dynamic>{});
@@ -145,17 +140,15 @@ class JiraDataSourceImpl implements JiraDataSource {
     final String accessToken =
         await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
-    final Response<Map<String, dynamic>> response =
-        await _dioFactory.shared.post<Map<String, dynamic>>(
+    final HttpResponse<Map<String, dynamic>> response =
+        await _httpClient.post<Map<String, dynamic>>(
       ApiEndPoints.createIssueJira(params.cloudId ?? ''),
       data: request.toMap(),
-      options: Options(
-        headers: <String, dynamic>{
-          ApiKeys.contentType: ApiKeys.applicationJson,
-          ApiKeys.accept: ApiKeys.applicationJson,
-          ApiKeys.authorization: 'Bearer $accessToken',
-        },
-      ),
+      headers: <String, String>{
+        ApiKeys.contentType: ApiKeys.applicationJson,
+        ApiKeys.accept: ApiKeys.applicationJson,
+        ApiKeys.authorization: 'Bearer $accessToken',
+      },
     );
 
     return CreateJiraIssueResponse.fromMap(
@@ -164,21 +157,25 @@ class JiraDataSourceImpl implements JiraDataSource {
 
   @override
   Future<void> addAttachmentToTicket(
-      CommonParamsRequest params, FormData request) async {
+      CommonParamsRequest params, List<String> filePaths) async {
     final String accessToken =
         await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
-    await _dioFactory.shared.post<List<dynamic>>(
+    // Convert file paths to MultipartFile objects
+    // Jira API expects files under the 'file' key
+    final List<http.MultipartFile> files = await MultipartHelper.filesFromPaths(
+      'file',
+      filePaths,
+    );
+
+    await _httpClient.postMultipart<List<dynamic>>(
       ApiEndPoints.attachFileJira(params.cloudId ?? '', params.issueKey ?? ''),
-      data: request,
-      options: Options(
-        headers: <String, dynamic>{
-          ApiKeys.xAtlassianToken: ApiKeys.noCheck,
-          ApiKeys.authorization: 'Bearer $accessToken',
-          ApiKeys.contentType: ApiKeys.multipartFormData,
-          ApiKeys.accept: ApiKeys.applicationJson,
-        },
-      ),
+      files: files,
+      headers: <String, String>{
+        ApiKeys.xAtlassianToken: ApiKeys.noCheck,
+        ApiKeys.authorization: 'Bearer $accessToken',
+        ApiKeys.accept: ApiKeys.applicationJson,
+      },
     );
   }
 
@@ -188,16 +185,14 @@ class JiraDataSourceImpl implements JiraDataSource {
     final String accessToken =
         await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
-    await _dioFactory.shared.put<dynamic>(
+    await _httpClient.put<dynamic>(
       ApiEndPoints.assignIssueJira(params.cloudId ?? '', params.issueKey ?? ''),
       data: request.toMap(),
-      options: Options(
-        headers: <String, dynamic>{
-          ApiKeys.contentType: ApiKeys.applicationJson,
-          ApiKeys.accept: ApiKeys.applicationJson,
-          ApiKeys.authorization: 'Bearer $accessToken',
-        },
-      ),
+      headers: <String, String>{
+        ApiKeys.contentType: ApiKeys.applicationJson,
+        ApiKeys.accept: ApiKeys.applicationJson,
+        ApiKeys.authorization: 'Bearer $accessToken',
+      },
     );
   }
 }
