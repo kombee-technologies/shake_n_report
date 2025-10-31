@@ -44,16 +44,6 @@ class JiraIssueTypeDropdownWidget extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: <Widget>[
-                if (issueType.iconUrl != null &&
-                    issueType.iconUrl!.isNotEmpty) ...<Widget>[
-                  CacheNetworkImageWidget(
-                    // Or Image.network if icons are not cached
-                    imageUrl: issueType.iconUrl!,
-                    height: 24,
-                    width: 24,
-                  ),
-                  const SizedBox(width: 10),
-                ],
                 Text(issueType.name ?? ''),
               ],
             ),

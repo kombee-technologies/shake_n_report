@@ -9,6 +9,13 @@ A Flutter plugin that enables users to report issues by shaking their device. Th
 - Integration with Jira for issue management
 - Debug mode support
 
+## Output Screenshots
+![Screenshot1](assets/screenshot1.jpg)
+![Screenshot2](assets/screenshot2.jpg)
+![Screenshot3](assets/screenshot3.jpg)
+![Screenshot4](assets/screenshot4.jpg)
+![Screenshot5](assets/screenshot5.jpg)
+
 ## Platform Support
 
 - iOS
@@ -118,7 +125,7 @@ When using Jira as the management tool, provide the following configuration:
 - `redirectUrl`: The redirect URL for OAuth authentication
 - `clientSecret`: Your Jira client secret
 
-(For more information on how to obtain these credentials, refer to the [Jira Plugin Documentation](jira_developer_app_setup_guide.md)).
+(For more information on how to obtain these credentials, refer to the [Jira Plugin Documentation](https://github.com/kombee-technologies/shake_n_report/blob/develop/jira_developer_app_setup_guide.md)).
 
 ## Usage
 

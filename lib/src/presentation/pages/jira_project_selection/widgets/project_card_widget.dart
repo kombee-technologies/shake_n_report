@@ -153,14 +153,6 @@ class _ProjectCardWidgetState extends State<ProjectCardWidget> {
                           padding: const EdgeInsets.all(16),
                           child: Row(
                             children: <Widget>[
-                              CacheNetworkImageWidget(
-                                imageUrl: widget.project?.projects?[index]
-                                        .avatarUrls?.the48X48 ??
-                                    '',
-                                width: 40,
-                                height: 40,
-                                fit: BoxFit.cover,
-                              ),
                               const SizedBox(width: 12),
                               Flexible(
                                 child: Text(

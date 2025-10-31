@@ -48,12 +48,6 @@ class JiraAssignableUserDropdownWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
                   children: <Widget>[
-                    CacheNetworkImageWidget(
-                      imageUrl: user.avatarUrls?.the48X48 ?? '',
-                      height: 48,
-                      width: 48,
-                    ),
-                    const SizedBox(width: 10),
                     Text(user.displayName ?? ''),
                   ],
                 ),
