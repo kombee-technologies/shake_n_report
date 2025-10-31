@@ -11,6 +11,11 @@ class ShakeNReportPlugin {
 
   ShakeNReportPlugin._internal();
 
+  static void registerWith() {
+    // Plugin registration - intentionally empty
+    // The actual initialization happens via the initialize() method
+  }
+
   /// The minimum acceleration required to register a shake event.
   /// A higher value makes shake detection less sensitive.
   double shakeThreshold = 2.7;
