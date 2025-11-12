@@ -46,7 +46,7 @@ class HttpClientWrapper {
   /// [headers] - Optional custom headers (merged with defaults)
   /// [queryParameters] - Optional query parameters to append to URL
   ///
-  /// Returns a Future that resolves to HttpResponse<T>
+  /// Returns a Future that resolves to HttpResponse of type T
   Future<HttpResponse<T>> get<T>(
     String url, {
     Map<String, String>? headers,
@@ -89,7 +89,7 @@ class HttpClientWrapper {
   /// [data] - The request body (will be JSON encoded if it's a Map or List)
   /// [headers] - Optional custom headers (merged with defaults)
   ///
-  /// Returns a Future that resolves to HttpResponse<T>
+  /// Returns a Future that resolves to HttpResponse of type T
   Future<HttpResponse<T>> post<T>(
     String url, {
     dynamic data,
@@ -137,7 +137,7 @@ class HttpClientWrapper {
   /// [data] - The request body (will be JSON encoded if it's a Map or List)
   /// [headers] - Optional custom headers (merged with defaults)
   ///
-  /// Returns a Future that resolves to HttpResponse<T>
+  /// Returns a Future that resolves to HttpResponse of type T
   Future<HttpResponse<T>> put<T>(
     String url, {
     dynamic data,
@@ -186,7 +186,7 @@ class HttpClientWrapper {
   /// [fields] - Optional string fields to include in the request
   /// [headers] - Optional custom headers (merged with defaults, excluding Content-Type)
   ///
-  /// Returns a Future that resolves to HttpResponse<T>
+  /// Returns a Future that resolves to HttpResponse of type T
   Future<HttpResponse<T>> postMultipart<T>(
     String url, {
     required List<MultipartFileData> files,
