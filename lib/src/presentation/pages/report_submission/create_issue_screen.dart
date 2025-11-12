@@ -92,7 +92,7 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
           child: GestureDetector(
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: BlocConsumer<JiraManagementCubit, JiraManagementState>(
                 listener: (BuildContext context, JiraManagementState state) {
                   if (!state.isSubmitting &&

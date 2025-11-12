@@ -1,13 +1,26 @@
-import 'package:equatable/equatable.dart';
-
-abstract class ShakeDetectionState extends Equatable {
+abstract class ShakeDetectionState {
   const ShakeDetectionState();
 
   @override
-  List<Object> get props => <Object>[];
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ShakeDetectionState && runtimeType == other.runtimeType;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
 }
 
-class ShakeDetectionInitial extends ShakeDetectionState {}
+class ShakeDetectionInitial extends ShakeDetectionState {
+  const ShakeDetectionInitial();
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ShakeDetectionInitial && runtimeType == other.runtimeType;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
 
 class ShakeDetectedState extends ShakeDetectionState {
   final DateTime timestamp;
@@ -15,5 +28,13 @@ class ShakeDetectedState extends ShakeDetectionState {
   const ShakeDetectedState(this.timestamp);
 
   @override
-  List<Object> get props => <Object>[timestamp];
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ShakeDetectedState &&
+          runtimeType == other.runtimeType &&
+          timestamp == other.timestamp;
+
+  @override
+  int get hashCode => timestamp.hashCode;
 }
+

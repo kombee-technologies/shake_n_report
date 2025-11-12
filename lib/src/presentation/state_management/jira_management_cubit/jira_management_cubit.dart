@@ -1,11 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shake_n_report/shake_n_report.dart';
 import 'package:shake_n_report/src/core/constants/my_constants.dart';
-import 'package:shake_n_report/src/core/di.dart';
 import 'package:shake_n_report/src/core/exceptions/exceptions.dart';
 import 'package:shake_n_report/src/core/utils/utility.dart';
 import 'package:shake_n_report/src/data/data_source/local_data_source/local_storage.dart';
@@ -37,31 +35,31 @@ part 'jira_management_state.dart';
 class JiraManagementCubit extends Cubit<JiraManagementState> {
   JiraManagementCubit() : super(JiraManagementInitial());
 
-  final LocalStorage _localStorage = getIt<LocalStorage>();
+  final LocalStorage _localStorage = LocalStorage.instance;
 
   final GetAccessibleResourceUseCase getAccessibleResourcesUseCase =
-      getIt<GetAccessibleResourceUseCase>();
+      GetAccessibleResourceUseCase.instance;
 
   final GetAccessTokenUseCase getAccessTokenUseCase =
-      getIt<GetAccessTokenUseCase>();
+      GetAccessTokenUseCase.instance;
 
   final GetJiraProjectsUseCase getJiraProjectsUseCase =
-      getIt<GetJiraProjectsUseCase>();
+      GetJiraProjectsUseCase.instance;
 
   final GetProjectIssueTypeUseCase getProjectIssueTypeUseCase =
-      getIt<GetProjectIssueTypeUseCase>();
+      GetProjectIssueTypeUseCase.instance;
 
   final GetAssignableUserUseCase getAssignableUserUseCase =
-      getIt<GetAssignableUserUseCase>();
+      GetAssignableUserUseCase.instance;
 
   final CreateJiraTicketUseCase createJiraTicketUseCase =
-      getIt<CreateJiraTicketUseCase>();
+      CreateJiraTicketUseCase.instance;
 
   final AssignUserToTicketUseCase assignUserToTicketUseCase =
-      getIt<AssignUserToTicketUseCase>();
+      AssignUserToTicketUseCase.instance;
 
   final AddAttachmentToTicketUseCase addAttachmentToTicketUseCase =
-      getIt<AddAttachmentToTicketUseCase>();
+      AddAttachmentToTicketUseCase.instance;
 
   Future<void> getAccessToken(String code) async {
     final GetAccessTokenRequest request = GetAccessTokenRequest(

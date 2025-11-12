@@ -1,6 +1,6 @@
 part of 'jira_management_cubit.dart';
 
-class JiraManagementState extends Equatable {
+class JiraManagementState {
   final AccessibleResourcesResponse? selectedProject;
   final ProjectItem? projectItem;
   final List<AccessibleResourcesResponse>? projects;
@@ -43,24 +43,61 @@ class JiraManagementState extends Equatable {
   });
 
   @override
-  List<Object?> get props => <Object?>[
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is JiraManagementState &&
+          runtimeType == other.runtimeType &&
+          selectedProject == other.selectedProject &&
+          projectItem == other.projectItem &&
+          _listEquals(projects, other.projects) &&
+          isProjectLoading == other.isProjectLoading &&
+          errorMessage == other.errorMessage &&
+          _listEquals(issueTypes, other.issueTypes) &&
+          isIssueTypeLoading == other.isIssueTypeLoading &&
+          issueTypeErrorMessage == other.issueTypeErrorMessage &&
+          selectedIssueTypeID == other.selectedIssueTypeID &&
+          _listEquals(assignableUsers, other.assignableUsers) &&
+          isAssignableUsersLoading == other.isAssignableUsersLoading &&
+          assignableUsersErrorMessage == other.assignableUsersErrorMessage &&
+          selectedAssignerAccID == other.selectedAssignerAccID &&
+          _listEquals(attachments, other.attachments) &&
+          isSubmitting == other.isSubmitting &&
+          createJiraIssueResponse == other.createJiraIssueResponse;
+
+  @override
+  int get hashCode => Object.hash(
         selectedProject,
         projectItem,
-        isProjectLoading,
         projects,
+        isProjectLoading,
         errorMessage,
         issueTypes,
         isIssueTypeLoading,
+        issueTypeErrorMessage,
+        selectedIssueTypeID,
         assignableUsers,
         isAssignableUsersLoading,
-        issueTypeErrorMessage,
         assignableUsersErrorMessage,
-        selectedIssueTypeID,
         selectedAssignerAccID,
-        isSubmitting,
         attachments,
+        isSubmitting,
         createJiraIssueResponse,
-      ];
+      );
+
+  bool _listEquals<T>(List<T>? a, List<T>? b) {
+    if (a == null) {
+      return b == null;
+    }
+    if (b == null || a.length != b.length) {
+      return false;
+    }
+    for (int i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   /// copy with method generate
   JiraManagementState copyWith({
@@ -90,8 +127,7 @@ class JiraManagementState extends Equatable {
         issueTypes: issueTypes ?? this.issueTypes,
         isIssueTypeLoading: isIssueTypeLoading ?? this.isIssueTypeLoading,
         assignableUsers: assignableUsers ?? this.assignableUsers,
-        isAssignableUsersLoading:
-            isAssignableUsersLoading ?? this.isAssignableUsersLoading,
+        isAssignableUsersLoading: isAssignableUsersLoading ?? this.isAssignableUsersLoading,
         selectedIssueTypeID: selectedIssueTypeID,
         selectedAssignerAccID: selectedAssignerAccID,
         issueTypeErrorMessage: issueTypeErrorMessage,
@@ -110,7 +146,4 @@ final class JiraManagementInitial extends JiraManagementState {
             isProjectLoading: false,
             projects: const <AccessibleResourcesResponse>[],
             errorMessage: null);
-
-  @override
-  List<Object?> get props => <Object?>[super.props];
 }

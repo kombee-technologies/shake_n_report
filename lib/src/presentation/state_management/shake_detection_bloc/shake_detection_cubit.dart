@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shake_n_report/src/core/constants/enums.dart';
 import 'package:shake_n_report/src/core/constants/my_constants.dart';
-import 'package:shake_n_report/src/core/di.dart';
 import 'package:shake_n_report/src/core/shake_n_report_plugin.dart';
 import 'package:shake_n_report/src/core/utils/utility.dart';
 import 'package:shake_n_report/src/data/data_source/local_data_source/local_storage.dart';
@@ -12,7 +11,7 @@ import 'package:shake_n_report/src/presentation/pages/webview/web_view_page.dart
 import 'package:shake_n_report/src/presentation/state_management/shake_detection_bloc/shake_detection_state.dart';
 
 class ShakeDetectionCubit extends Cubit<ShakeDetectionState> {
-  ShakeDetectionCubit() : super(ShakeDetectionInitial());
+  ShakeDetectionCubit() : super(const ShakeDetectionInitial());
 
   Future<void> onShakeDetected(DateTime timestamp) async {
     switch (ShakeNReportPlugin.instance.managementTool) {
@@ -20,8 +19,8 @@ class ShakeDetectionCubit extends Cubit<ShakeDetectionState> {
         if (ShakeNReportPlugin.instance.jiraConfig?.isValid() ?? false) {
           Utility.infoLog('Jira tool selected');
           emit(ShakeDetectedState(timestamp));
-          final String accessToken = await getIt<LocalStorage>().getStringData(LocalStorageKeys.jiraAccessToken);
-          final String refreshToken = await getIt<LocalStorage>().getStringData(LocalStorageKeys.jiraRefreshToken);
+          final String accessToken = await LocalStorage.instance.getStringData(LocalStorageKeys.jiraAccessToken);
+          final String refreshToken = await LocalStorage.instance.getStringData(LocalStorageKeys.jiraRefreshToken);
           final BuildContext? context = ShakeNReportPlugin.instance.navigatorKey.currentContext;
           if (accessToken.isNotEmpty || refreshToken.isNotEmpty) {
             if (context != null && context.mounted) {
@@ -61,6 +60,6 @@ class ShakeDetectionCubit extends Cubit<ShakeDetectionState> {
   }
 
   void resetState() {
-    emit(ShakeDetectionInitial());
+    emit(const ShakeDetectionInitial());
   }
 }

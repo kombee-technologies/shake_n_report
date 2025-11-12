@@ -41,11 +41,18 @@ abstract class JiraDataSource {
 }
 
 class JiraDataSourceImpl implements JiraDataSource {
+  static final JiraDataSourceImpl _instance = JiraDataSourceImpl._internal();
+  static JiraDataSourceImpl get instance => _instance;
+
   final HttpClientWrapper _httpClient;
 
   final LocalStorage _localStorage;
 
-  JiraDataSourceImpl(this._httpClient, this._localStorage);
+  JiraDataSourceImpl._internal({
+    HttpClientWrapper? httpClient,
+    LocalStorage? localStorage,
+  })  : _httpClient = httpClient ?? HttpClientWrapper.instance,
+        _localStorage = localStorage ?? LocalStorage.instance;
 
   @override
   Future<AccessTokenResponse> getAccessToken(

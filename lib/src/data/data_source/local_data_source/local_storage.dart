@@ -1,10 +1,13 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LocalStorage {
+  static final LocalStorage _instance = LocalStorage._internal();
+  static LocalStorage get instance => _instance;
+
   late FlutterSecureStorage _secureStorage;
 
   // Singleton pattern
-  LocalStorage() {
+  LocalStorage._internal() {
     const AndroidOptions getAndroidOptions = AndroidOptions(
       encryptedSharedPreferences: true,
       keyCipherAlgorithm:

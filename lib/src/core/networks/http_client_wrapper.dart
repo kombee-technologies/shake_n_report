@@ -13,6 +13,9 @@ import 'package:shake_n_report/src/core/networks/multipart_helper.dart';
 /// using the standard http package. Handles requests, responses, errors,
 /// logging, and multipart uploads.
 class HttpClientWrapper {
+  static final HttpClientWrapper _instance = HttpClientWrapper._internal();
+  static HttpClientWrapper get instance => _instance;
+
   final http.Client _client;
   final HttpErrorHandler _errorHandler;
   final Duration connectionTimeout;
@@ -25,14 +28,14 @@ class HttpClientWrapper {
     'Accept': 'application/json',
   };
 
-  HttpClientWrapper({
-    required LocalStorage localStorage,
+  HttpClientWrapper._internal({
+    LocalStorage? localStorage,
     http.Client? client,
     Duration? connectionTimeout,
     Duration? sendTimeout,
     Duration? receiveTimeout,
   })  : _client = client ?? http.Client(),
-        _errorHandler = HttpErrorHandler(localStorage),
+        _errorHandler = HttpErrorHandler(localStorage ?? LocalStorage.instance),
         connectionTimeout = connectionTimeout ?? const Duration(seconds: 60),
         sendTimeout = sendTimeout ?? const Duration(seconds: 60),
         receiveTimeout = receiveTimeout ?? const Duration(seconds: 60);

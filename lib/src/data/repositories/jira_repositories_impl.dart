@@ -15,9 +15,14 @@ import 'package:shake_n_report/src/data/models/jira/response/jira_project_respon
 import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
 class JiraRepositoriesImpl extends JiraRepository {
+  static final JiraRepositoriesImpl _instance = JiraRepositoriesImpl._internal();
+  static JiraRepositoriesImpl get instance => _instance;
+
   final JiraDataSource _jiraDataSource;
 
-  JiraRepositoriesImpl(this._jiraDataSource);
+  JiraRepositoriesImpl._internal({
+    JiraDataSource? jiraDataSource,
+  }) : _jiraDataSource = jiraDataSource ?? JiraDataSourceImpl.instance;
 
   @override
   Future<Either<BaseException, AccessTokenResponse>> getAccessToken(
