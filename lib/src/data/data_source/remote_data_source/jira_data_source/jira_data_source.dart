@@ -1,4 +1,3 @@
-import 'package:http/http.dart' as http;
 import 'package:shake_n_report/src/core/networks/api_end_points.dart';
 import 'package:shake_n_report/src/core/networks/api_keys.dart';
 import 'package:shake_n_report/src/core/networks/http_client_wrapper.dart';
@@ -168,9 +167,9 @@ class JiraDataSourceImpl implements JiraDataSource {
     final String accessToken =
         await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
-    // Convert file paths to MultipartFile objects
+    // Convert file paths to MultipartFileData objects
     // Jira API expects files under the 'file' key
-    final List<http.MultipartFile> files = await MultipartHelper.filesFromPaths(
+    final List<MultipartFileData> files = await MultipartHelper.filesFromPaths(
       'file',
       filePaths,
     );

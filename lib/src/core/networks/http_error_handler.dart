@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:shake_n_report/src/data/data_source/local_data_source/local_storage.dart';
 import 'package:shake_n_report/src/core/exceptions/exceptions.dart';
 
@@ -15,7 +14,9 @@ class HttpErrorHandler {
 
   /// Handles HTTP errors and throws appropriate custom exceptions
   Future<void> handleError(
-    http.Response? response,
+    int? statusCode,
+    Map<String, String>? headers,
+    String? responseBody,
     dynamic error,
     StackTrace stackTrace,
   ) async {
@@ -35,12 +36,12 @@ class HttpErrorHandler {
     }
 
     // Handle HTTP status code errors
-    if (response != null) {
-      await _handleStatusCode(response.statusCode);
+    if (statusCode != null) {
+      await _handleStatusCode(statusCode);
     }
 
     // Default to general exception for unknown errors
-    throw GeneralException('An unexpected error occurred: ${error.toString()}');
+    throw GeneralException('An unexpected error occurred: ${error?.toString() ?? 'Unknown error'}');
   }
 
   /// Maps HTTP status codes to appropriate exceptions

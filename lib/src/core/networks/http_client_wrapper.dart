@@ -2,7 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'dart:io';
 import 'package:shake_n_report/src/data/data_source/local_data_source/local_storage.dart';
 import 'package:shake_n_report/src/core/networks/http_response.dart';
 import 'package:shake_n_report/src/core/networks/http_logger.dart';
@@ -10,13 +10,13 @@ import 'package:shake_n_report/src/core/networks/http_error_handler.dart';
 import 'package:shake_n_report/src/core/networks/multipart_helper.dart';
 
 /// A centralized HTTP client wrapper that provides Dio-like functionality
-/// using the standard http package. Handles requests, responses, errors,
+/// using dart:io HttpClient. Handles requests, responses, errors,
 /// logging, and multipart uploads.
 class HttpClientWrapper {
   static final HttpClientWrapper _instance = HttpClientWrapper._internal();
   static HttpClientWrapper get instance => _instance;
 
-  final http.Client _client;
+  final HttpClient _client;
   final HttpErrorHandler _errorHandler;
   final Duration connectionTimeout;
   final Duration sendTimeout;
@@ -30,11 +30,11 @@ class HttpClientWrapper {
 
   HttpClientWrapper._internal({
     LocalStorage? localStorage,
-    http.Client? client,
+    HttpClient? client,
     Duration? connectionTimeout,
     Duration? sendTimeout,
     Duration? receiveTimeout,
-  })  : _client = client ?? http.Client(),
+  })  : _client = client ?? HttpClient(),
         _errorHandler = HttpErrorHandler(localStorage ?? LocalStorage.instance),
         connectionTimeout = connectionTimeout ?? const Duration(seconds: 60),
         sendTimeout = sendTimeout ?? const Duration(seconds: 60),
@@ -58,12 +58,27 @@ class HttpClientWrapper {
     HttpLogger.logRequest('GET', uri.toString(), mergedHeaders, null);
 
     try {
-      final http.Response response = await _client.get(uri, headers: mergedHeaders).timeout(connectionTimeout);
+      final HttpClientRequest request = await _client.getUrl(uri).timeout(connectionTimeout);
+      _setHeaders(request, mergedHeaders);
+      
+      final HttpClientResponse response = await request.close().timeout(receiveTimeout);
+      final String responseBody = await response.transform(utf8.decoder).join();
+      
+      final Map<String, String> responseHeaders = <String, String>{};
+      response.headers.forEach((String name, List<String> values) {
+        responseHeaders[name] = values.join(', ');
+      });
 
-      return _processResponse<T>(response, uri.toString());
+      return _processResponse<T>(
+        responseBody,
+        response.statusCode,
+        responseHeaders,
+        response.reasonPhrase,
+        uri.toString(),
+      );
     } catch (error, stackTrace) {
       HttpLogger.logError(uri.toString(), error, stackTrace);
-      await _errorHandler.handleError(null, error, stackTrace);
+      await _errorHandler.handleError(null, null, null, error, stackTrace);
       rethrow;
     }
   }
@@ -82,17 +97,36 @@ class HttpClientWrapper {
   }) async {
     final Uri uri = Uri.parse(url);
     final Map<String, String> mergedHeaders = _mergeHeaders(headers);
-    final body = _encodeBody(data, mergedHeaders);
+    final String body = _encodeBody(data, mergedHeaders);
 
     HttpLogger.logRequest('POST', uri.toString(), mergedHeaders, data);
 
     try {
-      final http.Response response = await _client.post(uri, headers: mergedHeaders, body: body).timeout(sendTimeout);
+      final HttpClientRequest request = await _client.postUrl(uri).timeout(connectionTimeout);
+      _setHeaders(request, mergedHeaders);
+      
+      if (body.isNotEmpty) {
+        request.write(body);
+      }
+      
+      final HttpClientResponse response = await request.close().timeout(receiveTimeout);
+      final String responseBody = await response.transform(utf8.decoder).join();
+      
+      final Map<String, String> responseHeaders = <String, String>{};
+      response.headers.forEach((String name, List<String> values) {
+        responseHeaders[name] = values.join(', ');
+      });
 
-      return _processResponse<T>(response, uri.toString());
+      return _processResponse<T>(
+        responseBody,
+        response.statusCode,
+        responseHeaders,
+        response.reasonPhrase,
+        uri.toString(),
+      );
     } catch (error, stackTrace) {
       HttpLogger.logError(uri.toString(), error, stackTrace);
-      await _errorHandler.handleError(null, error, stackTrace);
+      await _errorHandler.handleError(null, null, null, error, stackTrace);
       rethrow;
     }
   }
@@ -111,17 +145,36 @@ class HttpClientWrapper {
   }) async {
     final Uri uri = Uri.parse(url);
     final Map<String, String> mergedHeaders = _mergeHeaders(headers);
-    final body = _encodeBody(data, mergedHeaders);
+    final String body = _encodeBody(data, mergedHeaders);
 
     HttpLogger.logRequest('PUT', uri.toString(), mergedHeaders, data);
 
     try {
-      final http.Response response = await _client.put(uri, headers: mergedHeaders, body: body).timeout(sendTimeout);
+      final HttpClientRequest request = await _client.putUrl(uri).timeout(connectionTimeout);
+      _setHeaders(request, mergedHeaders);
+      
+      if (body.isNotEmpty) {
+        request.write(body);
+      }
+      
+      final HttpClientResponse response = await request.close().timeout(receiveTimeout);
+      final String responseBody = await response.transform(utf8.decoder).join();
+      
+      final Map<String, String> responseHeaders = <String, String>{};
+      response.headers.forEach((String name, List<String> values) {
+        responseHeaders[name] = values.join(', ');
+      });
 
-      return _processResponse<T>(response, uri.toString());
+      return _processResponse<T>(
+        responseBody,
+        response.statusCode,
+        responseHeaders,
+        response.reasonPhrase,
+        uri.toString(),
+      );
     } catch (error, stackTrace) {
       HttpLogger.logError(uri.toString(), error, stackTrace);
-      await _errorHandler.handleError(null, error, stackTrace);
+      await _errorHandler.handleError(null, null, null, error, stackTrace);
       rethrow;
     }
   }
@@ -129,44 +182,62 @@ class HttpClientWrapper {
   /// Performs a multipart POST request for file uploads
   ///
   /// [url] - The URL to request
-  /// [files] - List of MultipartFile objects to upload
+  /// [files] - List of MultipartFileData objects to upload
   /// [fields] - Optional string fields to include in the request
   /// [headers] - Optional custom headers (merged with defaults, excluding Content-Type)
   ///
   /// Returns a Future that resolves to HttpResponse<T>
   Future<HttpResponse<T>> postMultipart<T>(
     String url, {
-    required List<http.MultipartFile> files,
+    required List<MultipartFileData> files,
     Map<String, String>? fields,
     Map<String, String>? headers,
   }) async {
     final Uri uri = Uri.parse(url);
 
-    // Create multipart request
-    final http.MultipartRequest request = MultipartHelper.createRequest('POST', url, files, fields);
-
-    // Add headers (excluding Content-Type as it's set by multipart request)
-    (headers ?? <String, String>{}).forEach((String key, String value) {
-      if (key.toLowerCase() != 'content-type') {
-        request.headers[key] = value;
-      }
-    });
-
     HttpLogger.logRequest(
       'POST (multipart)',
       uri.toString(),
-      request.headers,
+      headers ?? <String, String>{},
       'Files: ${files.length}, Fields: ${fields?.length ?? 0}',
     );
 
     try {
-      final http.StreamedResponse streamedResponse = await request.send().timeout(sendTimeout);
-      final http.Response response = await http.Response.fromStream(streamedResponse);
+      final String boundary = 'dart-http-boundary-${DateTime.now().millisecondsSinceEpoch}';
+      final HttpClientRequest request = await _client.postUrl(uri).timeout(connectionTimeout);
+      
+      // Set headers (excluding Content-Type as it's set by multipart request)
+      final Map<String, String> mergedHeaders = headers ?? <String, String>{};
+      mergedHeaders.forEach((String key, String value) {
+        if (key.toLowerCase() != 'content-type') {
+          request.headers.set(key, value);
+        }
+      });
+      
+      request.headers.set('Content-Type', 'multipart/form-data; boundary=$boundary');
+      
+      // Write multipart body
+      final IOSink sink = request;
+      await MultipartHelper.writeMultipartBody(sink, boundary, files, fields);
+      
+      final HttpClientResponse response = await request.close().timeout(receiveTimeout);
+      final String responseBody = await response.transform(utf8.decoder).join();
+      
+      final Map<String, String> responseHeaders = <String, String>{};
+      response.headers.forEach((String name, List<String> values) {
+        responseHeaders[name] = values.join(', ');
+      });
 
-      return _processResponse<T>(response, uri.toString());
+      return _processResponse<T>(
+        responseBody,
+        response.statusCode,
+        responseHeaders,
+        response.reasonPhrase,
+        uri.toString(),
+      );
     } catch (error, stackTrace) {
       HttpLogger.logError(uri.toString(), error, stackTrace);
-      await _errorHandler.handleError(null, error, stackTrace);
+      await _errorHandler.handleError(null, null, null, error, stackTrace);
       rethrow;
     }
   }
@@ -196,10 +267,17 @@ class HttpClientWrapper {
     return <String, String>{..._defaultHeaders, ...customHeaders};
   }
 
+  /// Sets headers on the HttpClientRequest
+  void _setHeaders(HttpClientRequest request, Map<String, String> headers) {
+    headers.forEach((String key, String value) {
+      request.headers.set(key, value);
+    });
+  }
+
   /// Encodes the request body based on Content-Type
-  dynamic _encodeBody(dynamic data, Map<String, String> headers) {
+  String _encodeBody(dynamic data, Map<String, String> headers) {
     if (data == null) {
-      return null;
+      return '';
     }
 
     final String contentType = headers['Content-Type']?.toLowerCase() ?? '';
@@ -226,42 +304,45 @@ class HttpClientWrapper {
 
   /// Processes HTTP response and handles errors
   Future<HttpResponse<T>> _processResponse<T>(
-    http.Response response,
+    String responseBody,
+    int statusCode,
+    Map<String, String> headers,
+    String? reasonPhrase,
     String url,
   ) async {
     HttpLogger.logResponse(
       url,
-      response.statusCode,
-      response.headers,
-      response.body,
+      statusCode,
+      headers,
+      responseBody,
     );
 
     // Check for error status codes
-    if (response.statusCode >= 400) {
-      await _errorHandler.handleError(response, null, StackTrace.current);
+    if (statusCode >= 400) {
+      await _errorHandler.handleError(statusCode, headers, responseBody, null, StackTrace.current);
     }
 
     // Parse response body
     dynamic data;
-    if (response.body.isNotEmpty) {
+    if (responseBody.isNotEmpty) {
       try {
-        data = jsonDecode(response.body);
+        data = jsonDecode(responseBody);
       } catch (e) {
         // If JSON parsing fails, return raw body
-        data = response.body;
+        data = responseBody;
       }
     }
 
     return HttpResponse<T>(
       data: data as T?,
-      statusCode: response.statusCode,
-      headers: response.headers,
-      statusMessage: response.reasonPhrase,
+      statusCode: statusCode,
+      headers: headers,
+      statusMessage: reasonPhrase,
     );
   }
 
   /// Disposes the HTTP client
   void dispose() {
-    _client.close();
+    _client.close(force: true);
   }
 }
