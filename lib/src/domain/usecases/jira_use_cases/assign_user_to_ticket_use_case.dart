@@ -1,5 +1,4 @@
-import 'package:dartz/dartz.dart';
-import 'package:shake_n_report/src/core/exceptions/exceptions.dart';
+import 'package:shake_n_report/src/core/result/result.dart';
 import 'package:shake_n_report/src/core/usecase/use_case.dart';
 import 'package:shake_n_report/src/data/models/jira/request/assign_issue_request.dart';
 import 'package:shake_n_report/src/data/models/jira/request/common_params_request.dart';
@@ -17,7 +16,7 @@ class AssignUserToTicketUseCase extends UseCase<void, AssignTicketRequest> {
   }) : jiraRepository = jiraRepository ?? JiraRepositoriesImpl.instance;
 
   @override
-  Future<Either<BaseException, void>> call(AssignTicketRequest reqParams) =>
+  Future<Result<void>> call(AssignTicketRequest reqParams) =>
       jiraRepository.assignTicket(
           reqParams.commonParamsRequest, reqParams.assignIssueRequest);
 }

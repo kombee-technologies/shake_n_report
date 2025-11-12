@@ -1,5 +1,4 @@
-import 'package:dartz/dartz.dart';
-import 'package:shake_n_report/src/core/exceptions/exceptions.dart';
+import 'package:shake_n_report/src/core/result/result.dart';
 import 'package:shake_n_report/src/core/usecase/use_case.dart';
 import 'package:shake_n_report/src/data/models/jira/request/common_params_request.dart';
 import 'package:shake_n_report/src/data/models/jira/response/jira_issue_type_response.dart';
@@ -18,7 +17,7 @@ class GetProjectIssueTypeUseCase
   }) : jiraRepository = jiraRepository ?? JiraRepositoriesImpl.instance;
 
   @override
-  Future<Either<BaseException, List<JiraIssueTypeResponse>>> call(
+  Future<Result<List<JiraIssueTypeResponse>>> call(
           CommonParamsRequest reqParams) =>
       jiraRepository.getJiraIssueTypes(reqParams);
 }

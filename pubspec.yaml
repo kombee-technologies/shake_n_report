@@ -20,9 +20,6 @@ dependencies:
   # State management
   flutter_bloc: ^8.1.4
   
-  # Functional programming (error handling)
-  dartz: ^0.10.1
-  
   # Storage and security
   flutter_secure_storage: ^9.2.4
   

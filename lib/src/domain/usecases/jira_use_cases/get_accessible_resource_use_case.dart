@@ -1,5 +1,4 @@
-import 'package:dartz/dartz.dart';
-import 'package:shake_n_report/src/core/exceptions/exceptions.dart';
+import 'package:shake_n_report/src/core/result/result.dart';
 import 'package:shake_n_report/src/core/usecase/use_case.dart';
 import 'package:shake_n_report/src/data/models/jira/request/no_params.dart';
 import 'package:shake_n_report/src/data/models/jira/response/accessible_resource_response.dart';
@@ -18,7 +17,7 @@ class GetAccessibleResourceUseCase
   }) : _jiraRepository = jiraRepository ?? JiraRepositoriesImpl.instance;
 
   @override
-  Future<Either<BaseException, List<AccessibleResourcesResponse>>> call(
+  Future<Result<List<AccessibleResourcesResponse>>> call(
           NoParams reqParams) =>
       _jiraRepository.getAccessibleResources();
 }

@@ -1,6 +1,6 @@
-import 'package:dartz/dartz.dart';
 import 'package:shake_n_report/src/core/constants/my_constants.dart';
 import 'package:shake_n_report/src/core/exceptions/exceptions.dart';
+import 'package:shake_n_report/src/core/result/result.dart';
 import 'package:shake_n_report/src/data/data_source/remote_data_source/jira_data_source/jira_data_source.dart';
 import 'package:shake_n_report/src/data/models/jira/request/assign_issue_request.dart';
 import 'package:shake_n_report/src/data/models/jira/request/common_params_request.dart';
@@ -25,120 +25,120 @@ class JiraRepositoriesImpl extends JiraRepository {
   }) : _jiraDataSource = jiraDataSource ?? JiraDataSourceImpl.instance;
 
   @override
-  Future<Either<BaseException, AccessTokenResponse>> getAccessToken(
+  Future<Result<AccessTokenResponse>> getAccessToken(
       GetAccessTokenRequest request) async {
     try {
       final AccessTokenResponse response =
           await _jiraDataSource.getAccessToken(request);
-      return right(response);
+      return Success<AccessTokenResponse>(response);
     } catch (e) {
       if (e is BaseException) {
-        return left(e);
+        return Failure<AccessTokenResponse>(e);
       }
-      return left(GeneralException(MyConstants.somethingWentWrong));
+      return Failure<AccessTokenResponse>(GeneralException(MyConstants.somethingWentWrong));
     }
   }
 
   @override
-  Future<Either<BaseException, List<AccessibleResourcesResponse>>>
+  Future<Result<List<AccessibleResourcesResponse>>>
       getAccessibleResources() async {
     try {
       final List<AccessibleResourcesResponse> response =
           await _jiraDataSource.getAccessibleResources();
-      return right(response);
+      return Success<List<AccessibleResourcesResponse>>(response);
     } catch (e) {
       if (e is BaseException) {
-        return left(e);
+        return Failure<List<AccessibleResourcesResponse>>(e);
       }
-      return left(GeneralException(MyConstants.somethingWentWrong));
+      return Failure<List<AccessibleResourcesResponse>>(GeneralException(MyConstants.somethingWentWrong));
     }
   }
 
   @override
-  Future<Either<BaseException, List<JiraAssignableUsersResponse>>>
+  Future<Result<List<JiraAssignableUsersResponse>>>
       getJiraAssignableUsers(CommonParamsRequest request) async {
     try {
       final List<JiraAssignableUsersResponse> response =
           await _jiraDataSource.getJiraAssignableUsers(request);
-      return right(response);
+      return Success<List<JiraAssignableUsersResponse>>(response);
     } catch (e) {
       if (e is BaseException) {
-        return left(e);
+        return Failure<List<JiraAssignableUsersResponse>>(e);
       }
-      return left(GeneralException(MyConstants.somethingWentWrong));
+      return Failure<List<JiraAssignableUsersResponse>>(GeneralException(MyConstants.somethingWentWrong));
     }
   }
 
   @override
-  Future<Either<BaseException, List<JiraIssueTypeResponse>>> getJiraIssueTypes(
+  Future<Result<List<JiraIssueTypeResponse>>> getJiraIssueTypes(
       CommonParamsRequest request) async {
     try {
       final List<JiraIssueTypeResponse> response =
           await _jiraDataSource.getJiraIssueTypes(request);
-      return right(response);
+      return Success<List<JiraIssueTypeResponse>>(response);
     } catch (e) {
       if (e is BaseException) {
-        return left(e);
+        return Failure<List<JiraIssueTypeResponse>>(e);
       }
-      return left(GeneralException(MyConstants.somethingWentWrong));
+      return Failure<List<JiraIssueTypeResponse>>(GeneralException(MyConstants.somethingWentWrong));
     }
   }
 
   @override
-  Future<Either<BaseException, JiraProjectsResponse>> getJiraProjects(
+  Future<Result<JiraProjectsResponse>> getJiraProjects(
       CommonParamsRequest request) async {
     try {
       final JiraProjectsResponse response =
           await _jiraDataSource.getJiraProjects(request);
-      return right(response);
+      return Success<JiraProjectsResponse>(response);
     } catch (e) {
       if (e is BaseException) {
-        return left(e);
+        return Failure<JiraProjectsResponse>(e);
       }
-      return left(GeneralException(MyConstants.somethingWentWrong));
+      return Failure<JiraProjectsResponse>(GeneralException(MyConstants.somethingWentWrong));
     }
   }
 
   @override
-  Future<Either<BaseException, void>> addAttachmentToTicket(
+  Future<Result<void>> addAttachmentToTicket(
       CommonParamsRequest params, List<String> filePaths) async {
     try {
       await _jiraDataSource.addAttachmentToTicket(params, filePaths);
-      return right(null);
+      return const Success<void>(null);
     } catch (e) {
       if (e is BaseException) {
-        return left(e);
+        return Failure<void>(e);
       }
-      return left(GeneralException(MyConstants.somethingWentWrong));
+      return Failure<void>(GeneralException(MyConstants.somethingWentWrong));
     }
   }
 
   @override
-  Future<Either<BaseException, void>> assignTicket(
+  Future<Result<void>> assignTicket(
       CommonParamsRequest params, AssignIssueRequest request) async {
     try {
       await _jiraDataSource.assignTicket(params, request);
-      return right(null);
+      return const Success<void>(null);
     } catch (e) {
       if (e is BaseException) {
-        return left(e);
+        return Failure<void>(e);
       }
-      return left(GeneralException(MyConstants.somethingWentWrong));
+      return Failure<void>(GeneralException(MyConstants.somethingWentWrong));
     }
   }
 
   @override
-  Future<Either<BaseException, CreateJiraIssueResponse>> createJiraTicket(
+  Future<Result<CreateJiraIssueResponse>> createJiraTicket(
       CommonParamsRequest params, CreateJiraIssueRequest request) async {
     try {
       final CreateJiraIssueResponse response =
           await _jiraDataSource.createJiraTicket(params, request);
-      return right(response);
+      return Success<CreateJiraIssueResponse>(response);
     } catch (e) {
       if (e is BaseException) {
-        return left(e);
+        return Failure<CreateJiraIssueResponse>(e);
       }
-      return left(GeneralException(MyConstants.somethingWentWrong));
+      return Failure<CreateJiraIssueResponse>(GeneralException(MyConstants.somethingWentWrong));
     }
   }
 }
