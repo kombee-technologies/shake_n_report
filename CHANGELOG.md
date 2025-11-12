@@ -1,3 +1,7 @@
+## 0.0.4
+
+* Fix the broken links
+
 ## 0.0.3
 
 * **Dependency optimization**: Migrated from Dio to standard `http` package, reducing external dependencies

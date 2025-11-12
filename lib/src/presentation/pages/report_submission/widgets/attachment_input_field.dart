@@ -2,8 +2,8 @@ import 'dart:io' show Platform, File;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:shake_n_report/src/core/constants/my_constants.dart';
+import 'package:shake_n_report/src/core/utils/device_info_helper.dart';
 
 class AttachmentInputField extends StatelessWidget {
   final List<XFile> attachments;
@@ -27,9 +27,8 @@ class AttachmentInputField extends StatelessWidget {
     final List<Permission> permissionsToRequest = <Permission>[];
 
     if (Platform.isAndroid) {
-      final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-      final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      if (androidInfo.version.sdkInt >= 33) {
+      final int? sdkVersion = await DeviceInfoHelper.getAndroidSdkVersion();
+      if (sdkVersion != null && sdkVersion >= 33) {
         // Android 13+
         permissionsToRequest
           ..add(Permission.photos)
