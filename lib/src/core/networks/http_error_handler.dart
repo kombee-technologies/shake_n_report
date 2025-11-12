@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_annotating_with_dynamic
+
 import 'dart:async';
 import 'dart:io';
 import 'package:http/http.dart' as http;

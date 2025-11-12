@@ -14,18 +14,29 @@ dependencies:
   flutter:
     sdk: flutter
     
+  # Core shake detection
   shake: ^3.0.0
+  
+  # State management
   flutter_bloc: ^8.1.4
   equatable: ^2.0.5
+  
+  # Functional programming (error handling)
   dartz: ^0.10.1
+  
+  # Storage and security
   flutter_secure_storage: ^9.2.4
+  
+  # OAuth and web integration
   webview_flutter: ^4.8.0
+  
+  # Dependency injection
   get_it: ^8.0.3
-  toastification: ^2.3.0
+  
+  # Media and permissions
   image_picker: ^1.1.2
   permission_handler: ^11.3.1 
   device_info_plus: ^11.0.0
-  nested: ^1.0.0
 
 dev_dependencies:
   flutter_test:

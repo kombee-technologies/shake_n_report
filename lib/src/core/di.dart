@@ -12,7 +12,6 @@ import 'package:shake_n_report/src/domain/usecases/jira_use_cases/get_accessible
 import 'package:shake_n_report/src/domain/usecases/jira_use_cases/get_assignable_user_use_case.dart';
 import 'package:shake_n_report/src/domain/usecases/jira_use_cases/get_jira_projects_use_case.dart';
 import 'package:shake_n_report/src/domain/usecases/jira_use_cases/get_project_issue_type_use_case.dart';
-import 'package:toastification/toastification.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -21,7 +20,6 @@ Future<void> initDI() async {
     ..registerSingleton<LocalStorage>(LocalStorage())
     ..registerSingleton<HttpClientWrapper>(
         HttpClientWrapper(localStorage: getIt()))
-    ..registerLazySingleton<Toastification>(() => Toastification())
     ..registerLazySingleton<JiraDataSource>(
         () => JiraDataSourceImpl(getIt(), getIt()))
     ..registerLazySingleton<JiraRepository>(() => JiraRepositoriesImpl(getIt()))

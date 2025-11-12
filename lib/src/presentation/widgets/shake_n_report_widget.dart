@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nested/nested.dart';
 import 'package:shake/shake.dart';
 import 'package:shake_n_report/shake_n_report.dart';
 import 'package:shake_n_report/src/core/utils/utility.dart';
 import 'package:shake_n_report/src/presentation/state_management/jira_management_cubit/jira_management_cubit.dart';
 import 'package:shake_n_report/src/presentation/state_management/shake_detection_bloc/shake_detection_cubit.dart';
 import 'package:shake_n_report/src/presentation/state_management/shake_detection_bloc/shake_detection_state.dart';
-import 'package:toastification/toastification.dart';
 
 class ShakeToReportWidget extends StatefulWidget {
   final Widget child;
@@ -57,15 +55,13 @@ class _ShakeToReportWidgetState extends State<ShakeToReportWidget> {
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
-        providers: <SingleChildWidget>[
+        // ignore: always_specify_types
+        providers: <BlocProvider>[
           BlocProvider<ShakeDetectionCubit>.value(
             value: _shakeDetectionCubit,
           ),
-          BlocProvider<JiraManagementCubit>(
-              create: (_) => JiraManagementCubit()),
+          BlocProvider<JiraManagementCubit>(create: (_) => JiraManagementCubit()),
         ],
-        child: ToastificationWrapper(
-          child: widget.child,
-        ),
+        child: widget.child,
       );
 }

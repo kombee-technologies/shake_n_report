@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_annotating_with_dynamic
+
 import 'dart:developer' as developer;
 import 'package:flutter/foundation.dart';
 

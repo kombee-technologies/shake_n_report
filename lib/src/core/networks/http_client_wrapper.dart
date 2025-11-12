@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_annotating_with_dynamic, always_specify_types
+
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -36,11 +38,11 @@ class HttpClientWrapper {
         receiveTimeout = receiveTimeout ?? const Duration(seconds: 60);
 
   /// Performs a GET request
-  /// 
+  ///
   /// [url] - The URL to request
   /// [headers] - Optional custom headers (merged with defaults)
   /// [queryParameters] - Optional query parameters to append to URL
-  /// 
+  ///
   /// Returns a Future that resolves to HttpResponse<T>
   Future<HttpResponse<T>> get<T>(
     String url, {
@@ -53,9 +55,7 @@ class HttpClientWrapper {
     HttpLogger.logRequest('GET', uri.toString(), mergedHeaders, null);
 
     try {
-      final http.Response response = await _client
-          .get(uri, headers: mergedHeaders)
-          .timeout(connectionTimeout);
+      final http.Response response = await _client.get(uri, headers: mergedHeaders).timeout(connectionTimeout);
 
       return _processResponse<T>(response, uri.toString());
     } catch (error, stackTrace) {
@@ -66,11 +66,11 @@ class HttpClientWrapper {
   }
 
   /// Performs a POST request
-  /// 
+  ///
   /// [url] - The URL to request
   /// [data] - The request body (will be JSON encoded if it's a Map or List)
   /// [headers] - Optional custom headers (merged with defaults)
-  /// 
+  ///
   /// Returns a Future that resolves to HttpResponse<T>
   Future<HttpResponse<T>> post<T>(
     String url, {
@@ -84,9 +84,7 @@ class HttpClientWrapper {
     HttpLogger.logRequest('POST', uri.toString(), mergedHeaders, data);
 
     try {
-      final http.Response response = await _client
-          .post(uri, headers: mergedHeaders, body: body)
-          .timeout(sendTimeout);
+      final http.Response response = await _client.post(uri, headers: mergedHeaders, body: body).timeout(sendTimeout);
 
       return _processResponse<T>(response, uri.toString());
     } catch (error, stackTrace) {
@@ -97,11 +95,11 @@ class HttpClientWrapper {
   }
 
   /// Performs a PUT request
-  /// 
+  ///
   /// [url] - The URL to request
   /// [data] - The request body (will be JSON encoded if it's a Map or List)
   /// [headers] - Optional custom headers (merged with defaults)
-  /// 
+  ///
   /// Returns a Future that resolves to HttpResponse<T>
   Future<HttpResponse<T>> put<T>(
     String url, {
@@ -115,9 +113,7 @@ class HttpClientWrapper {
     HttpLogger.logRequest('PUT', uri.toString(), mergedHeaders, data);
 
     try {
-      final http.Response response = await _client
-          .put(uri, headers: mergedHeaders, body: body)
-          .timeout(sendTimeout);
+      final http.Response response = await _client.put(uri, headers: mergedHeaders, body: body).timeout(sendTimeout);
 
       return _processResponse<T>(response, uri.toString());
     } catch (error, stackTrace) {
@@ -128,12 +124,12 @@ class HttpClientWrapper {
   }
 
   /// Performs a multipart POST request for file uploads
-  /// 
+  ///
   /// [url] - The URL to request
   /// [files] - List of MultipartFile objects to upload
   /// [fields] - Optional string fields to include in the request
   /// [headers] - Optional custom headers (merged with defaults, excluding Content-Type)
-  /// 
+  ///
   /// Returns a Future that resolves to HttpResponse<T>
   Future<HttpResponse<T>> postMultipart<T>(
     String url, {
@@ -142,13 +138,12 @@ class HttpClientWrapper {
     Map<String, String>? headers,
   }) async {
     final Uri uri = Uri.parse(url);
-    
+
     // Create multipart request
     final http.MultipartRequest request = MultipartHelper.createRequest('POST', url, files, fields);
-    
+
     // Add headers (excluding Content-Type as it's set by multipart request)
-    final Map<String, String> customHeaders = headers ?? <String, String>{};
-    customHeaders.forEach((String key, String value) {
+    (headers ?? <String, String>{}).forEach((String key, String value) {
       if (key.toLowerCase() != 'content-type') {
         request.headers[key] = value;
       }
@@ -176,7 +171,7 @@ class HttpClientWrapper {
   /// Builds a URI with query parameters
   Uri _buildUri(String url, Map<String, dynamic>? queryParameters) {
     final Uri uri = Uri.parse(url);
-    
+
     if (queryParameters == null || queryParameters.isEmpty) {
       return uri;
     }
@@ -210,7 +205,8 @@ class HttpClientWrapper {
     if (contentType.contains('application/x-www-form-urlencoded')) {
       if (data is Map) {
         return data.entries
-            .map((MapEntry<dynamic, dynamic> e) => '${Uri.encodeComponent(e.key.toString())}=${Uri.encodeComponent(e.value.toString())}')
+            .map((MapEntry<dynamic, dynamic> e) =>
+                '${Uri.encodeComponent(e.key.toString())}=${Uri.encodeComponent(e.value.toString())}')
             .join('&');
       }
       return data.toString();

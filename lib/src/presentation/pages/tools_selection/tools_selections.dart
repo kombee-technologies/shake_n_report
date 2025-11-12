@@ -79,7 +79,6 @@ class ToolsSelections extends StatelessWidget {
                         color: Colors.grey,
                       ),
                       onTap: () {
-                        // TODO: Handle tool selection
                       },
                     ),
                   );

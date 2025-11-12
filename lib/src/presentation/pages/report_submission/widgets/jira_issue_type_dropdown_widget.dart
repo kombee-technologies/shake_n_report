@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shake_n_report/src/data/models/jira/response/jira_issue_type_response.dart';
 import 'package:shake_n_report/src/presentation/state_management/jira_management_cubit/jira_management_cubit.dart';
-import 'package:shake_n_report/src/presentation/widgets/cache_network_image_widget.dart';
 import 'package:shake_n_report/src/presentation/widgets/custom_autocomplete_widget.dart';
 
 class JiraIssueTypeDropdownWidget extends StatelessWidget {

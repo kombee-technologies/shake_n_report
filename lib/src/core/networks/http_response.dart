@@ -13,9 +13,9 @@ class HttpResponse<T> {
   final String? statusMessage;
 
   HttpResponse({
-    this.data,
     required this.statusCode,
     required this.headers,
+    this.data,
     this.statusMessage,
   });
 
