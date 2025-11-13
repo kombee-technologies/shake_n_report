@@ -213,9 +213,9 @@ class _AttachmentImage extends StatelessWidget {
           return Image.memory(
             snapshot.data!,
             fit: BoxFit.cover,
-            errorBuilder: (BuildContext context, Object error,
-                    StackTrace? stackTrace) =>
-                const Center(
+            errorBuilder:
+                (BuildContext context, Object error, StackTrace? stackTrace) =>
+                    const Center(
               child: Icon(
                 Icons.broken_image,
                 color: Colors.redAccent,

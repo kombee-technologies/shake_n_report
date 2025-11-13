@@ -1,6 +1,6 @@
 name: shake_n_report
 description: A Flutter plugin that enables users to report bugs by shaking their device.
-version: 0.0.4
+version: 0.0.5-beta.1
 homepage: https://github.com/kombee-technologies
 repository: https://github.com/kombee-technologies/shake_n_report
 issue_tracker: https://github.com/kombee-technologies/shake_n_report/issues

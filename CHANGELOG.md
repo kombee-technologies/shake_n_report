@@ -1,3 +1,17 @@
+## 0.0.5-beta.1
+
+* **WASM Compatibility**: Fixed WASM compatibility issues by removing `dart:io` from import chain
+  - Added conditional imports for platform detection
+  - Replaced `Image.file()` with `Image.memory()` for cross-platform image display
+  - Created platform helper utilities with stub implementations for web/WASM
+* **Platform Restrictions**: Added runtime checks to ensure plugin only works on Android and iOS
+  - Added platform validation in plugin initialization
+  - Added platform checks in shake detection widget
+  - Clear error messages for unsupported platforms
+* **Documentation**: Fixed broken screenshot images in README.md
+  - Changed GitHub blob URLs to raw URLs for proper image display on pub.dev
+  - Fixed class name inconsistency in README examples
+
 ## 0.0.4
 
 * Fix the broken links

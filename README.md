@@ -17,21 +17,21 @@ A Flutter plugin that enables users to report issues by shaking their device. Th
 <table>
   <tr>
     <td align="center">
-      <img src="https://github.com/kombee-technologies/shake_n_report/blob/main/assets/screenshot1.jpg" alt="Screenshot 1" width="300"/>
+      <img src="https://raw.githubusercontent.com/kombee-technologies/shake_n_report/main/assets/screenshot1.jpg" alt="Screenshot 1" width="300"/>
     </td>
     <td align="center">
-      <img src="https://github.com/kombee-technologies/shake_n_report/blob/main/assets/screenshot2.jpg" alt="Screenshot 2" width="300"/>
+      <img src="https://raw.githubusercontent.com/kombee-technologies/shake_n_report/main/assets/screenshot2.jpg" alt="Screenshot 2" width="300"/>
     </td>
     <td align="center">
-      <img src="https://github.com/kombee-technologies/shake_n_report/blob/main/assets/screenshot3.jpg" alt="Screenshot 3" width="300"/>
+      <img src="https://raw.githubusercontent.com/kombee-technologies/shake_n_report/main/assets/screenshot3.jpg" alt="Screenshot 3" width="300"/>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="https://github.com/kombee-technologies/shake_n_report/blob/main/assets/screenshot4.jpg" alt="Screenshot 4" width="300"/>
+      <img src="https://raw.githubusercontent.com/kombee-technologies/shake_n_report/main/assets/screenshot4.jpg" alt="Screenshot 4" width="300"/>
     </td>
     <td align="center">
-      <img src="https://github.com/kombee-technologies/shake_n_report/blob/main/assets/screenshot5.jpg" alt="Screenshot 5" width="300"/>
+      <img src="https://raw.githubusercontent.com/kombee-technologies/shake_n_report/main/assets/screenshot5.jpg" alt="Screenshot 5" width="300"/>
     </td>
     <td></td>
   </tr>
@@ -87,7 +87,7 @@ Initialize the plugin in your `main()` function:
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  ShakeToReportPlugin.initialize(
+  ShakeNReportPlugin.initialize(
     // Required parameters
     navigatorKey: navigatorKey,
     managementTool: ManagementTools.jira,

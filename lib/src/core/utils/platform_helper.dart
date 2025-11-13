@@ -11,4 +11,3 @@ class PlatformHelper {
   /// Check if running on iOS (returns false on web/WASM)
   static bool get isIOS => PlatformHelperImpl.isIOS;
 }
-
