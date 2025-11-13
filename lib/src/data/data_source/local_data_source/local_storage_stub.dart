@@ -28,6 +28,7 @@ class LocalStorageImpl {
     throw UnsupportedError('LocalStorage is not supported on web/WASM');
   }
 
+  // ignore: avoid_positional_boolean_parameters
   Future<void> setBoolData(String key, bool value) async {
     throw UnsupportedError('LocalStorage is not supported on web/WASM');
   }

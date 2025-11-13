@@ -550,7 +550,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.5-beta.1"
+    version: "0.0.5-beta.2"
   sky_engine:
     dependency: transitive
     description: flutter

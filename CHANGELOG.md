@@ -1,3 +1,15 @@
+## 0.0.5-beta.2
+
+* **WASM Compatibility Improvements**: Enhanced WASM compatibility by making all `dart:io` dependencies conditional
+  - Made `flutter_secure_storage` usage conditional with stub implementation for web/WASM
+  - Made `device_info_plus` usage conditional to prevent `dart:io` import chain
+  - Created conditional import structure for `LocalStorage` class
+  - Package now fully compatible with WASM runtime analysis
+* **Code Quality**: Fixed static analysis issues
+  - Fixed angle brackets in documentation comments (replaced `<T>` with descriptive text)
+  - All documentation now passes linter checks
+  - Improved code documentation clarity
+
 ## 0.0.5-beta.1
 
 * **WASM Compatibility**: Fixed WASM compatibility issues by removing `dart:io` from import chain

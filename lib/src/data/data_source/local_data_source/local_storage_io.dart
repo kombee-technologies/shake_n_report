@@ -31,6 +31,7 @@ class LocalStorageImpl {
   Future<bool> getBoolData(String key, {bool defaultVal = false}) async =>
       bool.parse(await _secureStorage.read(key: key) ?? '$defaultVal');
 
+  // ignore: avoid_positional_boolean_parameters
   Future<void> setBoolData(String key, bool value) async =>
       await _secureStorage.write(key: key, value: '$value');
 
