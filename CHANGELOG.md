@@ -1,3 +1,12 @@
+## 0.0.5-beta.4
+
+* **Complete WASM Compatibility**: Fixed all remaining WASM compatibility issues
+  - Made `HttpClientWrapper` usage conditional with stub implementation for web/WASM
+  - Made `HttpErrorHandler` usage conditional to prevent `dart:io` import chain
+  - Created conditional import structure for all HTTP-related classes
+  - Removed all direct `dart:io` imports from main code paths
+  - Package now fully compatible with WASM runtime analysis
+
 ## 0.0.5-beta.3
 
 * **WASM Compatibility Fix**: Fixed remaining WASM compatibility issue with `MultipartHelper`
