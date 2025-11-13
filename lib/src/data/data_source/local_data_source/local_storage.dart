@@ -1,62 +1,61 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// Conditional import: only import flutter_secure_storage when dart:io is available
+import 'package:shake_n_report/src/data/data_source/local_data_source/local_storage_stub.dart'
+    if (dart.library.io) 'package:shake_n_report/src/data/data_source/local_data_source/local_storage_io.dart';
 
+/// LocalStorage class that provides secure storage functionality.
+/// Uses FlutterSecureStorage on mobile platforms (Android/iOS) and
+/// throws UnsupportedError on web/WASM platforms.
 class LocalStorage {
   static final LocalStorage _instance = LocalStorage._internal();
   static LocalStorage get instance => _instance;
 
-  late FlutterSecureStorage _secureStorage;
+  late LocalStorageImpl _impl;
 
   // Singleton pattern
   LocalStorage._internal() {
-    const AndroidOptions getAndroidOptions = AndroidOptions(
-      encryptedSharedPreferences: true,
-      keyCipherAlgorithm:
-          KeyCipherAlgorithm.RSA_ECB_OAEPwithSHA_256andMGF1Padding,
-      storageCipherAlgorithm: StorageCipherAlgorithm.AES_GCM_NoPadding,
-    );
-    _secureStorage = const FlutterSecureStorage(aOptions: getAndroidOptions);
+    _impl = LocalStorageImpl();
   }
 
 //<---------------------------- Clear Data -------------------------------------//
 
   Future<void> clear() async {
-    await _secureStorage.deleteAll();
+    await _impl.clear();
   }
 
   Future<void> clearKey(String key) async {
-    await _secureStorage.delete(key: key);
+    await _impl.clearKey(key);
   }
 
 //<---------------------------- String -------------------------------------//
 
   Future<String> getStringData(String key) async =>
-      await _secureStorage.read(key: key) ?? '';
+      await _impl.getStringData(key);
 
   Future<void> setStringData(String key, String value) async =>
-      await _secureStorage.write(key: key, value: value);
+      await _impl.setStringData(key, value);
 
 //<---------------------------- Bool -------------------------------------//
 
   Future<bool> getBoolData(String key, {bool defaultVal = false}) async =>
-      bool.parse(await _secureStorage.read(key: key) ?? '$defaultVal');
+      await _impl.getBoolData(key, defaultVal: defaultVal);
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> setBoolData(String key, bool value) async =>
-      await _secureStorage.write(key: key, value: '$value');
+      await _impl.setBoolData(key, value);
 
 //<---------------------------- Double -------------------------------------//
 
   Future<double> getDoubleData(String key) async =>
-      double.parse(await _secureStorage.read(key: key) ?? '0.0');
+      await _impl.getDoubleData(key);
 
   Future<void> setDoubleData(String key, double value) async =>
-      await _secureStorage.write(key: key, value: value.toString());
+      await _impl.setDoubleData(key, value);
 
 //<---------------------------- Int -------------------------------------//
 
   Future<int> getIntegerData(String key) async =>
-      int.parse(await _secureStorage.read(key: key) ?? '0');
+      await _impl.getIntegerData(key);
 
   Future<void> setIntegerData(String key, int value) async =>
-      await _secureStorage.write(key: key, value: value.toString());
+      await _impl.setIntegerData(key, value);
 }
