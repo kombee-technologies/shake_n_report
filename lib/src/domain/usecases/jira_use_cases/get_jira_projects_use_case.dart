@@ -7,7 +7,8 @@ import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
 class GetJiraProjectsUseCase
     extends UseCase<JiraProjectsResponse, CommonParamsRequest> {
-  static final GetJiraProjectsUseCase _instance = GetJiraProjectsUseCase._internal();
+  static final GetJiraProjectsUseCase _instance =
+      GetJiraProjectsUseCase._internal();
   static GetJiraProjectsUseCase get instance => _instance;
 
   final JiraRepository jiraRepository;
@@ -17,7 +18,6 @@ class GetJiraProjectsUseCase
   }) : jiraRepository = jiraRepository ?? JiraRepositoriesImpl.instance;
 
   @override
-  Future<Result<JiraProjectsResponse>> call(
-          CommonParamsRequest reqParams) =>
+  Future<Result<JiraProjectsResponse>> call(CommonParamsRequest reqParams) =>
       jiraRepository.getJiraProjects(reqParams);
 }

@@ -56,7 +56,8 @@ class JiraDataSourceImpl implements JiraDataSource {
   @override
   Future<AccessTokenResponse> getAccessToken(
       GetAccessTokenRequest request) async {
-    final HttpResponse<Map<String, dynamic>> response = await _httpClient.post<Map<String, dynamic>>(
+    final HttpResponse<Map<String, dynamic>> response =
+        await _httpClient.post<Map<String, dynamic>>(
       ApiEndPoints.oAuthTokenJira,
       data: request.toJson(),
       headers: <String, String>{
@@ -71,7 +72,8 @@ class JiraDataSourceImpl implements JiraDataSource {
     final String accessToken =
         await _localStorage.getStringData(LocalStorageKeys.jiraAccessToken);
 
-    final HttpResponse<List<dynamic>> response = await _httpClient.get<List<dynamic>>(
+    final HttpResponse<List<dynamic>> response =
+        await _httpClient.get<List<dynamic>>(
       ApiEndPoints.getAccessibleResourcesJira,
       headers: <String, String>{
         ApiKeys.contentType: ApiKeys.applicationXWwwFormUrlencoded,

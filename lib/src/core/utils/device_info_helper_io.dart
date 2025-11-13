@@ -12,4 +12,3 @@ class DeviceInfoHelperImpl {
     return androidInfo.version.sdkInt;
   }
 }
-

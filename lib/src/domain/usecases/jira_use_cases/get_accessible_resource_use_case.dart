@@ -7,7 +7,8 @@ import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
 class GetAccessibleResourceUseCase
     extends UseCase<List<AccessibleResourcesResponse>, NoParams> {
-  static final GetAccessibleResourceUseCase _instance = GetAccessibleResourceUseCase._internal();
+  static final GetAccessibleResourceUseCase _instance =
+      GetAccessibleResourceUseCase._internal();
   static GetAccessibleResourceUseCase get instance => _instance;
 
   final JiraRepository _jiraRepository;
@@ -17,7 +18,6 @@ class GetAccessibleResourceUseCase
   }) : _jiraRepository = jiraRepository ?? JiraRepositoriesImpl.instance;
 
   @override
-  Future<Result<List<AccessibleResourcesResponse>>> call(
-          NoParams reqParams) =>
+  Future<Result<List<AccessibleResourcesResponse>>> call(NoParams reqParams) =>
       _jiraRepository.getAccessibleResources();
 }

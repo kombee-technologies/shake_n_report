@@ -6,7 +6,8 @@ import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
 class AddAttachmentToTicketUseCase
     extends UseCase<void, AddAttachmentToTicketRequest> {
-  static final AddAttachmentToTicketUseCase _instance = AddAttachmentToTicketUseCase._internal();
+  static final AddAttachmentToTicketUseCase _instance =
+      AddAttachmentToTicketUseCase._internal();
   static AddAttachmentToTicketUseCase get instance => _instance;
 
   final JiraRepository jiraRepository;
@@ -16,8 +17,7 @@ class AddAttachmentToTicketUseCase
   }) : jiraRepository = jiraRepository ?? JiraRepositoriesImpl.instance;
 
   @override
-  Future<Result<void>> call(
-          AddAttachmentToTicketRequest reqParams) =>
+  Future<Result<void>> call(AddAttachmentToTicketRequest reqParams) =>
       jiraRepository.addAttachmentToTicket(
           reqParams.commonParamsRequest, reqParams.filePaths);
 }

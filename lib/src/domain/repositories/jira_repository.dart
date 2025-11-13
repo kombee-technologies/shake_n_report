@@ -20,8 +20,7 @@ abstract class JiraRepository {
   /// Fetches the accessible resources from the Jira API.
   ///
   /// Returns a list of [AccessibleResourcesResponse] containing the accessible resources.
-  Future<Result<List<AccessibleResourcesResponse>>>
-      getAccessibleResources();
+  Future<Result<List<AccessibleResourcesResponse>>> getAccessibleResources();
 
   /// Fetches the projects from the Jira API.
   ///
@@ -38,8 +37,8 @@ abstract class JiraRepository {
   /// Fetches the assignable users from the Jira API.
   ///
   /// Returns a list of [JiraAssignableUsersResponse]
-  Future<Result<List<JiraAssignableUsersResponse>>>
-      getJiraAssignableUsers(CommonParamsRequest request);
+  Future<Result<List<JiraAssignableUsersResponse>>> getJiraAssignableUsers(
+      CommonParamsRequest request);
 
   /// Creates a new Jira ticket with the specified parameters and request data.
   ///

@@ -6,7 +6,8 @@ import 'package:shake_n_report/src/data/repositories/jira_repositories_impl.dart
 import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
 class AssignUserToTicketUseCase extends UseCase<void, AssignTicketRequest> {
-  static final AssignUserToTicketUseCase _instance = AssignUserToTicketUseCase._internal();
+  static final AssignUserToTicketUseCase _instance =
+      AssignUserToTicketUseCase._internal();
   static AssignUserToTicketUseCase get instance => _instance;
 
   final JiraRepository jiraRepository;

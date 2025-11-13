@@ -13,7 +13,7 @@ class Utility {
   }
 
   /// Show a snackbar message using Flutter's built-in SnackBar
-  /// 
+  ///
   /// [msg] - The message to display
   /// [bannerStyle] - The style of the banner (success, error, warning, info)
   /// [onTap] - Optional callback when the snackbar is tapped
@@ -24,7 +24,7 @@ class Utility {
   }) {
     final BuildContext? context =
         ShakeNReportPlugin.instance.navigatorKey.currentContext;
-    
+
     if (context == null || !context.mounted) {
       return;
     }

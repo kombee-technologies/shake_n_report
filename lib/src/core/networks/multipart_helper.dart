@@ -112,7 +112,8 @@ class MultipartHelper {
 
       sink
         ..write('--$boundary\r\n')
-        ..write('Content-Disposition: form-data; name="${file.field}"; filename="${file.fileName}"\r\n');
+        ..write(
+            'Content-Disposition: form-data; name="${file.field}"; filename="${file.fileName}"\r\n');
       if (file.contentType != null) {
         sink.write('Content-Type: ${file.contentType}\r\n');
       }

@@ -7,7 +7,8 @@ import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
 class GetProjectIssueTypeUseCase
     extends UseCase<List<JiraIssueTypeResponse>, CommonParamsRequest> {
-  static final GetProjectIssueTypeUseCase _instance = GetProjectIssueTypeUseCase._internal();
+  static final GetProjectIssueTypeUseCase _instance =
+      GetProjectIssueTypeUseCase._internal();
   static GetProjectIssueTypeUseCase get instance => _instance;
 
   final JiraRepository jiraRepository;

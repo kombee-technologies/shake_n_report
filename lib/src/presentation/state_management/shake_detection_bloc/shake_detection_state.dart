@@ -37,4 +37,3 @@ class ShakeDetectedState extends ShakeDetectionState {
   @override
   int get hashCode => timestamp.hashCode;
 }
-

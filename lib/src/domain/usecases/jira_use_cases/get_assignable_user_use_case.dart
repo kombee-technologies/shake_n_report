@@ -7,7 +7,8 @@ import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
 class GetAssignableUserUseCase
     extends UseCase<List<JiraAssignableUsersResponse>, CommonParamsRequest> {
-  static final GetAssignableUserUseCase _instance = GetAssignableUserUseCase._internal();
+  static final GetAssignableUserUseCase _instance =
+      GetAssignableUserUseCase._internal();
   static GetAssignableUserUseCase get instance => _instance;
 
   final JiraRepository jiraRepository;

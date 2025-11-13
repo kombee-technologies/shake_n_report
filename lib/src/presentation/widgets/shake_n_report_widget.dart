@@ -60,7 +60,8 @@ class _ShakeToReportWidgetState extends State<ShakeToReportWidget> {
           BlocProvider<ShakeDetectionCubit>.value(
             value: _shakeDetectionCubit,
           ),
-          BlocProvider<JiraManagementCubit>(create: (_) => JiraManagementCubit()),
+          BlocProvider<JiraManagementCubit>(
+              create: (_) => JiraManagementCubit()),
         ],
         child: widget.child,
       );

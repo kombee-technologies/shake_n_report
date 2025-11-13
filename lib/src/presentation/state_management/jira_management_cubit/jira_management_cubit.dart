@@ -73,7 +73,7 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
         ShakeNReportPlugin.instance.navigatorKey.currentContext;
     final Result<AccessTokenResponse> accessToken =
         await getAccessTokenUseCase.call(request);
-    
+
     switch (accessToken) {
       case Failure<AccessTokenResponse>(exception: final BaseException error):
         Utility.showSnackbar(
@@ -113,12 +113,16 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
 
     final Result<List<AccessibleResourcesResponse>> resources =
         await getAccessibleResourcesUseCase.call(NoParams());
-    
+
     switch (resources) {
-      case Failure<List<AccessibleResourcesResponse>>(exception: final BaseException error):
+      case Failure<List<AccessibleResourcesResponse>>(
+          exception: final BaseException error
+        ):
         emit(state.copyWith(
             isProjectLoading: false, errorMessage: error.message));
-      case Success<List<AccessibleResourcesResponse>>(value: final List<AccessibleResourcesResponse> projects):
+      case Success<List<AccessibleResourcesResponse>>(
+          value: final List<AccessibleResourcesResponse> projects
+        ):
         emit(state.copyWith(projects: projects, isProjectLoading: false));
     }
   }
@@ -154,7 +158,9 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
         updatedProjectResources[index] =
             resourceToUpdate.copyWith(errorStr: error.message);
         emit(state.copyWith(projects: updatedProjectResources));
-      case Success<JiraProjectsResponse>(value: final JiraProjectsResponse projectsRes):
+      case Success<JiraProjectsResponse>(
+          value: final JiraProjectsResponse projectsRes
+        ):
         updatedProjectResources[index] =
             resourceToUpdate.copyWith(projects: projectsRes.values);
         emit(state.copyWith(projects: updatedProjectResources));
@@ -171,10 +177,14 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
             .call(CommonParamsRequest(cloudId: cloudId, projectId: projectId));
 
     switch (issueTypesResult) {
-      case Failure<List<JiraIssueTypeResponse>>(exception: final BaseException error):
+      case Failure<List<JiraIssueTypeResponse>>(
+          exception: final BaseException error
+        ):
         emit(state.copyWith(
             isIssueTypeLoading: false, errorMessage: error.message));
-      case Success<List<JiraIssueTypeResponse>>(value: final List<JiraIssueTypeResponse> issueTypes):
+      case Success<List<JiraIssueTypeResponse>>(
+          value: final List<JiraIssueTypeResponse> issueTypes
+        ):
         emit(state.copyWith(issueTypes: issueTypes, isIssueTypeLoading: false));
     }
   }
@@ -212,17 +222,21 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
     final String? cloudId = state.selectedProject?.id;
     final String? projectKey = state.projectItem?.key;
 
-    final Result<List<JiraAssignableUsersResponse>>
-        assignableUsersResult = await getAssignableUserUseCase.call(
+    final Result<List<JiraAssignableUsersResponse>> assignableUsersResult =
+        await getAssignableUserUseCase.call(
             CommonParamsRequest(cloudId: cloudId, projectKey: projectKey));
 
     switch (assignableUsersResult) {
-      case Failure<List<JiraAssignableUsersResponse>>(exception: final BaseException error):
+      case Failure<List<JiraAssignableUsersResponse>>(
+          exception: final BaseException error
+        ):
         emit(state.copyWith(
             isAssignableUsersLoading: false, errorMessage: error.message));
         Utility.showSnackbar(
             msg: error.message, bannerStyle: BannerStyle.error);
-      case Success<List<JiraAssignableUsersResponse>>(value: final List<JiraAssignableUsersResponse> users):
+      case Success<List<JiraAssignableUsersResponse>>(
+          value: final List<JiraAssignableUsersResponse> users
+        ):
         // Filter out inactive users if necessary, or handle as per your requirements
         final List<JiraAssignableUsersResponse> activeUsers = users
             .where((JiraAssignableUsersResponse user) => user.active == true)
@@ -295,7 +309,9 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
     CreateJiraIssueResponse? ticketResponse;
 
     switch (createTicketResult) {
-      case Failure<CreateJiraIssueResponse>(exception: final BaseException error):
+      case Failure<CreateJiraIssueResponse>(
+          exception: final BaseException error
+        ):
         if (error is UnauthorizedException) {
           final BuildContext? context =
               ShakeNReportPlugin.instance.navigatorKey.currentContext;
@@ -316,7 +332,9 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
             selectedAssignerAccID: state.selectedAssignerAccID,
           ));
         }
-      case Success<CreateJiraIssueResponse>(value: final CreateJiraIssueResponse response):
+      case Success<CreateJiraIssueResponse>(
+          value: final CreateJiraIssueResponse response
+        ):
         ticketResponse = response;
         // emit(state.copyWith(
         //   createJiraIssueResponse: response,
@@ -349,7 +367,7 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
                   msg:
                       'Ticket created, but failed to assign user: ${error.message}',
                   bannerStyle: BannerStyle.warning);
-              // Continue to attachments even if assignment fails
+            // Continue to attachments even if assignment fails
             case Success<void>():
               Utility.showSnackbar(
                   msg:
@@ -361,9 +379,8 @@ class JiraManagementCubit extends Cubit<JiraManagementState> {
         // 3. Add Attachments (if any)
         if (state.attachments.isNotEmpty) {
           // Extract file paths from XFile objects
-          final List<String> filePaths = state.attachments
-              .map((XFile file) => file.path)
-              .toList();
+          final List<String> filePaths =
+              state.attachments.map((XFile file) => file.path).toList();
 
           final AddAttachmentToTicketRequest addAttachmentFullRequest =
               AddAttachmentToTicketRequest(

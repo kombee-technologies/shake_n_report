@@ -17,27 +17,27 @@ class ShakeNReportPlugin {
   }
 
   /// The minimum acceleration (in g-force units) required to register a shake event.
-  /// 
+  ///
   /// This threshold determines the sensitivity of shake detection:
   /// - **Lower values (1.0-3.0)**: More sensitive - detects gentle shakes
   /// - **Medium values (3.0-5.0)**: Balanced - detects normal shakes
   /// - **Higher values (5.0+)**: Less sensitive - requires vigorous shaking
-  /// 
+  ///
   /// **Recommended values:**
   /// - For development/testing: 2.0-3.0
   /// - For production: 3.0-4.0
-  /// 
+  ///
   /// The default value is optimized for most use cases.
   /// Note: Values below 1.0 may cause false positives, values above 10.0 may be too insensitive.
   double shakeThreshold = 2.7;
 
   /// The minimum number of consecutive shake events required to trigger the report interface.
-  /// 
+  ///
   /// This helps prevent accidental triggers:
   /// - **1**: Triggers on first shake (most sensitive, may have false positives)
   /// - **2-3**: Recommended for most use cases (balanced sensitivity)
   /// - **4+**: Requires multiple shakes (reduces false positives but may be less responsive)
-  /// 
+  ///
   /// **Recommended:** 2 shakes for production, 1 for development/testing.
   int minShakeCount = 2;
 

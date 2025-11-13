@@ -58,12 +58,14 @@ class HttpClientWrapper {
     HttpLogger.logRequest('GET', uri.toString(), mergedHeaders, null);
 
     try {
-      final HttpClientRequest request = await _client.getUrl(uri).timeout(connectionTimeout);
+      final HttpClientRequest request =
+          await _client.getUrl(uri).timeout(connectionTimeout);
       _setHeaders(request, mergedHeaders);
-      
-      final HttpClientResponse response = await request.close().timeout(receiveTimeout);
+
+      final HttpClientResponse response =
+          await request.close().timeout(receiveTimeout);
       final String responseBody = await response.transform(utf8.decoder).join();
-      
+
       final Map<String, String> responseHeaders = <String, String>{};
       response.headers.forEach((String name, List<String> values) {
         responseHeaders[name] = values.join(', ');
@@ -102,16 +104,18 @@ class HttpClientWrapper {
     HttpLogger.logRequest('POST', uri.toString(), mergedHeaders, data);
 
     try {
-      final HttpClientRequest request = await _client.postUrl(uri).timeout(connectionTimeout);
+      final HttpClientRequest request =
+          await _client.postUrl(uri).timeout(connectionTimeout);
       _setHeaders(request, mergedHeaders);
-      
+
       if (body.isNotEmpty) {
         request.write(body);
       }
-      
-      final HttpClientResponse response = await request.close().timeout(receiveTimeout);
+
+      final HttpClientResponse response =
+          await request.close().timeout(receiveTimeout);
       final String responseBody = await response.transform(utf8.decoder).join();
-      
+
       final Map<String, String> responseHeaders = <String, String>{};
       response.headers.forEach((String name, List<String> values) {
         responseHeaders[name] = values.join(', ');
@@ -150,16 +154,18 @@ class HttpClientWrapper {
     HttpLogger.logRequest('PUT', uri.toString(), mergedHeaders, data);
 
     try {
-      final HttpClientRequest request = await _client.putUrl(uri).timeout(connectionTimeout);
+      final HttpClientRequest request =
+          await _client.putUrl(uri).timeout(connectionTimeout);
       _setHeaders(request, mergedHeaders);
-      
+
       if (body.isNotEmpty) {
         request.write(body);
       }
-      
-      final HttpClientResponse response = await request.close().timeout(receiveTimeout);
+
+      final HttpClientResponse response =
+          await request.close().timeout(receiveTimeout);
       final String responseBody = await response.transform(utf8.decoder).join();
-      
+
       final Map<String, String> responseHeaders = <String, String>{};
       response.headers.forEach((String name, List<String> values) {
         responseHeaders[name] = values.join(', ');
@@ -203,25 +209,29 @@ class HttpClientWrapper {
     );
 
     try {
-      final String boundary = 'dart-http-boundary-${DateTime.now().millisecondsSinceEpoch}';
-      final HttpClientRequest request = await _client.postUrl(uri).timeout(connectionTimeout);
-      
+      final String boundary =
+          'dart-http-boundary-${DateTime.now().millisecondsSinceEpoch}';
+      final HttpClientRequest request =
+          await _client.postUrl(uri).timeout(connectionTimeout);
+
       // Set headers (excluding Content-Type as it's set by multipart request)
       (headers ?? <String, String>{}).forEach((String key, String value) {
         if (key.toLowerCase() != 'content-type') {
           request.headers.set(key, value);
         }
       });
-      
-      request.headers.set('Content-Type', 'multipart/form-data; boundary=$boundary');
-      
+
+      request.headers
+          .set('Content-Type', 'multipart/form-data; boundary=$boundary');
+
       // Write multipart body
       final IOSink sink = request;
       await MultipartHelper.writeMultipartBody(sink, boundary, files, fields);
-      
-      final HttpClientResponse response = await request.close().timeout(receiveTimeout);
+
+      final HttpClientResponse response =
+          await request.close().timeout(receiveTimeout);
       final String responseBody = await response.transform(utf8.decoder).join();
-      
+
       final Map<String, String> responseHeaders = <String, String>{};
       response.headers.forEach((String name, List<String> values) {
         responseHeaders[name] = values.join(', ');
@@ -318,7 +328,8 @@ class HttpClientWrapper {
 
     // Check for error status codes
     if (statusCode >= 400) {
-      await _errorHandler.handleError(statusCode, headers, responseBody, null, StackTrace.current);
+      await _errorHandler.handleError(
+          statusCode, headers, responseBody, null, StackTrace.current);
     }
 
     // Parse response body

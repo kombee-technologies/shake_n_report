@@ -78,8 +78,7 @@ class ToolsSelections extends StatelessWidget {
                         size: 16,
                         color: Colors.grey,
                       ),
-                      onTap: () {
-                      },
+                      onTap: () {},
                     ),
                   );
                 },

@@ -15,7 +15,8 @@ import 'package:shake_n_report/src/data/models/jira/response/jira_project_respon
 import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
 class JiraRepositoriesImpl extends JiraRepository {
-  static final JiraRepositoriesImpl _instance = JiraRepositoriesImpl._internal();
+  static final JiraRepositoriesImpl _instance =
+      JiraRepositoriesImpl._internal();
   static JiraRepositoriesImpl get instance => _instance;
 
   final JiraDataSource _jiraDataSource;
@@ -35,7 +36,8 @@ class JiraRepositoriesImpl extends JiraRepository {
       if (e is BaseException) {
         return Failure<AccessTokenResponse>(e);
       }
-      return Failure<AccessTokenResponse>(GeneralException(MyConstants.somethingWentWrong));
+      return Failure<AccessTokenResponse>(
+          GeneralException(MyConstants.somethingWentWrong));
     }
   }
 
@@ -50,13 +52,14 @@ class JiraRepositoriesImpl extends JiraRepository {
       if (e is BaseException) {
         return Failure<List<AccessibleResourcesResponse>>(e);
       }
-      return Failure<List<AccessibleResourcesResponse>>(GeneralException(MyConstants.somethingWentWrong));
+      return Failure<List<AccessibleResourcesResponse>>(
+          GeneralException(MyConstants.somethingWentWrong));
     }
   }
 
   @override
-  Future<Result<List<JiraAssignableUsersResponse>>>
-      getJiraAssignableUsers(CommonParamsRequest request) async {
+  Future<Result<List<JiraAssignableUsersResponse>>> getJiraAssignableUsers(
+      CommonParamsRequest request) async {
     try {
       final List<JiraAssignableUsersResponse> response =
           await _jiraDataSource.getJiraAssignableUsers(request);
@@ -65,7 +68,8 @@ class JiraRepositoriesImpl extends JiraRepository {
       if (e is BaseException) {
         return Failure<List<JiraAssignableUsersResponse>>(e);
       }
-      return Failure<List<JiraAssignableUsersResponse>>(GeneralException(MyConstants.somethingWentWrong));
+      return Failure<List<JiraAssignableUsersResponse>>(
+          GeneralException(MyConstants.somethingWentWrong));
     }
   }
 
@@ -80,7 +84,8 @@ class JiraRepositoriesImpl extends JiraRepository {
       if (e is BaseException) {
         return Failure<List<JiraIssueTypeResponse>>(e);
       }
-      return Failure<List<JiraIssueTypeResponse>>(GeneralException(MyConstants.somethingWentWrong));
+      return Failure<List<JiraIssueTypeResponse>>(
+          GeneralException(MyConstants.somethingWentWrong));
     }
   }
 
@@ -95,7 +100,8 @@ class JiraRepositoriesImpl extends JiraRepository {
       if (e is BaseException) {
         return Failure<JiraProjectsResponse>(e);
       }
-      return Failure<JiraProjectsResponse>(GeneralException(MyConstants.somethingWentWrong));
+      return Failure<JiraProjectsResponse>(
+          GeneralException(MyConstants.somethingWentWrong));
     }
   }
 
@@ -138,7 +144,8 @@ class JiraRepositoriesImpl extends JiraRepository {
       if (e is BaseException) {
         return Failure<CreateJiraIssueResponse>(e);
       }
-      return Failure<CreateJiraIssueResponse>(GeneralException(MyConstants.somethingWentWrong));
+      return Failure<CreateJiraIssueResponse>(
+          GeneralException(MyConstants.somethingWentWrong));
     }
   }
 }

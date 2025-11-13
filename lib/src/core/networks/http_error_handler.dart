@@ -22,17 +22,20 @@ class HttpErrorHandler {
   ) async {
     // Handle timeout errors
     if (error is TimeoutException) {
-      throw TimeoutException('Request timeout: Connection took too long to respond');
+      throw TimeoutException(
+          'Request timeout: Connection took too long to respond');
     }
 
     // Handle socket/connection errors
     if (error is SocketException) {
-      throw ConnectionErrorException('Connection error: Unable to connect to server');
+      throw ConnectionErrorException(
+          'Connection error: Unable to connect to server');
     }
 
     // Handle TLS/SSL certificate errors
     if (error is HandshakeException || error is TlsException) {
-      throw BadCertificateException('Certificate error: SSL/TLS handshake failed');
+      throw BadCertificateException(
+          'Certificate error: SSL/TLS handshake failed');
     }
 
     // Handle HTTP status code errors
@@ -41,7 +44,8 @@ class HttpErrorHandler {
     }
 
     // Default to general exception for unknown errors
-    throw GeneralException('An unexpected error occurred: ${error?.toString() ?? 'Unknown error'}');
+    throw GeneralException(
+        'An unexpected error occurred: ${error?.toString() ?? 'Unknown error'}');
   }
 
   /// Maps HTTP status codes to appropriate exceptions

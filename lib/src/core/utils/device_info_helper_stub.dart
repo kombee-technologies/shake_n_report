@@ -2,4 +2,3 @@
 class DeviceInfoHelperImpl {
   static Future<int?> getAndroidSdkVersion() async => null;
 }
-

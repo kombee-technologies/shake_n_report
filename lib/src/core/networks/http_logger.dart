@@ -7,7 +7,8 @@ import 'package:flutter/foundation.dart';
 /// Provides formatted output with chunking for large responses.
 class HttpLogger {
   static const int _chunkSize = 800;
-  static const String _separator = '════════════════════════════════════════════════════════════════════════════════';
+  static const String _separator =
+      '════════════════════════════════════════════════════════════════════════════════';
 
   /// Logs an HTTP request with method, URL, headers, and body
   static void logRequest(
@@ -98,7 +99,8 @@ class HttpLogger {
     }
 
     for (int i = 0; i < text.length; i += _chunkSize) {
-      final int end = (i + _chunkSize < text.length) ? i + _chunkSize : text.length;
+      final int end =
+          (i + _chunkSize < text.length) ? i + _chunkSize : text.length;
       developer.log(text.substring(i, end), name: 'HTTP');
     }
   }

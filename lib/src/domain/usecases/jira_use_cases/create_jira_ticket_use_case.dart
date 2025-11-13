@@ -8,7 +8,8 @@ import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
 class CreateJiraTicketUseCase
     extends UseCase<CreateJiraIssueResponse, CreateJiraTicketRequest> {
-  static final CreateJiraTicketUseCase _instance = CreateJiraTicketUseCase._internal();
+  static final CreateJiraTicketUseCase _instance =
+      CreateJiraTicketUseCase._internal();
   static CreateJiraTicketUseCase get instance => _instance;
 
   final JiraRepository _jiraRepository;

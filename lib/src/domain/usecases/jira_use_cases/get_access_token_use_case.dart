@@ -7,7 +7,8 @@ import 'package:shake_n_report/src/domain/repositories/jira_repository.dart';
 
 class GetAccessTokenUseCase
     extends UseCase<AccessTokenResponse, GetAccessTokenRequest> {
-  static final GetAccessTokenUseCase _instance = GetAccessTokenUseCase._internal();
+  static final GetAccessTokenUseCase _instance =
+      GetAccessTokenUseCase._internal();
   static GetAccessTokenUseCase get instance => _instance;
 
   final JiraRepository _jiraRepository;
@@ -17,7 +18,6 @@ class GetAccessTokenUseCase
   }) : _jiraRepository = jiraRepository ?? JiraRepositoriesImpl.instance;
 
   @override
-  Future<Result<AccessTokenResponse>> call(
-          GetAccessTokenRequest reqParams) =>
+  Future<Result<AccessTokenResponse>> call(GetAccessTokenRequest reqParams) =>
       _jiraRepository.getAccessToken(reqParams);
 }
