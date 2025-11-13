@@ -1,9 +1,11 @@
-import 'dart:io' show Platform, File;
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shake_n_report/src/core/constants/my_constants.dart';
 import 'package:shake_n_report/src/core/utils/device_info_helper.dart';
+import 'package:shake_n_report/src/core/utils/platform_helper.dart';
 
 class AttachmentInputField extends StatelessWidget {
   final List<XFile> attachments;
@@ -26,7 +28,7 @@ class AttachmentInputField extends StatelessWidget {
         <Permission, PermissionStatus>{};
     final List<Permission> permissionsToRequest = <Permission>[];
 
-    if (Platform.isAndroid) {
+    if (PlatformHelper.isAndroid) {
       final int? sdkVersion = await DeviceInfoHelper.getAndroidSdkVersion();
       if (sdkVersion != null && sdkVersion >= 33) {
         // Android 13+
@@ -37,7 +39,7 @@ class AttachmentInputField extends StatelessWidget {
         // Android 12 and below
         permissionsToRequest.add(Permission.storage);
       }
-    } else if (Platform.isIOS) {
+    } else if (PlatformHelper.isIOS) {
       permissionsToRequest
           .add(Permission.photos); // Covers both images and videos on iOS
     }
@@ -156,16 +158,7 @@ class AttachmentInputField extends StatelessWidget {
                           color: Colors.grey.shade200,
                         ),
                         // attachment.type == AttachmentType.image
-                        child: Image.file(
-                          File(attachments[index].path),
-                          fit: BoxFit.cover,
-                          errorBuilder: (BuildContext context, Object error,
-                                  StackTrace? stackTrace) =>
-                              const Center(
-                            child: Icon(Icons.broken_image,
-                                color: Colors.redAccent, size: 40),
-                          ),
-                        ),
+                        child: _AttachmentImage(file: attachments[index]),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0, top: 8.0),
@@ -188,5 +181,48 @@ class AttachmentInputField extends StatelessWidget {
               ),
             ),
         ],
+      );
+}
+
+/// Widget that displays an image from XFile using Image.memory for WASM compatibility
+class _AttachmentImage extends StatelessWidget {
+  final XFile file;
+
+  const _AttachmentImage({required this.file});
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<Uint8List>(
+        future: file.readAsBytes(),
+        builder: (BuildContext context, AsyncSnapshot<Uint8List> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(strokeWidth: 2),
+            );
+          }
+
+          if (snapshot.hasError || !snapshot.hasData) {
+            return const Center(
+              child: Icon(
+                Icons.broken_image,
+                color: Colors.redAccent,
+                size: 40,
+              ),
+            );
+          }
+
+          return Image.memory(
+            snapshot.data!,
+            fit: BoxFit.cover,
+            errorBuilder: (BuildContext context, Object error,
+                    StackTrace? stackTrace) =>
+                const Center(
+              child: Icon(
+                Icons.broken_image,
+                color: Colors.redAccent,
+                size: 40,
+              ),
+            ),
+          );
+        },
       );
 }

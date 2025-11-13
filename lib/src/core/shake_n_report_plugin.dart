@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shake_n_report/src/core/constants/enums.dart';
 import 'package:shake_n_report/src/core/di.dart';
+import 'package:shake_n_report/src/core/utils/platform_helper.dart';
 import 'package:shake_n_report/src/data/models/jira/jira_config.dart';
 
 class ShakeNReportPlugin {
@@ -100,6 +101,13 @@ class ShakeNReportPlugin {
     ManagementTools managementTool = ManagementTools.jira,
     JiraConfig? jiraConfig,
   }) async {
+    // Platform validation: This plugin only supports Android and iOS
+    assert(
+      PlatformHelper.isAndroid || PlatformHelper.isIOS,
+      'ShakeNReportPlugin only supports Android and iOS platforms. '
+      'This plugin is not available for Web, Windows, macOS, or Linux.',
+    );
+
     // Validate shakeThreshold range
     assert(
       shakeThreshold >= 1.0 && shakeThreshold <= 20.0,

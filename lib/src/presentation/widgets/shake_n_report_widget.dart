@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shake/shake.dart';
 import 'package:shake_n_report/shake_n_report.dart';
+import 'package:shake_n_report/src/core/utils/platform_helper.dart';
 import 'package:shake_n_report/src/core/utils/utility.dart';
 import 'package:shake_n_report/src/presentation/state_management/jira_management_cubit/jira_management_cubit.dart';
 import 'package:shake_n_report/src/presentation/state_management/shake_detection_bloc/shake_detection_cubit.dart';
@@ -28,22 +29,31 @@ class _ShakeToReportWidgetState extends State<ShakeToReportWidget> {
     super.initState();
     _shakeDetectionCubit = ShakeDetectionCubit();
 
-    _shakeDetector = ShakeDetector.waitForStart(
-      onPhoneShake: (ShakeEvent e) {
-        Utility.infoLog('onPhoneShake: Got it! ${e.direction} || ${e.force}');
-        if (_shakeDetectionCubit.state is ShakeDetectionInitial) {
-          _shakeDetectionCubit.onShakeDetected(e.timestamp);
-        }
-      },
-      shakeThresholdGravity: ShakeNReportPlugin.instance.shakeThreshold,
-      minimumShakeCount: ShakeNReportPlugin.instance.minShakeCount,
-    );
+    // Only initialize shake detection on Android and iOS
+    if (PlatformHelper.isAndroid || PlatformHelper.isIOS) {
+      _shakeDetector = ShakeDetector.waitForStart(
+        onPhoneShake: (ShakeEvent e) {
+          Utility.infoLog('onPhoneShake: Got it! ${e.direction} || ${e.force}');
+          if (_shakeDetectionCubit.state is ShakeDetectionInitial) {
+            _shakeDetectionCubit.onShakeDetected(e.timestamp);
+          }
+        },
+        shakeThresholdGravity: ShakeNReportPlugin.instance.shakeThreshold,
+        minimumShakeCount: ShakeNReportPlugin.instance.minShakeCount,
+      );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (ShakeNReportPlugin.instance.isEnabled) {
-        _shakeDetector?.startListening();
-      }
-    });
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (ShakeNReportPlugin.instance.isEnabled) {
+          _shakeDetector?.startListening();
+        }
+      });
+    } else {
+      // Log warning for unsupported platforms
+      Utility.infoLog(
+        'ShakeNReportPlugin: Shake detection is only available on Android and iOS. '
+        'Current platform is not supported.',
+      );
+    }
   }
 
   @override
