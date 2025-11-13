@@ -49,4 +49,3 @@ class LocalStorageImpl {
     throw UnsupportedError('LocalStorage is not supported on web/WASM');
   }
 }
-

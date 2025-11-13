@@ -1,3 +1,11 @@
+## 0.0.5-beta.3
+
+* **WASM Compatibility Fix**: Fixed remaining WASM compatibility issue with `MultipartHelper`
+  - Made `multipart_helper.dart` usage conditional with stub implementation for web/WASM
+  - Created conditional import structure for `MultipartHelper` class
+  - Removed direct `dart:io` import from main code path
+  - Package now fully compatible with WASM runtime analysis
+
 ## 0.0.5-beta.2
 
 * **WASM Compatibility Improvements**: Enhanced WASM compatibility by making all `dart:io` dependencies conditional

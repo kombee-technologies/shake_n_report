@@ -47,4 +47,3 @@ class LocalStorageImpl {
   Future<void> setIntegerData(String key, int value) async =>
       await _secureStorage.write(key: key, value: value.toString());
 }
-
